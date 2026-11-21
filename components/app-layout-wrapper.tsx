@@ -1,12 +1,21 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { usePathname } from '@/navigation';
 import { BottomNav } from '@/components/bottom-nav';
+import { usePersona } from '@/components/persona-context';
 
 export function AppLayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isDoctorPortal = pathname.includes('/doctor');
+  // Match /doctor exactly (not the patient-side /doctors page).
+  const isDoctorPortal = /^\/doctor(\/|$)/.test(pathname);
+  const { currentPersona, setPersonaType } = usePersona();
+
+  // Keep the persona switcher in step with the page being viewed.
+  useEffect(() => {
+    const wanted = isDoctorPortal ? 'doctor' : 'patient';
+    if (currentPersona.type !== wanted) setPersonaType(wanted);
+  }, [isDoctorPortal, currentPersona.type, setPersonaType]);
 
   if (isDoctorPortal) {
     return (

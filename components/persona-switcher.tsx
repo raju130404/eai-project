@@ -50,7 +50,7 @@ export function PersonaSwitcher() {
           {currentPersona.avatarText}
         </div>
         <span className="font-heading tracking-tight truncate max-w-[85px] sm:max-w-none text-white">
-          {currentPersona.name.split(' ')[0]}
+          {currentPersona.type === 'doctor' ? 'Dr. Sen' : currentPersona.name.split(' ')[0]}
         </span>
         <span className="text-[10px] text-rose-200/90 font-normal">
           ({currentPersona.badge})
