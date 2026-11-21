@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocale } from 'next-intl';
 import { Locale } from '@/i18n';
 import { getDictionary } from '@/lib/i18n-dictionary';
@@ -13,6 +13,7 @@ import {
   DOCTOR_AUDIT_TRAIL,
   DoctorInboxItem,
 } from '@/data/doctor-portal-data';
+import { DOCTOR_NAV_EVENT, DoctorNavTarget } from '@/data/doctor-notifications';
 import {
   Stethoscope,
   Inbox as InboxIcon,
@@ -122,6 +123,35 @@ export default function DoctorPortalPage() {
   // D22. Practice Insights Natural Language Query state
   const [nlQuery, setNlQuery] = useState<string>('Which of my phenotype B patients haven’t had Fasting Insulin in 4 months?');
   const [nlQueryResultVisible, setNlQueryResultVisible] = useState<boolean>(true);
+
+  // Notifications deep-link here: via an in-page event, or ?section=&tab=&item= when arriving from another page.
+  useEffect(() => {
+    const apply = (t: DoctorNavTarget) => {
+      setActiveSection(t.section);
+      if (t.tab) setActivePatientSubTab(t.tab);
+      if (t.inboxItemId) {
+        setInboxFilter('all');
+        setExpandedInboxItemId(t.inboxItemId);
+        const item = DOCTOR_INBOX_ITEMS.find((i) => i.id === t.inboxItemId);
+        if (item) setSelectedMessageItem(item);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const q = new URLSearchParams(window.location.search);
+    const section = q.get('section') as DoctorNavTarget['section'] | null;
+    if (section) {
+      apply({
+        section,
+        tab: (q.get('tab') as DoctorNavTarget['tab']) || undefined,
+        inboxItemId: q.get('item') || undefined,
+      });
+    }
+
+    const onNav = (e: Event) => apply((e as CustomEvent<DoctorNavTarget>).detail);
+    window.addEventListener(DOCTOR_NAV_EVENT, onNav);
+    return () => window.removeEventListener(DOCTOR_NAV_EVENT, onNav);
+  }, []);
 
   // Filtered inbox items
   const filteredInbox = DOCTOR_INBOX_ITEMS.filter((item) => {
