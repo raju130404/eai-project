@@ -160,15 +160,15 @@ export default function DoctorPortalPage() {
   });
 
   return (
-    <div className="min-h-screen text-slate-900 pb-16 pt-2">
+    <div className="min-h-screen text-slate-900 pb-28 lg:pb-16 pt-2">
       {/* Top Clinical Header Bar */}
       <div className="mb-4 bg-white border border-slate-200/90 rounded-3xl p-4 shadow-xs flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-xs">
+        <div className="flex items-start gap-3 min-w-0">
+          <div className="w-10 h-10 shrink-0 rounded-2xl bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-xs">
             <Stethoscope className="w-5 h-5" />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
               <h1 className="font-heading text-base sm:text-lg font-bold text-slate-900">
                 Dr. Ananya Sen, MD, FRCOG
               </h1>
@@ -180,14 +180,14 @@ export default function DoctorPortalPage() {
                 Apollo Health City OPD
               </span>
             </div>
-            <p className="text-xs text-slate-500">
+            <p className="hidden sm:block text-xs text-slate-500 mt-0.5">
               Rotterdam Phenotype Oversight • 24 AI Decision Support Tools Active • HPR: HP98472918
             </p>
           </div>
         </div>
 
         {/* Quick OPD Status Badges */}
-        <div className="flex items-center gap-2 text-xs">
+        <div className="flex flex-wrap items-center gap-2 text-xs">
           <div className="p-2 rounded-2xl bg-slate-50 border border-slate-200 text-slate-700">
             <span className="font-bold text-indigo-700">3</span> Appointments Today
           </div>
@@ -259,12 +259,12 @@ export default function DoctorPortalPage() {
               {/* STICKY PATIENT HEADER */}
               <div className="bg-white border-2 border-indigo-100 rounded-4xl p-4 sm:p-5 shadow-sm space-y-3">
                 <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div className="flex items-start gap-3.5">
+                  <div className="flex items-start gap-3.5 min-w-0">
                     <div className="w-12 h-12 rounded-2xl bg-rose-600 text-white flex items-center justify-center font-heading font-extrabold text-base shrink-0 shadow-xs">
                       PS
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2">
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                         <h2 className="font-heading text-lg font-extrabold text-slate-900">
                           Priya Sharma
                         </h2>
@@ -273,20 +273,20 @@ export default function DoctorPortalPage() {
                           Rotterdam Phenotype B
                         </span>
                       </div>
-                      <div className="text-xs text-slate-600 mt-0.5 flex flex-wrap items-center gap-2">
+                      <div className="text-xs text-slate-600 mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5">
                         <span>HOMA-IR: <strong className="text-coral">3.61</strong></span>
-                        <span>•</span>
+                        <span className="hidden sm:inline">•</span>
                         <span>Fasting Insulin: <strong>16 µIU/mL</strong></span>
-                        <span>•</span>
+                        <span className="hidden sm:inline">•</span>
                         <span>TSH: <strong className="text-amber-700">3.8 µIU/mL</strong></span>
-                        <span>•</span>
+                        <span className="hidden sm:inline">•</span>
                         <span>Life Stage: <strong>Tracking Cycles (Preconception 2027)</strong></span>
                       </div>
                     </div>
                   </div>
 
                   {/* Header Actions: D7 Ambient Scribe + D20 Referral */}
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 w-full sm:w-auto">
                     {/* D7 Scribe Button */}
                     <button
                       type="button"
@@ -294,7 +294,7 @@ export default function DoctorPortalPage() {
                       className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-2xl font-bold text-xs shadow-xs transition ${
                         isScribing
                           ? 'bg-red-600 text-white animate-pulse'
-                          : 'bg-brand-purple text-white hover:bg-brand-purpleDark'
+                          : 'bg-brand-purple text-white hover:bg-brand-purpleHover'
                       }`}
                     >
                       {isScribing ? (
@@ -325,13 +325,13 @@ export default function DoctorPortalPage() {
 
                 {/* Consent & Data Streams Badges */}
                 <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100 text-[11px]">
-                  <div className="flex items-center gap-1.5 text-slate-500">
-                    <span className="font-semibold text-slate-700">Patient Consented Streams:</span>
-                    <span className="bg-emerald-50 text-emerald-800 font-bold px-2 py-0.5 rounded-md">Labs ✓</span>
-                    <span className="bg-emerald-50 text-emerald-800 font-bold px-2 py-0.5 rounded-md">Food & You ✓</span>
-                    <span className="bg-emerald-50 text-emerald-800 font-bold px-2 py-0.5 rounded-md">Symptoms ✓</span>
-                    <span className="bg-emerald-50 text-emerald-800 font-bold px-2 py-0.5 rounded-md">Workouts ✓</span>
-                    <span className="bg-emerald-50 text-emerald-800 font-bold px-2 py-0.5 rounded-md">Meds ✓</span>
+                  <div className="flex flex-wrap items-center gap-1.5 text-slate-500">
+                    <span className="w-full sm:w-auto font-semibold text-slate-700">Patient Consented Streams:</span>
+                    <span className="bg-emerald-50 text-emerald-800 font-bold px-2 py-0.5 rounded-md whitespace-nowrap">Labs ✓</span>
+                    <span className="bg-emerald-50 text-emerald-800 font-bold px-2 py-0.5 rounded-md whitespace-nowrap">Food & You ✓</span>
+                    <span className="bg-emerald-50 text-emerald-800 font-bold px-2 py-0.5 rounded-md whitespace-nowrap">Symptoms ✓</span>
+                    <span className="bg-emerald-50 text-emerald-800 font-bold px-2 py-0.5 rounded-md whitespace-nowrap">Workouts ✓</span>
+                    <span className="bg-emerald-50 text-emerald-800 font-bold px-2 py-0.5 rounded-md whitespace-nowrap">Meds ✓</span>
                   </div>
                   <span className="text-[10px] text-slate-400 font-medium">
                     3 Active Rules Locked
@@ -373,7 +373,7 @@ export default function DoctorPortalPage() {
                 <div className="space-y-4">
                   {/* D5. "WHAT CHANGED SINCE LAST VISIT" DIFF (Top Block, Light Periwinkle #EEF2FF) */}
                   <div className="p-4 rounded-3xl bg-[#EEF2FF] border border-blue-200 space-y-2">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
                       <div className="flex items-center gap-2 font-heading font-bold text-xs text-blue-950">
                         <Sparkles className="w-3.5 h-3.5 text-blue-600" />
                         <span>What Changed Since Last Visit (14 Oct 2026 Diff)</span>
@@ -407,7 +407,7 @@ export default function DoctorPortalPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Left Column: Metrics & Tolerances */}
                     <Card className="rounded-4xl p-4 sm:p-5 border-slate-200 bg-white shadow-card space-y-3">
-                      <div className="flex items-center justify-between">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
                         <span className="text-xs font-bold text-slate-800 font-heading">
                           Cycle &amp; Physiological Status
                         </span>
@@ -475,7 +475,7 @@ export default function DoctorPortalPage() {
 
                       {/* D6. Suggested Visit Agenda */}
                       <div className="pt-2 border-t border-slate-100 space-y-2">
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
                           <span className="font-heading font-bold text-xs text-brand-purple">
                             Suggested Visit Agenda (Ranked Priority):
                           </span>
@@ -537,7 +537,7 @@ export default function DoctorPortalPage() {
                 <div className="space-y-4">
                   {/* D17. Trend Grid + Derived Indices */}
                   <Card className="rounded-4xl p-5 border-slate-200 bg-white shadow-card space-y-3">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
                       <span className="font-heading text-sm font-bold text-slate-900">
                         Lab Trend Analyst &amp; Normalised Indices
                       </span>
@@ -622,7 +622,7 @@ export default function DoctorPortalPage() {
 
                   {/* D18. Diagnostic Criteria Checklist (Rotterdam 2023) */}
                   <Card className="rounded-4xl p-5 border-slate-200 bg-white shadow-card space-y-2">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
                       <span className="font-heading text-sm font-bold text-slate-900">
                         Diagnostic Criteria Checklist (International PCOS 2023)
                       </span>
@@ -649,7 +649,7 @@ export default function DoctorPortalPage() {
 
                   {/* D19. Ultrasound Report Drop Zone & Extraction */}
                   <Card className="rounded-4xl p-5 border-slate-200 bg-white shadow-card space-y-3">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
                       <span className="font-heading text-sm font-bold text-slate-900">
                         Ultrasound &amp; Structured Report Extraction
                       </span>
@@ -658,7 +658,7 @@ export default function DoctorPortalPage() {
 
                     {ultrasoundReportUploaded && (
                       <div className="p-3.5 rounded-3xl bg-indigo-50/70 border border-indigo-200 text-xs space-y-2">
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
                           <span className="font-bold text-indigo-950">
                             📄 Extracted from: Apollo Cradle TVS Scan (Nov 2026)
                           </span>
@@ -681,25 +681,25 @@ export default function DoctorPortalPage() {
                 <div className="space-y-4">
                   {/* D10. Natural Language Rule Builder */}
                   <Card className="rounded-4xl p-5 border-slate-200 bg-white shadow-card space-y-3">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
                       <span className="font-heading text-sm font-bold text-slate-900">
                         Natural-Language Rule Builder (Calibration Engine Limits)
                       </span>
                       <span className="text-[10px] text-slate-400">AI parses; Doctor locks</span>
                     </div>
 
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                       <input
                         type="text"
                         value={newRuleText}
                         onChange={(e) => setNewRuleText(e.target.value)}
                         placeholder="Speak or type: 'No gluten for 3 months, recheck insulin in 12 weeks'..."
-                        className="flex-1 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-xs focus:outline-none focus:border-indigo-500"
+                        className="flex-1 min-w-0 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-xs focus:outline-none focus:border-indigo-500"
                       />
                       <Button
                         variant="purple"
                         size="sm"
-                        className="rounded-full text-xs font-bold"
+                        className="rounded-full text-xs font-bold shrink-0"
                         onClick={() => {
                           if (newRuleText.trim()) {
                             setLockedRules([...lockedRules, newRuleText]);
@@ -723,7 +723,7 @@ export default function DoctorPortalPage() {
                   {/* D11. Cross-Specialist Conflict Checker Alert */}
                   {!conflictResolved && (
                     <div className="p-4 rounded-3xl bg-amber-50 border-2 border-amber-300 text-xs text-amber-950 space-y-2">
-                      <div className="flex items-center justify-between">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
                         <span className="font-bold flex items-center gap-1.5 text-amber-900">
                           <AlertTriangle className="w-4 h-4 text-amber-600" />
                           Cross-Specialist Rule Conflict Flagged
@@ -735,7 +735,7 @@ export default function DoctorPortalPage() {
                       <p className="text-[11px] leading-relaxed">
                         <strong>Conflict:</strong> Dietitian Sneha Nair suggested a 16-hour intermittent fasting schedule. Your locked Metformin rule states: <em>"Must be taken with evening dinner to avoid hypoglycemia and GI distress."</em>
                       </p>
-                      <div className="flex gap-2 pt-1">
+                      <div className="flex flex-wrap gap-2 pt-1">
                         <Button size="sm" variant="forest" className="rounded-full text-[10px] h-7" onClick={() => setConflictResolved(true)}>
                           Keep My Metformin Rule (Stricter)
                         </Button>
@@ -753,7 +753,7 @@ export default function DoctorPortalPage() {
                     </span>
                     <div className="space-y-1.5 text-xs">
                       {lockedRules.map((r, i) => (
-                        <div key={i} className="p-2.5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+                        <div key={i} className="p-2.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-wrap items-center justify-between gap-2">
                           <span>🔒 {r}</span>
                           <span className="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full">
                             Active Hard Limit
@@ -782,7 +782,7 @@ export default function DoctorPortalPage() {
                 <div className="space-y-4">
                   {/* D14. AI Trial Designer (Propose / Approve Protocol) */}
                   <Card className="rounded-4xl p-5 border-slate-200 bg-white shadow-card space-y-3">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
                       <span className="font-heading text-sm font-bold text-slate-900">
                         AI Trial Designer (Pending Clinician Sign-Off)
                       </span>
@@ -803,7 +803,7 @@ export default function DoctorPortalPage() {
                         Bayesian Statistical Power: <strong>88%</strong> probability of reaching clear verdict.
                       </div>
 
-                      <div className="flex gap-2 pt-2">
+                      <div className="flex flex-wrap gap-2 pt-2">
                         <Button
                           variant="forest"
                           size="sm"
@@ -826,7 +826,7 @@ export default function DoctorPortalPage() {
 
                   {/* D15. Bayesian Verdict Reviewer */}
                   <Card className="rounded-4xl p-5 border-slate-200 bg-white shadow-card space-y-3">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
                       <span className="font-heading text-sm font-bold text-slate-900">
                         Completed Trial Bayesian Verdict Reviewer
                       </span>
@@ -885,7 +885,7 @@ export default function DoctorPortalPage() {
 
                   {/* D7. Ambient Scribe Note */}
                   <Card className="rounded-4xl p-5 border-slate-200 bg-white shadow-card space-y-3">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
                       <span className="font-heading text-sm font-bold text-slate-900 flex items-center gap-2">
                         <FileText className="w-4 h-4 text-indigo-600" />
                         Auto-Structured Clinical Note (SOAP)
@@ -904,7 +904,7 @@ export default function DoctorPortalPage() {
 
                   {/* D12. Prescription Assistant */}
                   <Card className="rounded-4xl p-5 border-slate-200 bg-white shadow-card space-y-3">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
                       <span className="font-heading text-sm font-bold text-slate-900">
                         Indian Generic &amp; Brand Rx Composer (Safety Checks)
                       </span>
@@ -945,7 +945,7 @@ export default function DoctorPortalPage() {
                         <span>Push to Patient's ABHA Record (ICD-10: E28.2 PCOS)</span>
                       </label>
 
-                      <div className="flex gap-2">
+                      <div className="flex flex-wrap gap-2">
                         <Button
                           variant="outline"
                           size="sm"
@@ -975,7 +975,7 @@ export default function DoctorPortalPage() {
               {activePatientSubTab === 'messages' && (
                 <Card className="rounded-4xl p-5 border-slate-200 bg-white shadow-card space-y-4">
                   {/* D21. Patient vs Team Toggle */}
-                  <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
                     <div className="inline-flex rounded-full bg-slate-100 p-1 text-xs font-bold">
                       <button
                         type="button"
@@ -1017,7 +1017,7 @@ export default function DoctorPortalPage() {
 
                       {/* D3 AI Draft Panel on Right */}
                       <div className="p-4 rounded-3xl bg-indigo-50/70 border border-indigo-200 text-xs space-y-2">
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
                           <span className="font-heading font-bold text-xs text-indigo-950 flex items-center gap-1.5">
                             <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
                             AI Drafted Reply (Grounded in Guidelines &amp; Your Locked Rules)
@@ -1033,7 +1033,7 @@ export default function DoctorPortalPage() {
                           <strong>English Back-Translation:</strong> "Namaste Priya, please continue Metformin 500mg for now. In our Friday consult, we will review your TSH and insulin levels together before adjusting."
                         </div>
 
-                        <div className="flex gap-2 pt-1">
+                        <div className="flex flex-wrap gap-2 pt-1">
                           <Button size="sm" variant="purple" className="rounded-full text-xs font-bold">
                             Send Verified Reply
                           </Button>
@@ -1116,7 +1116,7 @@ export default function DoctorPortalPage() {
                       key={item.id}
                       className="rounded-3xl border border-slate-200 p-3.5 hover:border-indigo-300 transition space-y-2 bg-slate-50/50"
                     >
-                      <div className="flex items-center justify-between">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
                         <div className="flex items-center gap-2.5">
                           <span
                             className={`w-3 h-3 rounded-full shrink-0 ${
@@ -1185,7 +1185,7 @@ export default function DoctorPortalPage() {
           {/* SECTION 3: OPD SCHEDULE */}
           {activeSection === 'schedule' && (
             <Card className="rounded-4xl p-5 border-slate-200 bg-white shadow-card space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
                 <h3 className="font-heading text-base font-bold text-slate-900">
                   Today's Consult Schedule (Apollo Health City OPD)
                 </h3>
@@ -1239,7 +1239,7 @@ export default function DoctorPortalPage() {
           {activeSection === 'insights' && (
             <div className="space-y-4">
               <Card className="rounded-4xl p-5 border-slate-200 bg-white shadow-card space-y-4">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
                   <div>
                     <h3 className="font-heading text-base font-bold text-slate-900">
                       Practice Insights &amp; Clinical Panel Analytics
@@ -1285,14 +1285,14 @@ export default function DoctorPortalPage() {
                   <span className="font-heading text-xs font-bold text-slate-800">
                     Natural-Language Clinical Query Engine:
                   </span>
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <input
                       type="text"
                       value={nlQuery}
                       onChange={(e) => setNlQuery(e.target.value)}
-                      className="flex-1 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-xs focus:outline-none focus:border-indigo-500"
+                      className="flex-1 min-w-0 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-xs focus:outline-none focus:border-indigo-500"
                     />
-                    <Button size="sm" variant="forest" className="rounded-full text-xs font-bold" onClick={() => setNlQueryResultVisible(true)}>
+                    <Button size="sm" variant="forest" className="rounded-full text-xs font-bold shrink-0" onClick={() => setNlQueryResultVisible(true)}>
                       Run Query
                     </Button>
                   </div>
@@ -1349,7 +1349,7 @@ export default function DoctorPortalPage() {
           {/* SECTION 6: AI AUDIT TRAIL (D24) */}
           {activeSection === 'audit' && (
             <Card className="rounded-4xl p-5 border-slate-200 bg-white shadow-card space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
                 <div>
                   <h3 className="font-heading text-base font-bold text-slate-900">
                     Medico-Legal AI Audit Trail
@@ -1367,7 +1367,7 @@ export default function DoctorPortalPage() {
               <div className="space-y-2.5">
                 {DOCTOR_AUDIT_TRAIL.map((audit) => (
                   <div key={audit.id} className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs space-y-1">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
                       <span className="font-bold text-slate-900">
                         {audit.patientName} • {audit.feature}
                       </span>
@@ -1388,14 +1388,15 @@ export default function DoctorPortalPage() {
       </div>
 
       {/* D9. GLOBAL GUIDELINE COPILOT (Floating Action Button + Slide-out Drawer) */}
-      <div className="fixed bottom-4 right-4 z-50">
+      <div className="fixed bottom-20 right-3 lg:bottom-4 lg:right-4 z-50">
         <button
           type="button"
           onClick={() => setCopilotOpen(!copilotOpen)}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-brand-purple hover:bg-brand-purpleDark text-white font-bold text-xs shadow-xl shadow-indigo-500/30 transition transform hover:scale-105"
+          aria-label="Ask Guidelines (Copilot)"
+          className="flex items-center gap-2 p-3 sm:px-4 sm:py-2.5 rounded-full bg-brand-purple hover:bg-brand-purpleHover text-white font-bold text-xs shadow-xl shadow-indigo-500/30 transition transform hover:scale-105"
         >
           <BookOpen className="w-4 h-4" />
-          <span>Ask Guidelines (Copilot)</span>
+          <span className="hidden sm:inline">Ask Guidelines (Copilot)</span>
         </button>
       </div>
 
@@ -1403,7 +1404,7 @@ export default function DoctorPortalPage() {
       {copilotOpen && (
         <div className="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-xs animate-in fade-in">
           <div className="w-full max-w-md bg-white h-full shadow-2xl p-5 space-y-4 overflow-y-auto animate-in slide-in-from-right duration-200 text-xs text-slate-900">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2">
                 <BookOpen className="w-5 h-5 text-brand-purple" />
                 <span className="font-heading text-base font-bold text-slate-900">
@@ -1453,7 +1454,7 @@ export default function DoctorPortalPage() {
       {previewForPatientOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in">
           <div className="w-full max-w-2xl bg-white rounded-4xl p-6 shadow-2xl space-y-4 text-xs">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2">
               <span className="font-heading text-base font-bold text-slate-900">
                 Patient-Language Instructions + Automatic Back-Translation
               </span>
@@ -1510,7 +1511,7 @@ export default function DoctorPortalPage() {
       {referralModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in">
           <div className="w-full max-w-md bg-white rounded-4xl p-6 shadow-2xl space-y-4 text-xs">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2">
               <span className="font-heading text-base font-bold text-slate-900">
                 Referral &amp; Care-Team Handoff Writer
               </span>

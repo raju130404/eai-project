@@ -52,14 +52,14 @@ export function PersonaSwitcher() {
         <span className="font-heading tracking-tight truncate max-w-[85px] sm:max-w-none text-white">
           {currentPersona.type === 'doctor' ? 'Dr. Sen' : currentPersona.name.split(' ')[0]}
         </span>
-        <span className="text-[10px] text-rose-200/90 font-normal">
+        <span className="hidden sm:inline text-[10px] text-rose-200/90 font-normal">
           ({currentPersona.badge})
         </span>
         <ChevronDown className="h-3 w-3 text-rose-200/80 ml-0.5" />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 z-50 mt-2 w-72 rounded-3xl border border-slate-200/90 bg-white p-2.5 shadow-xl animate-in fade-in zoom-in-95 text-slate-900">
+        <div className="fixed left-3 right-3 top-14 sm:absolute sm:left-auto sm:top-auto sm:right-0 sm:w-72 z-50 mt-2 rounded-3xl border border-slate-200/90 bg-white p-2.5 shadow-xl animate-in fade-in zoom-in-95 text-slate-900">
           <div className="mb-2 px-2 pt-1">
             <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-indigo-700">
               <Sparkles className="h-3 w-3 text-brand-pink" />

@@ -76,20 +76,20 @@ export function Navbar() {
     <>
       <header className="sticky top-0 z-40 bg-[#1E171B]/85 backdrop-blur-md border-b border-white/10 text-white shadow-sm">
         <div className={`mx-auto ${isDoctorView ? 'max-w-7xl px-4 sm:px-6' : 'max-w-md sm:max-w-lg px-3.5 sm:px-4'} py-2.5`}>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-2">
             {/* Left: User / Doctor Welcome */}
             <Link
               href={isDoctorView ? '/doctor' : '/today'}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 min-w-0"
             >
-              <div className="flex flex-col">
-                <span className="text-[11px] font-medium text-rose-200/70 leading-none">
+              <div className="flex flex-col min-w-0">
+                <span className="text-[11px] font-medium text-rose-200/70 leading-none whitespace-nowrap">
                   {isDoctorView ? 'Clinical Doctor Portal' : dict.navbar.welcome}
                 </span>
-                <span className="font-heading text-base font-bold text-white tracking-tight flex items-center gap-1.5">
-                  {isDoctorView ? PERSONAS.doctor.name : currentPersona.name}
+                <span className="font-heading text-base font-bold text-white tracking-tight flex items-center gap-1.5 min-w-0">
+                  <span className="truncate">{isDoctorView ? PERSONAS.doctor.name : currentPersona.name}</span>
                   {isDoctorView && (
-                    <span className="text-[10px] bg-indigo-500/30 text-indigo-200 border border-indigo-400/40 px-2 py-0.5 rounded-full font-sans font-medium">
+                    <span className="hidden sm:inline text-[10px] bg-indigo-500/30 text-indigo-200 border border-indigo-400/40 px-2 py-0.5 rounded-full font-sans font-medium">
                       OPD Lead
                     </span>
                   )}
@@ -98,7 +98,7 @@ export function Navbar() {
             </Link>
 
             {/* Right: Controls & Notification Bell */}
-            <div className="flex items-center gap-1.5 sm:gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
               <PersonaSwitcher />
               <LanguageSwitcher />
 
