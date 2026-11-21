@@ -16,18 +16,25 @@ export function LanguageSwitcher({ className = '' }: { className?: string }) {
     router.replace(pathname, { locale: nextLocale });
   };
 
+  const short = (loc: Locale) => (loc === 'en' ? 'EN' : loc === 'hi' ? 'HI' : loc === 'te' ? 'TE' : 'TA');
+
   return (
-    <div className={`relative inline-flex items-center gap-1 rounded-full border border-white/20 bg-white/10 px-2.5 py-1 text-xs font-medium text-white shadow-xs hover:bg-white/15 transition ${className}`}>
-      <Globe className="h-3.5 w-3.5 text-rose-200" />
+    <div className={`relative inline-flex items-center gap-1 rounded-full border border-white/20 bg-white/10 px-2.5 py-1.5 text-xs font-semibold text-white shadow-xs hover:bg-white/15 transition ${className}`}>
+      <Globe className="h-3.5 w-3.5 text-rose-200 shrink-0" />
+      {/* Visible label: code only on phones, code + name on larger screens */}
+      <span aria-hidden="true" className="whitespace-nowrap">
+        {short(currentLocale)}
+        <span className="hidden sm:inline"> • {localeNames[currentLocale].split(' ')[0]}</span>
+      </span>
       <select
         value={currentLocale}
         onChange={handleLanguageChange}
         aria-label="Select Language"
-        className="bg-transparent text-xs font-semibold text-white focus:outline-none cursor-pointer pr-1"
+        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
       >
         {locales.map((loc) => (
           <option key={loc} value={loc} className="bg-slate-900 text-white">
-            {loc === 'en' ? 'EN' : loc === 'hi' ? 'HI' : loc === 'te' ? 'TE' : 'TA'} • {localeNames[loc].split(' ')[0]}
+            {short(loc)} • {localeNames[loc].split(' ')[0]}
           </option>
         ))}
       </select>
