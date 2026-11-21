@@ -149,7 +149,7 @@ export const DOCTOR_AUDIT_TRAIL: DoctorAuditItem[] = [
   {
     id: 'aud-1',
     patientName: 'Priya Sharma',
-    feature: 'D10 Rule Builder',
+    feature: 'Rule Builder',
     timestamp: '21 Nov 2026, 04:32 PM',
     suggestion: 'Dietary Ban: Avoid Gluten & Maida for 3 months; repeat Fasting Insulin at 12w',
     model: 'Gemini-1.5-Pro (v2026.11)',
@@ -160,7 +160,7 @@ export const DOCTOR_AUDIT_TRAIL: DoctorAuditItem[] = [
   {
     id: 'aud-2',
     patientName: 'Priya Sharma',
-    feature: 'D14 Trial Designer',
+    feature: 'Trial Designer',
     timestamp: '21 Nov 2026, 04:28 PM',
     suggestion: '21-day A1 Dairy Elimination Trial (Primary: Bloating visual analog score)',
     model: 'Empirical-Bayes N-of-1 Engine',
@@ -171,7 +171,7 @@ export const DOCTOR_AUDIT_TRAIL: DoctorAuditItem[] = [
   {
     id: 'aud-3',
     patientName: 'Priya Sharma',
-    feature: 'D11 Conflict Checker',
+    feature: 'Conflict Checker',
     timestamp: '21 Nov 2026, 02:15 PM',
     suggestion: 'Conflict flagged between Dietitian 16h fasting and Metformin dinner dose',
     model: 'Deterministic Rule Intersect',
@@ -182,7 +182,7 @@ export const DOCTOR_AUDIT_TRAIL: DoctorAuditItem[] = [
   {
     id: 'aud-4',
     patientName: 'Kavita Reddy',
-    feature: 'D1 Triage Classifier',
+    feature: 'Triage Classifier',
     timestamp: '21 Nov 2026, 01:45 PM',
     suggestion: 'Priority elevated to CODE RED: Menorrhagia > 10 days with Hb 9.4',
     model: 'FOGSI Emergency Risk Classifier',
