@@ -176,9 +176,6 @@ export function BottomNav() {
             </div>
             <span className="text-[10px] font-semibold mt-0.5">{dict.nav.profile}</span>
           </Link>
-            </div>
-            <span className="text-[10px] font-semibold mt-0.5">{dict.nav.profile}</span>
-          </Link>
         </nav>
       </div>
 
