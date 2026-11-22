@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { DisclaimerBanner } from '@/components/disclaimer-banner';
 import type { ExtractedCheckInData } from '@/lib/ai/checkin-extractor';
 import { getVoiceProvider } from '@/lib/voice';
+import { CRAVING_CATEGORIES, CravingCategory, HealthySwap } from '@/data/craving-swaps-data';
 import {
   Sparkles,
   CheckCircle2,
@@ -24,6 +25,9 @@ import {
   Droplets,
   Activity,
   Heart,
+  ChevronRight,
+  Info,
+  Utensils,
 } from 'lucide-react';
 
 const MOOD_EMOJIS = [
@@ -90,6 +94,44 @@ export default function CheckinPage() {
   const [extractedReview, setExtractedReview] = useState<ExtractedCheckInData | null>(null);
   const [emergencyAlert, setEmergencyAlert] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState<boolean>(false);
+
+  // Hormonal Craving Decoder & Healthy Swaps state
+  const [selectedCravingCategory, setSelectedCravingCategory] = useState<string>('chocolate_sweets');
+  const [cravingDecoderOpen, setCravingDecoderOpen] = useState<boolean>(true);
+  const [loggedSwaps, setLoggedSwaps] = useState<string[]>([]);
+  const [swapToast, setSwapToast] = useState<string | null>(null);
+  const [isSpeakingCause, setIsSpeakingCause] = useState<boolean>(false);
+
+  const activeCategory = CRAVING_CATEGORIES.find((c) => c.id === selectedCravingCategory) || CRAVING_CATEGORIES[0];
+
+  const handleLogSwap = (swap: HealthySwap, categoryTitle: string) => {
+    if (!loggedSwaps.includes(swap.id)) {
+      setLoggedSwaps([...loggedSwaps, swap.id]);
+      const swapTagName = `Swap: ${swap.name}`;
+      if (!activeTags.includes(swapTagName)) {
+        setActiveTags([...activeTags, swapTagName]);
+      }
+      setNotes((prev) => (prev ? `${prev}\n` : '') + `[Healthy Swap Eaten: ${swap.name} for ${categoryTitle}]`);
+      setSwapToast(`Logged "${swap.name}"! Great choice for your hormonal balance.`);
+      setTimeout(() => setSwapToast(null), 3500);
+    }
+  };
+
+  const handleSpeakCause = (text: string) => {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+        setIsSpeakingCause(false);
+        return;
+      }
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 0.95;
+      utterance.onend = () => setIsSpeakingCause(false);
+      utterance.onerror = () => setIsSpeakingCause(false);
+      setIsSpeakingCause(true);
+      window.speechSynthesis.speak(utterance);
+    }
+  };
 
   const toggleTag = (tag: string) => {
     if (activeTags.includes(tag)) {
@@ -304,13 +346,13 @@ export default function CheckinPage() {
             </div>
 
             {/* Cravings */}
-            <div className="pt-2 border-t border-slate-100">
-              <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-2">
+            <div className="pt-2 border-t border-[#F2E2DD]">
+              <div className="flex items-center justify-between text-xs font-bold text-[#361118] mb-2">
                 <span className="flex items-center gap-1.5">
-                  <Activity className="w-4 h-4 text-coral" />
+                  <Activity className="w-4 h-4 text-[#7A1D2E]" />
                   Carb / Sugar Cravings: {cravings} / 5
                 </span>
-                <span className="text-slate-400 font-normal">
+                <span className="text-[#7A5A62] font-normal">
                   {cravings <= 2 ? 'Minimal' : cravings >= 4 ? 'High' : 'Moderate'}
                 </span>
               </div>
@@ -319,11 +361,14 @@ export default function CheckinPage() {
                   <button
                     key={lvl}
                     type="button"
-                    onClick={() => setCravings(lvl)}
+                    onClick={() => {
+                      setCravings(lvl);
+                      if (lvl >= 3) setCravingDecoderOpen(true);
+                    }}
                     className={`flex-1 py-2 rounded-2xl text-xs font-bold transition-all ${
                       cravings === lvl
-                        ? 'bg-coral text-white shadow-sm'
-                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                        ? 'bg-[#7A1D2E] text-white shadow-sm scale-102'
+                        : 'bg-[#FAF4F0] text-[#7A5A62] hover:bg-[#FCEEEB]/60 border border-[#F2E2DD]'
                     }`}
                   >
                     {lvl}
@@ -332,6 +377,201 @@ export default function CheckinPage() {
               </div>
             </div>
           </Card>
+
+          {/* HORMONAL CRAVING DECODER & HEALTHY ALTERNATES */}
+          <div id="cravings" className="rounded-3xl border border-[#F2E2DD] bg-white p-4 sm:p-5 shadow-xs space-y-3.5 transition">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-2xl bg-[#FCEEEB] flex items-center justify-center text-[#7A1D2E] shrink-0">
+                  <Utensils className="w-4 h-4 text-[#7A1D2E]" />
+                </div>
+                <div>
+                  <h3 className="font-heading text-sm font-bold text-[#361118] flex items-center gap-1.5">
+                    <span>Hormonal Craving Decoder &amp; Swaps</span>
+                    <span className="text-[9px] font-semibold bg-[#FCEEEB] text-[#7A1D2E] px-2 py-0.5 rounded-full border border-[#F0DDD8]">
+                      ICMR &amp; Endocrine Guided
+                    </span>
+                  </h3>
+                  <p className="text-[11px] text-[#7A5A62]">
+                    Craving unhealthy food? Decode the hormone driving it and choose a healthy Indian swap.
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setCravingDecoderOpen(!cravingDecoderOpen)}
+                className="text-xs font-bold text-[#7A1D2E] hover:underline shrink-0"
+              >
+                {cravingDecoderOpen ? 'Collapse' : 'Explore Swaps'}
+              </button>
+            </div>
+
+            {/* Instant Swap Success Notification */}
+            {swapToast && (
+              <div className="p-3 rounded-2xl bg-[#EBF5F0] border border-emerald-300 text-xs text-emerald-900 flex items-center gap-2 animate-in fade-in">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span className="font-medium">{swapToast}</span>
+              </div>
+            )}
+
+            {cravingDecoderOpen && (
+              <div className="space-y-3.5 pt-1 animate-in fade-in">
+                {/* Craving Categories Selector Pills */}
+                <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                  {CRAVING_CATEGORIES.map((cat) => {
+                    const isSelected = selectedCravingCategory === cat.id;
+                    return (
+                      <button
+                        key={cat.id}
+                        type="button"
+                        onClick={() => setSelectedCravingCategory(cat.id)}
+                        className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition-all ${
+                          isSelected
+                            ? 'bg-[#7A1D2E] text-white shadow-xs font-bold scale-[1.02]'
+                            : 'bg-[#FAF4F0] text-[#7A5A62] border border-[#F2E2DD] hover:bg-[#FCEEEB]/60'
+                        }`}
+                      >
+                        <span>{cat.emoji}</span>
+                        <span>{cat.title}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Active Category: Hormonal Root Cause Box */}
+                <div className="p-3.5 rounded-2xl bg-[#FFF9F7] border border-[#F2E2DD] space-y-2">
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <div className="text-[10px] font-bold uppercase tracking-wider text-[#7A1D2E]">
+                        Hormonal Driver Behind This Craving
+                      </div>
+                      <div className="font-heading text-xs font-bold text-[#361118] mt-0.5">
+                        {activeCategory.hormonalRootCause.hormone}
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleSpeakCause(activeCategory.hormonalRootCause.explanation)}
+                      className={`w-7 h-7 rounded-full flex items-center justify-center transition shrink-0 ${
+                        isSpeakingCause
+                          ? 'bg-[#7A1D2E] text-white animate-pulse'
+                          : 'bg-[#FCEEEB] text-[#7A1D2E] hover:bg-[#F8DDD7]'
+                      }`}
+                      title="Listen to explanation"
+                    >
+                      <Volume2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
+                  <p className="text-[11px] text-[#361118] leading-relaxed">
+                    {activeCategory.hormonalRootCause.explanation}
+                  </p>
+
+                  <div className="flex flex-wrap gap-1.5 pt-1 text-[10px]">
+                    <span className="bg-[#FAF4F0] text-[#7A5A62] px-2 py-0.5 rounded-md border border-[#F2E2DD]">
+                      <strong>Timing:</strong> {activeCategory.hormonalRootCause.phaseRelevance}
+                    </span>
+                    <span className="bg-[#FAF4F0] text-[#7A1D2E] px-2 py-0.5 rounded-md border border-[#F2E2DD]">
+                      <strong>Depletion:</strong> {activeCategory.hormonalRootCause.deficiencyRisk}
+                    </span>
+                  </div>
+
+                  <div className="text-[10px] text-[#7A5A62] pt-1.5 border-t border-[#F2E2DD]/80 flex items-center gap-1.5">
+                    <span className="font-semibold text-rose-700">Craving:</span>
+                    <span className="truncate">{activeCategory.unhealthyExamples.join(' • ')}</span>
+                  </div>
+                </div>
+
+                {/* Healthy Swaps List */}
+                <div className="space-y-2.5">
+                  <div className="flex items-center justify-between px-0.5">
+                    <span className="text-xs font-bold text-[#361118] font-heading">
+                      Recommended Healthy Indian Swaps
+                    </span>
+                    <span className="text-[10px] text-[#7A5A62]">
+                      {activeCategory.swaps.length} vetted options
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-2.5">
+                    {activeCategory.swaps.map((swap) => {
+                      const isLogged = loggedSwaps.includes(swap.id);
+                      return (
+                        <div
+                          key={swap.id}
+                          className={`p-3.5 rounded-2xl border transition ${
+                            isLogged
+                              ? 'bg-[#EBF5F0] border-emerald-300 shadow-xs'
+                              : 'bg-white border-[#F2E2DD] hover:border-[#7A1D2E]/40'
+                          }`}
+                        >
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-1.5">
+                                <span className="font-heading font-bold text-xs text-[#361118]">
+                                  {swap.name}
+                                </span>
+                                <span className="text-[9px] font-bold bg-[#FAF4F0] text-[#7A1D2E] px-1.5 py-0.5 rounded border border-[#F2E2DD]">
+                                  {swap.prepTime}
+                                </span>
+                              </div>
+                              <p className="text-[11px] text-[#7A5A62] mt-0.5 leading-relaxed">
+                                {swap.description}
+                              </p>
+                            </div>
+                            <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#FAF4F0] text-[#7A1D2E] border border-[#F2E2DD] shrink-0">
+                              GI: {swap.glycemicImpact}
+                            </span>
+                          </div>
+
+                          {/* Physiological benefits tags */}
+                          <div className="flex flex-wrap gap-1 mt-2">
+                            {swap.benefits.map((b, idx) => (
+                              <span
+                                key={idx}
+                                className="text-[9px] bg-[#FCEEEB] text-[#7A1D2E] font-medium px-1.5 py-0.5 rounded"
+                              >
+                                ✓ {b}
+                              </span>
+                            ))}
+                          </div>
+
+                          {/* Quick tip and 1-tap Log Button */}
+                          <div className="mt-2.5 pt-2 border-t border-[#F2E2DD]/70 flex items-center justify-between gap-2">
+                            <span className="text-[10px] text-[#7A5A62] italic truncate max-w-[200px] sm:max-w-xs">
+                              💡 {swap.recipeQuickTip}
+                            </span>
+
+                            <button
+                              type="button"
+                              onClick={() => handleLogSwap(swap, activeCategory.title)}
+                              className={`px-3 py-1 rounded-xl text-[11px] font-bold transition flex items-center gap-1 shrink-0 ${
+                                isLogged
+                                  ? 'bg-emerald-600 text-white shadow-xs'
+                                  : 'bg-[#7A1D2E] text-white hover:bg-[#661423] shadow-xs'
+                              }`}
+                            >
+                              {isLogged ? (
+                                <>
+                                  <CheckCircle2 className="w-3.5 h-3.5" />
+                                  <span>Swap Logged</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Sparkles className="w-3 h-3" />
+                                  <span>Try This Swap</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* Quick Symptoms & Categories Chips */}
           <Card className="rounded-4xl p-5 border-slate-200/80 bg-white shadow-card">

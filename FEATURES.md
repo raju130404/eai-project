@@ -116,6 +116,16 @@ A permanently docked, native mobile bottom navigation bar with fluid active-stat
   - Energy slider (1 to 5).
   - Pelvic Cramp / Pain slider (0 to 10).
   - Period flow tracker (`None`, `Spotting`, `Light`, `Medium`, `Heavy`).
+- **Hormonal Craving Decoder & Healthy Indian Swaps:**
+  - Addresses the biological reality that women's cravings (especially for unhealthy, high-calorie foods) are driven by neuroendocrine shifts:
+    - *Luteal Progesterone Drop & Magnesium Depletion:* Drives urgent cravings for chocolates, sweets, and bakery treats.
+    - *Compensatory Hyperinsulinemia (PCOS / Insulin Resistance):* Triggers reactive hypoglycemia and sudden cravings for refined starches (white bread, pizza, naans).
+    - *Cortisol & Adrenal Stress:* Causes electrolyte imbalances and intense cravings for fried samosas, pakoras, potato chips, and salty savories.
+    - *Estrogen-Related Fatigue:* Triggers cravings for 3-spoon sugary chai, commercial colas, and energy drinks.
+  - **Interactive Craving Selector:** 6 targeted categories (Chocolate & Sweets, Samosas & Fried Snacks, Salty Chips & Kurkure, White Bread & Pizza, Ice Cream & Creamy Dairy, Sweet Chai & Sodas).
+  - **Clinical Root Cause Decoder:** Explains the exact hormone shift, cycle phase relevance, and micronutrient depletion driving the craving with Web Speech read-aloud support.
+  - **Culturally Grounded Indian Healthy Swaps:** 3 vetted alternates per craving category (e.g. 70%+ Dark Chocolate + Almonds, Air-Fried Turmeric Makhana, Besan-Palak Pinwheels, Chilled Jeera Chaas, Kesar Pista Hung Curd Shrikhand, Jowar-Methi Mini Pizza) with glycemic impact ratings and chef prep tips.
+  - **1-Tap Swap Logger:** Allows women to tap `[✨ Try This Swap]` to instantly commit the healthy swap to their daily log and lifestyle tracking.
 - **Interactive Symptom Chips:**
   - Quick-toggle tags: *Sugar Cravings*, *Bloating*, *Hormonal Acne*, *Afternoon Fatigue*, *Period Started*, *Brain Fog*.
 - **Multilingual Voice & NLP Extraction:**
