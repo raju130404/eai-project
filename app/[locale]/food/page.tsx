@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { DisclaimerBanner } from '@/components/disclaimer-banner';
 import type { ExtractedFoodLog } from '@/lib/ai/food-extractor';
 import { INDB_FOOD_ITEMS, INDBFoodItem } from '@/data/indb-seed';
+import { EAT_HEALTHY_FOODS, UnhealthyFoodItem, HealthyVariant } from '@/data/eat-healthy-data';
 import {
   Utensils,
   Search,
@@ -21,6 +22,8 @@ import {
   Plus,
   CheckCircle2,
   AlertTriangle,
+  X,
+  Volume2,
 } from 'lucide-react';
 
 const CATEGORIES = ['All', 'Breakfast', 'Roti & Breads', 'Dals & Curries', 'Snacks', 'Beverages'];
@@ -42,8 +45,40 @@ export default function FoodPage() {
   const [thaliModalOpen, setThaliModalOpen] = useState<boolean>(false);
   const [thaliLoggedSuccess, setThaliLoggedSuccess] = useState<boolean>(false);
 
-  // F2. Fasting planner tab state
-  const [foodViewMode, setFoodViewMode] = useState<'daily' | 'fasting'>('daily');
+  // F2. Fasting planner & Eat Healthy tab state
+  const [foodViewMode, setFoodViewMode] = useState<'daily' | 'fasting' | 'eatHealthy'>('daily');
+  const [eatHealthySearch, setEatHealthySearch] = useState<string>('');
+  const [selectedEatHealthyFood, setSelectedEatHealthyFood] = useState<UnhealthyFoodItem>(EAT_HEALTHY_FOODS[0]);
+  const [selectedVariantType, setSelectedVariantType] = useState<'all' | 'lowSugar' | 'lowCalorie' | 'lowCarb'>('all');
+
+  const filteredUnhealthyFoods = EAT_HEALTHY_FOODS.filter((item) => {
+    if (!eatHealthySearch.trim()) return true;
+    const q = eatHealthySearch.toLowerCase();
+    return (
+      item.name.toLowerCase().includes(q) ||
+      item.category.toLowerCase().includes(q) ||
+      item.aliases.some((a) => a.toLowerCase().includes(q))
+    );
+  });
+
+  const handleAddHealthyVariant = (unhealthy: UnhealthyFoodItem, variant: HealthyVariant) => {
+    setLoggedMeals([
+      {
+        mealType: 'snack',
+        time: 'Just now',
+        dish: `${variant.title} (Healthy swap for ${unhealthy.name})`,
+        calories: variant.calories,
+        carbs: parseInt(variant.carbs) || 15,
+        protein: parseInt(variant.protein) || 10,
+        fiber: parseFloat(variant.fiber) || 5,
+        pcosScore: 9.2,
+        swap: `${variant.type}: ${variant.whyBetter}`,
+      },
+      ...loggedMeals,
+    ]);
+    setAddedNotice(`Added "${variant.title}" to today's log!`);
+    setTimeout(() => setAddedNotice(null), 3500);
+  };
 
   // F3. Regional & Budget meal plan state
   const [mealPlanOpen, setMealPlanOpen] = useState<boolean>(false);
@@ -131,11 +166,11 @@ export default function FoodPage() {
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      {/* Header Banner in Forest Green */}
-      <div className="rounded-4xl bg-forest p-6 text-white text-center shadow-soft relative overflow-hidden">
+      {/* Header Banner in Deep Burgundy */}
+      <div className="rounded-4xl bg-gradient-to-br from-[#801D30] via-[#7A1D2E] to-[#601422] p-5 sm:p-6 text-white text-center shadow-md shadow-[#7A1D2E]/20 relative overflow-hidden">
         <div className="flex items-center justify-between mb-2">
-          <span className="inline-flex items-center gap-1 rounded-full bg-forest-light px-3 py-1 text-xs font-semibold text-sage-light">
-            <Utensils className="w-3.5 h-3.5 text-sage" />
+          <span className="inline-flex items-center gap-1 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold text-rose-50">
+            <Utensils className="w-3.5 h-3.5 text-white" />
             Indian Nutrient Databank (INDB)
           </span>
 
@@ -152,17 +187,17 @@ export default function FoodPage() {
         <h1 className="mt-2 font-heading text-2xl sm:text-3xl font-bold tracking-tight text-white">
           {dict.food.headerTitle}
         </h1>
-        <p className="mt-1 text-xs text-sage-light max-w-md mx-auto">
+        <p className="mt-1 text-xs text-[#FCEEEB] max-w-md mx-auto">
           {dict.food.headerSub}
         </p>
 
-        {/* View Switcher: Daily Foods vs Fasting Days */}
-        <div className="mt-4 inline-flex rounded-full bg-black/20 p-1 text-xs font-semibold">
+        {/* View Switcher: Daily Foods vs Fasting Days vs Eat Healthy */}
+        <div className="mt-4 inline-flex flex-wrap justify-center gap-1 rounded-full bg-black/20 p-1 text-xs font-semibold">
           <button
             type="button"
             onClick={() => setFoodViewMode('daily')}
-            className={`rounded-full px-4 py-1.5 transition ${
-              foodViewMode === 'daily' ? 'bg-white text-forest font-bold shadow-xs' : 'text-white'
+            className={`rounded-full px-3.5 py-1.5 transition ${
+              foodViewMode === 'daily' ? 'bg-white text-[#7A1D2E] font-bold shadow-xs' : 'text-white'
             }`}
           >
             {dict.food.tabDaily}
@@ -170,11 +205,21 @@ export default function FoodPage() {
           <button
             type="button"
             onClick={() => setFoodViewMode('fasting')}
-            className={`rounded-full px-4 py-1.5 transition ${
-              foodViewMode === 'fasting' ? 'bg-white text-forest font-bold shadow-xs' : 'text-white'
+            className={`rounded-full px-3.5 py-1.5 transition ${
+              foodViewMode === 'fasting' ? 'bg-white text-[#7A1D2E] font-bold shadow-xs' : 'text-white'
             }`}
           >
             {dict.food.tabFasting}
+          </button>
+          <button
+            type="button"
+            onClick={() => setFoodViewMode('eatHealthy')}
+            className={`rounded-full px-3.5 py-1.5 transition flex items-center gap-1 ${
+              foodViewMode === 'eatHealthy' ? 'bg-white text-[#7A1D2E] font-bold shadow-xs' : 'text-white'
+            }`}
+          >
+            <Sparkles className="w-3 h-3" />
+            <span>Eat Healthy</span>
           </button>
         </div>
       </div>
@@ -249,70 +294,480 @@ export default function FoodPage() {
         </div>
       )}
 
-      {/* Natural Language Voice/Text Log Card */}
-      <Card className="rounded-4xl p-5 border-slate-200/80 bg-white shadow-card space-y-3">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-            Quick Log Meal (Text / Voice)
-          </span>
-          <span className="text-[10px] text-forest font-semibold">
-            INDB AI Matching
-          </span>
-        </div>
-
-        <div className="flex gap-2">
-          <input
-            type="text"
-            value={naturalTextLog}
-            onChange={(e) => setNaturalTextLog(e.target.value)}
-            placeholder="e.g. 2 roti, dal tadka, aloo gobi, buttermilk..."
-            className="flex-1 rounded-full border border-slate-200 bg-[#F4F6F2] px-4 py-2.5 text-xs text-slate-800 placeholder:text-slate-400 focus:border-forest focus:outline-none"
-          />
-          <Button
-            type="button"
-            variant="forest"
-            size="sm"
-            onClick={handleQuickExtract}
-            disabled={isExtracting || !naturalTextLog.trim()}
-            className="text-xs px-4"
-          >
-            {isExtracting ? 'Analyzing...' : 'Log'}
-          </Button>
-        </div>
-
-        {/* Extracted Meal Review */}
-        {extractedMeal && (
-          <div className="rounded-3xl border border-emerald-200 bg-pastel-mint/60 p-4 space-y-2.5 animate-in fade-in">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-pastel-mintText font-heading">
-                Meal Analysis • PCOS Score: {extractedMeal.overallPcosScore} / 10
-              </span>
-              <span className="text-[10px] text-slate-500">{extractedMeal.dishes.length} Dishes Identified</span>
+      {/* EAT HEALTHY VIEW: Low Sugar, Low Calorie & Low Carb Alternates for Unhealthy Cravings */}
+      {foodViewMode === 'eatHealthy' && (
+        <div className="space-y-4 animate-in fade-in">
+          <Card className="rounded-4xl p-5 border-[#F2E2DD] bg-white shadow-card space-y-4">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-2xl bg-[#FCEEEB] flex items-center justify-center text-xl shrink-0">
+                  🥗
+                </div>
+                <div>
+                  <h2 className="font-heading text-base font-bold text-[#361118] flex items-center gap-1.5">
+                    <span>Eat Healthy</span>
+                    <span className="text-[10px] font-semibold bg-[#FCEEEB] text-[#7A1D2E] px-2 py-0.5 rounded-full border border-[#F0DDD8]">
+                      Craving Alternates
+                    </span>
+                  </h2>
+                  <p className="text-xs text-[#7A5A62]">
+                    Craving something unhealthy like pizza or ice cream? Get low sugar, low calorie, and low carb alternatives that protect your insulin levels.
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <div className="space-y-1.5">
-              {extractedMeal.dishes.map((dish, i) => (
-                <div key={i} className="flex items-center justify-between bg-white/80 p-2.5 rounded-2xl text-xs border border-emerald-100">
-                  <div>
-                    <span className="font-bold text-slate-900">{dish.dishName}</span>
-                    <span className="text-slate-500 ml-1.5">({dish.calories} kcal)</span>
-                    {dish.suggestedSwap && (
-                      <div className="text-[11px] text-amber-700 mt-0.5">
-                        Swap: {dish.suggestedSwap}
-                      </div>
-                    )}
-                  </div>
-                  <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
-                    dish.pcosScore >= 7 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
-                  }`}>
-                    {dish.pcosScore}/10
-                  </span>
+            {/* Search Input for Any Unhealthy Food or Craving */}
+            <div className="relative">
+              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#7A5A62]" />
+              <input
+                type="text"
+                value={eatHealthySearch}
+                onChange={(e) => setEatHealthySearch(e.target.value)}
+                placeholder="Search craving (Pizza, Ice Cream, Samosa, Burger, Biryani, Maggi, Cake)..."
+                className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-[#F2E2DD] bg-[#FAF4F0] text-xs text-[#361118] placeholder:text-[#7A5A62]/70 focus:border-[#7A1D2E] focus:outline-none"
+              />
+              {eatHealthySearch && (
+                <button
+                  type="button"
+                  onClick={() => setEatHealthySearch('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
+            {/* Popular Unhealthy Food Quick-Select Chips */}
+            <div>
+              <div className="text-[11px] font-bold text-[#7A5A62] mb-1.5">
+                Popular unhealthy cravings (tap to view alternatives):
+              </div>
+              <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                {EAT_HEALTHY_FOODS.map((item) => {
+                  const isSelected = selectedEatHealthyFood.id === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => {
+                        setSelectedEatHealthyFood(item);
+                        setEatHealthySearch('');
+                      }}
+                      className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition-all ${
+                        isSelected
+                          ? 'bg-[#7A1D2E] text-white shadow-xs font-bold scale-[1.02]'
+                          : 'bg-[#FAF4F0] text-[#7A5A62] border border-[#F2E2DD] hover:bg-[#FCEEEB]/60'
+                      }`}
+                    >
+                      <span>{item.emoji}</span>
+                      <span>{item.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Matching search results if search active */}
+            {eatHealthySearch.trim() && (
+              <div className="space-y-1.5 pt-2 border-t border-[#F2E2DD]">
+                <span className="text-[11px] font-semibold text-[#7A5A62]">
+                  Matching cravings ({filteredUnhealthyFoods.length}):
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {filteredUnhealthyFoods.map((item) => (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => {
+                        setSelectedEatHealthyFood(item);
+                        setEatHealthySearch('');
+                      }}
+                      className="px-3 py-1 rounded-full text-xs bg-[#FAF4F0] border border-[#F2E2DD] hover:border-[#7A1D2E] text-[#361118] font-medium flex items-center gap-1"
+                    >
+                      <span>{item.emoji}</span>
+                      <span>{item.name}</span>
+                    </button>
+                  ))}
                 </div>
+              </div>
+            )}
+          </Card>
+
+          {/* UNHEALTHY PROFILE CARD */}
+          <Card className="rounded-4xl p-5 border-rose-200/90 bg-gradient-to-br from-rose-50/80 via-white to-amber-50/40 shadow-card space-y-3">
+            <div className="flex items-start justify-between">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl">{selectedEatHealthyFood.emoji}</span>
+                  <div>
+                    <h3 className="font-heading text-base font-bold text-slate-900">
+                      Unhealthy Choice: {selectedEatHealthyFood.name}
+                    </h3>
+                    <span className="text-[11px] text-slate-500">
+                      Serving: {selectedEatHealthyFood.unhealthyProfile.serving}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-wider bg-rose-100 text-rose-800 border border-rose-200 px-2.5 py-1 rounded-full">
+                High Risk • GI {selectedEatHealthyFood.unhealthyProfile.glycemicIndex}
+              </span>
+            </div>
+
+            {/* Unhealthy Macro Breakdown */}
+            <div className="grid grid-cols-4 gap-2 pt-1 text-center">
+              <div className="p-2 rounded-2xl bg-white border border-rose-100 shadow-2xs">
+                <div className="text-[10px] text-slate-500">Calories</div>
+                <div className="text-xs font-bold text-rose-700">
+                  {selectedEatHealthyFood.unhealthyProfile.calories} kcal
+                </div>
+              </div>
+              <div className="p-2 rounded-2xl bg-white border border-rose-100 shadow-2xs">
+                <div className="text-[10px] text-slate-500">Carbs</div>
+                <div className="text-xs font-bold text-rose-700">
+                  {selectedEatHealthyFood.unhealthyProfile.carbs}g
+                </div>
+              </div>
+              <div className="p-2 rounded-2xl bg-white border border-rose-100 shadow-2xs">
+                <div className="text-[10px] text-slate-500">Sugar</div>
+                <div className="text-xs font-bold text-rose-700">
+                  {selectedEatHealthyFood.unhealthyProfile.sugar}g
+                </div>
+              </div>
+              <div className="p-2 rounded-2xl bg-white border border-rose-100 shadow-2xs">
+                <div className="text-[10px] text-slate-500">Fat</div>
+                <div className="text-xs font-bold text-rose-700">
+                  {selectedEatHealthyFood.unhealthyProfile.fat}g
+                </div>
+              </div>
+            </div>
+
+            {/* Harm Explanation */}
+            <div className="p-3 rounded-2xl bg-rose-50 border border-rose-200 text-xs text-rose-950 flex items-start gap-2">
+              <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+              <div className="text-[11px] leading-relaxed">
+                <strong>Why it harms hormonal health: </strong>
+                {selectedEatHealthyFood.unhealthyProfile.harmReason}
+              </div>
+            </div>
+          </Card>
+
+          {/* 3 HEALTHY ALTERNATIVES (LOW SUGAR, LOW CALORIE, LOW CARB) */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between px-1">
+              <h3 className="font-heading text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-emerald-600" />
+                <span>Healthier Alternatives for {selectedEatHealthyFood.name}</span>
+              </h3>
+              <span className="text-[11px] text-slate-500">3 scientific swaps</span>
+            </div>
+
+            {/* Filter pills: All, Low Sugar, Low Calorie, Low Carb */}
+            <div className="flex gap-1.5">
+              {[
+                { id: 'all', label: 'All 3 Versions' },
+                { id: 'lowSugar', label: '🍯 Low Sugar' },
+                { id: 'lowCalorie', label: '⚡ Low Calorie' },
+                { id: 'lowCarb', label: '🥗 Low Carb' },
+              ].map((pill) => (
+                <button
+                  key={pill.id}
+                  type="button"
+                  onClick={() => setSelectedVariantType(pill.id as any)}
+                  className={`px-3 py-1 rounded-full text-xs font-semibold transition ${
+                    selectedVariantType === pill.id
+                      ? 'bg-emerald-700 text-white shadow-xs'
+                      : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                  }`}
+                >
+                  {pill.label}
+                </button>
               ))}
             </div>
+
+            {/* OPTION 1: LOW SUGAR VERSION */}
+            {(selectedVariantType === 'all' || selectedVariantType === 'lowSugar') && (
+              <Card className="rounded-4xl p-5 border-emerald-200/90 bg-gradient-to-br from-emerald-50/40 via-white to-white shadow-card space-y-3">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl">🍯</span>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded-full">
+                          Low Sugar Version
+                        </span>
+                        <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
+                          GI: {selectedEatHealthyFood.lowSugarVariant.glycemicIndex} (Very Low)
+                        </span>
+                      </div>
+                      <h4 className="font-heading text-sm font-bold text-slate-900 mt-1">
+                        {selectedEatHealthyFood.lowSugarVariant.title}
+                      </h4>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-xs font-bold text-emerald-800">
+                      {selectedEatHealthyFood.lowSugarVariant.calories} kcal
+                    </span>
+                    <span className="block text-[10px] text-slate-500">
+                      Sugar: {selectedEatHealthyFood.lowSugarVariant.sugar}
+                    </span>
+                  </div>
+                </div>
+
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  {selectedEatHealthyFood.lowSugarVariant.description}
+                </p>
+
+                {/* Macro Strip */}
+                <div className="flex items-center gap-3 text-[11px] text-slate-600 p-2.5 rounded-2xl bg-emerald-50/60 border border-emerald-100">
+                  <span>Carbs: <strong className="text-slate-900">{selectedEatHealthyFood.lowSugarVariant.carbs}</strong></span>
+                  <span>•</span>
+                  <span>Protein: <strong className="text-emerald-800">{selectedEatHealthyFood.lowSugarVariant.protein}</strong></span>
+                  <span>•</span>
+                  <span>Fiber: <strong className="text-emerald-800">{selectedEatHealthyFood.lowSugarVariant.fiber}</strong></span>
+                </div>
+
+                {/* Why better & Quick recipe */}
+                <div className="space-y-1.5 text-[11px]">
+                  <div className="text-emerald-900">
+                    <strong>Why it works: </strong>
+                    {selectedEatHealthyFood.lowSugarVariant.whyBetter}
+                  </div>
+                  <div className="text-slate-500 italic bg-slate-50 p-2 rounded-xl border border-slate-100">
+                    <strong>Quick Tip / Recipe: </strong>
+                    {selectedEatHealthyFood.lowSugarVariant.quickRecipe}
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-emerald-100 flex items-center justify-between">
+                  <span className="text-[10px] text-slate-500">Zero sugar crash guaranteed</span>
+                  <Button
+                    type="button"
+                    variant="forest"
+                    size="sm"
+                    onClick={() => handleAddHealthyVariant(selectedEatHealthyFood, selectedEatHealthyFood.lowSugarVariant)}
+                    className="text-xs h-8 px-3 rounded-full"
+                  >
+                    <Plus className="w-3.5 h-3.5 mr-1" />
+                    + Add to Food Log
+                  </Button>
+                </div>
+              </Card>
+            )}
+
+            {/* OPTION 2: LOW CALORIE VERSION */}
+            {(selectedVariantType === 'all' || selectedVariantType === 'lowCalorie') && (
+              <Card className="rounded-4xl p-5 border-blue-200/90 bg-gradient-to-br from-blue-50/40 via-white to-white shadow-card space-y-3">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl">⚡</span>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider bg-blue-100 text-blue-800 border border-blue-200 px-2 py-0.5 rounded-full">
+                          Low Calorie Version
+                        </span>
+                        <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded">
+                          GI: {selectedEatHealthyFood.lowCalorieVariant.glycemicIndex}
+                        </span>
+                      </div>
+                      <h4 className="font-heading text-sm font-bold text-slate-900 mt-1">
+                        {selectedEatHealthyFood.lowCalorieVariant.title}
+                      </h4>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-xs font-bold text-blue-800">
+                      {selectedEatHealthyFood.lowCalorieVariant.calories} kcal
+                    </span>
+                    <span className="block text-[10px] text-slate-500">
+                      {selectedEatHealthyFood.unhealthyProfile.calories - selectedEatHealthyFood.lowCalorieVariant.calories} kcal saved
+                    </span>
+                  </div>
+                </div>
+
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  {selectedEatHealthyFood.lowCalorieVariant.description}
+                </p>
+
+                {/* Macro Strip */}
+                <div className="flex items-center gap-3 text-[11px] text-slate-600 p-2.5 rounded-2xl bg-blue-50/60 border border-blue-100">
+                  <span>Carbs: <strong className="text-slate-900">{selectedEatHealthyFood.lowCalorieVariant.carbs}</strong></span>
+                  <span>•</span>
+                  <span>Protein: <strong className="text-blue-800">{selectedEatHealthyFood.lowCalorieVariant.protein}</strong></span>
+                  <span>•</span>
+                  <span>Sugar: <strong className="text-slate-900">{selectedEatHealthyFood.lowCalorieVariant.sugar}</strong></span>
+                </div>
+
+                {/* Why better & Quick recipe */}
+                <div className="space-y-1.5 text-[11px]">
+                  <div className="text-blue-950">
+                    <strong>Why it works: </strong>
+                    {selectedEatHealthyFood.lowCalorieVariant.whyBetter}
+                  </div>
+                  <div className="text-slate-500 italic bg-slate-50 p-2 rounded-xl border border-slate-100">
+                    <strong>Quick Tip / Recipe: </strong>
+                    {selectedEatHealthyFood.lowCalorieVariant.quickRecipe}
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-blue-100 flex items-center justify-between">
+                  <span className="text-[10px] text-slate-500">High satiety, zero sluggishness</span>
+                  <Button
+                    type="button"
+                    variant="forest"
+                    size="sm"
+                    onClick={() => handleAddHealthyVariant(selectedEatHealthyFood, selectedEatHealthyFood.lowCalorieVariant)}
+                    className="text-xs h-8 px-3 rounded-full"
+                  >
+                    <Plus className="w-3.5 h-3.5 mr-1" />
+                    + Add to Food Log
+                  </Button>
+                </div>
+              </Card>
+            )}
+
+            {/* OPTION 3: LOW CARB / KETO VERSION */}
+            {(selectedVariantType === 'all' || selectedVariantType === 'lowCarb') && (
+              <Card className="rounded-4xl p-5 border-purple-200/90 bg-gradient-to-br from-purple-50/40 via-white to-white shadow-card space-y-3">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl">🥗</span>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider bg-purple-100 text-purple-800 border border-purple-200 px-2 py-0.5 rounded-full">
+                          Low Carb / Keto Version
+                        </span>
+                        <span className="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded">
+                          GI: {selectedEatHealthyFood.lowCarbVariant.glycemicIndex} (Ultra Low)
+                        </span>
+                      </div>
+                      <h4 className="font-heading text-sm font-bold text-slate-900 mt-1">
+                        {selectedEatHealthyFood.lowCarbVariant.title}
+                      </h4>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-xs font-bold text-purple-800">
+                      {selectedEatHealthyFood.lowCarbVariant.calories} kcal
+                    </span>
+                    <span className="block text-[10px] text-slate-500">
+                      {selectedEatHealthyFood.lowCarbVariant.carbs}
+                    </span>
+                  </div>
+                </div>
+
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  {selectedEatHealthyFood.lowCarbVariant.description}
+                </p>
+
+                {/* Macro Strip */}
+                <div className="flex items-center gap-3 text-[11px] text-slate-600 p-2.5 rounded-2xl bg-purple-50/60 border border-purple-100">
+                  <span>Carbs: <strong className="text-slate-900">{selectedEatHealthyFood.lowCarbVariant.carbs}</strong></span>
+                  <span>•</span>
+                  <span>Protein: <strong className="text-purple-800">{selectedEatHealthyFood.lowCarbVariant.protein}</strong></span>
+                  <span>•</span>
+                  <span>Fiber: <strong className="text-purple-800">{selectedEatHealthyFood.lowCarbVariant.fiber}</strong></span>
+                </div>
+
+                {/* Why better & Quick recipe */}
+                <div className="space-y-1.5 text-[11px]">
+                  <div className="text-purple-950">
+                    <strong>Why it works: </strong>
+                    {selectedEatHealthyFood.lowCarbVariant.whyBetter}
+                  </div>
+                  <div className="text-slate-500 italic bg-slate-50 p-2 rounded-xl border border-slate-100">
+                    <strong>Quick Tip / Recipe: </strong>
+                    {selectedEatHealthyFood.lowCarbVariant.quickRecipe}
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-purple-100 flex items-center justify-between">
+                  <span className="text-[10px] text-slate-500">Ketogenic &amp; PCOS friendly</span>
+                  <Button
+                    type="button"
+                    variant="forest"
+                    size="sm"
+                    onClick={() => handleAddHealthyVariant(selectedEatHealthyFood, selectedEatHealthyFood.lowCarbVariant)}
+                    className="text-xs h-8 px-3 rounded-full"
+                  >
+                    <Plus className="w-3.5 h-3.5 mr-1" />
+                    + Add to Food Log
+                  </Button>
+                </div>
+              </Card>
+            )}
           </div>
-        )}
-      </Card>
+        </div>
+      )}
+
+      {/* Natural Language Voice/Text Log Card - Only in Daily Mode */}
+      {foodViewMode === 'daily' && (
+        <Card className="rounded-4xl p-5 border-slate-200/80 bg-white shadow-card space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              Quick Log Meal (Text / Voice)
+            </span>
+            <span className="text-[10px] text-forest font-semibold">
+              INDB AI Matching
+            </span>
+          </div>
+
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={naturalTextLog}
+              onChange={(e) => setNaturalTextLog(e.target.value)}
+              placeholder="e.g. 2 roti, dal tadka, aloo gobi, buttermilk..."
+              className="flex-1 rounded-full border border-slate-200 bg-[#F4F6F2] px-4 py-2.5 text-xs text-slate-800 placeholder:text-slate-400 focus:border-forest focus:outline-none"
+            />
+            <Button
+              type="button"
+              variant="forest"
+              size="sm"
+              onClick={handleQuickExtract}
+              disabled={isExtracting || !naturalTextLog.trim()}
+              className="text-xs px-4"
+            >
+              {isExtracting ? 'Analyzing...' : 'Log'}
+            </Button>
+          </div>
+
+          {/* Extracted Meal Review */}
+          {extractedMeal && (
+            <div className="rounded-3xl border border-emerald-200 bg-pastel-mint/60 p-4 space-y-2.5 animate-in fade-in">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-pastel-mintText font-heading">
+                  Meal Analysis • PCOS Score: {extractedMeal.overallPcosScore} / 10
+                </span>
+                <span className="text-[10px] text-slate-500">{extractedMeal.dishes.length} Dishes Identified</span>
+              </div>
+
+              <div className="space-y-1.5">
+                {extractedMeal.dishes.map((dish, i) => (
+                  <div key={i} className="flex items-center justify-between bg-white/80 p-2.5 rounded-2xl text-xs border border-emerald-100">
+                    <div>
+                      <span className="font-bold text-slate-900">{dish.dishName}</span>
+                      <span className="text-slate-500 ml-1.5">({dish.calories} kcal)</span>
+                      {dish.suggestedSwap && (
+                        <div className="text-[11px] text-amber-700 mt-0.5">
+                          Swap: {dish.suggestedSwap}
+                        </div>
+                      )}
+                    </div>
+                    <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                      dish.pcosScore >= 7 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                    }`}>
+                      {dish.pcosScore}/10
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </Card>
+      )}
 
       {/* Added Notification */}
       {addedNotice && (
@@ -363,100 +818,102 @@ export default function FoodPage() {
         </div>
       </div>
 
-      {/* 150+ INDB Food Database Search & Category Filter */}
-      <div className="space-y-3 pt-2">
-        <div className="flex items-center justify-between px-1">
-          <h2 className="font-heading text-base font-bold text-slate-900">
-            INDB Food Databank &amp; PCOS Smart Swaps
-          </h2>
-          <span className="text-xs text-slate-500">{filteredFoods.length} dishes</span>
-        </div>
+      {/* 150+ INDB Food Database Search & Category Filter - Daily Mode */}
+      {foodViewMode === 'daily' && (
+        <div className="space-y-3 pt-2">
+          <div className="flex items-center justify-between px-1">
+            <h2 className="font-heading text-base font-bold text-slate-900">
+              INDB Food Databank &amp; PCOS Smart Swaps
+            </h2>
+            <span className="text-xs text-slate-500">{filteredFoods.length} dishes</span>
+          </div>
 
-        {/* Pill Search Bar */}
-        <div className="relative">
-          <Search className="absolute left-4 top-3.5 h-4 w-4 text-slate-400" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search Indian dishes (Roti, Poha, Dal, Paneer, Idli)..."
-            className="w-full rounded-full border border-slate-200 bg-white pl-11 pr-4 py-3 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 shadow-sm focus:border-forest focus:outline-none"
-          />
-        </div>
+          {/* Pill Search Bar */}
+          <div className="relative">
+            <Search className="absolute left-4 top-3.5 h-4 w-4 text-slate-400" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search Indian dishes (Roti, Poha, Dal, Paneer, Idli)..."
+              className="w-full rounded-full border border-slate-200 bg-white pl-11 pr-4 py-3 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 shadow-sm focus:border-forest focus:outline-none"
+            />
+          </div>
 
-        {/* Category Pills */}
-        <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              type="button"
-              onClick={() => setSelectedCategory(cat)}
-              className={`rounded-full px-3.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-all ${
-                selectedCategory === cat
-                  ? 'bg-forest text-white shadow-xs'
-                  : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
+          {/* Category Pills */}
+          <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setSelectedCategory(cat)}
+                className={`rounded-full px-3.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-all ${
+                  selectedCategory === cat
+                    ? 'bg-forest text-white shadow-xs'
+                    : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
 
-        {/* Food Items List */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {filteredFoods.slice(0, 12).map((item) => {
-            const isFriendly = item.pcosScore >= 7;
-            return (
-              <Card key={item.name} className="rounded-3xl p-4 border-slate-200/80 bg-white shadow-card flex flex-col justify-between">
-                <div>
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <h4 className="font-heading text-sm font-bold text-slate-900">
-                        {item.name}
-                      </h4>
-                      {item.nameHindi && (
-                        <span className="text-[11px] text-slate-400">{item.nameHindi}</span>
-                      )}
+          {/* Food Items List */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {filteredFoods.slice(0, 12).map((item) => {
+              const isFriendly = item.pcosScore >= 7;
+              return (
+                <Card key={item.name} className="rounded-3xl p-4 border-slate-200/80 bg-white shadow-card flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <h4 className="font-heading text-sm font-bold text-slate-900">
+                          {item.name}
+                        </h4>
+                        {item.nameHindi && (
+                          <span className="text-[11px] text-slate-400">{item.nameHindi}</span>
+                        )}
+                      </div>
+                      <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
+                        isFriendly ? 'bg-pastel-mint text-pastel-mintText' : 'bg-pastel-peach text-pastel-peachText'
+                      }`}>
+                        {item.pcosScore}/10
+                      </span>
                     </div>
-                    <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
-                      isFriendly ? 'bg-pastel-mint text-pastel-mintText' : 'bg-pastel-peach text-pastel-peachText'
-                    }`}>
-                      {item.pcosScore}/10
-                    </span>
+
+                    <div className="mt-2 text-[11px] text-slate-500 flex gap-2.5">
+                      <span>{item.calories} kcal</span>
+                      <span>•</span>
+                      <span>P: {item.protein}g</span>
+                      <span>•</span>
+                      <span>F: {item.fiber}g</span>
+                      <span>•</span>
+                      <span>C: {item.carbs}g</span>
+                    </div>
+
+                    {item.swapSuggestion && (
+                      <div className="mt-2.5 p-2 rounded-2xl bg-pastel-yellow/60 border border-amber-200/60 text-[11px] text-amber-900">
+                        <span className="font-bold">Smart Swap:</span> {item.swapSuggestion}
+                      </div>
+                    )}
                   </div>
 
-                  <div className="mt-2 text-[11px] text-slate-500 flex gap-2.5">
-                    <span>{item.calories} kcal</span>
-                    <span>•</span>
-                    <span>P: {item.protein}g</span>
-                    <span>•</span>
-                    <span>F: {item.fiber}g</span>
-                    <span>•</span>
-                    <span>C: {item.carbs}g</span>
+                  <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+                    <span className="text-[10px] text-slate-400">{item.category}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleAddDirect(item)}
+                      className="inline-flex items-center gap-1 text-xs font-bold text-forest hover:underline"
+                    >
+                      <Plus className="w-3.5 h-3.5" /> Log Dish
+                    </button>
                   </div>
-
-                  {item.swapSuggestion && (
-                    <div className="mt-2.5 p-2 rounded-2xl bg-pastel-yellow/60 border border-amber-200/60 text-[11px] text-amber-900">
-                      <span className="font-bold">Smart Swap:</span> {item.swapSuggestion}
-                    </div>
-                  )}
-                </div>
-
-                <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
-                  <span className="text-[10px] text-slate-400">{item.category}</span>
-                  <button
-                    type="button"
-                    onClick={() => handleAddDirect(item)}
-                    className="inline-flex items-center gap-1 text-xs font-bold text-forest hover:underline"
-                  >
-                    <Plus className="w-3.5 h-3.5" /> Log Dish
-                  </button>
-                </div>
-              </Card>
-            );
-          })}
+                </Card>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* F1. THALI PHOTO LOGGING FLOATING ACTION BUTTON (FAB) */}
       <div className="fixed bottom-20 right-4 z-40">

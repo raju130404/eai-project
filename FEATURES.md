@@ -111,30 +111,31 @@ A permanently docked, native mobile bottom navigation bar with fluid active-stat
 
 ## 5. Module 2: Daily Check-in & Symptom Logging
 
-- **10-Second Flow:** Quick input without tedious questionnaires.
-- **Vitals & Metrics:**
-  - Energy slider (1 to 5).
-  - Pelvic Cramp / Pain slider (0 to 10).
-  - Period flow tracker (`None`, `Spotting`, `Light`, `Medium`, `Heavy`).
-- **Hormonal Craving Decoder & Healthy Indian Swaps:**
-  - Addresses the biological reality that women's cravings (especially for unhealthy, high-calorie foods) are driven by neuroendocrine shifts:
-    - *Luteal Progesterone Drop & Magnesium Depletion:* Drives urgent cravings for chocolates, sweets, and bakery treats.
-    - *Compensatory Hyperinsulinemia (PCOS / Insulin Resistance):* Triggers reactive hypoglycemia and sudden cravings for refined starches (white bread, pizza, naans).
-    - *Cortisol & Adrenal Stress:* Causes electrolyte imbalances and intense cravings for fried samosas, pakoras, potato chips, and salty savories.
-    - *Estrogen-Related Fatigue:* Triggers cravings for 3-spoon sugary chai, commercial colas, and energy drinks.
-  - **Interactive Craving Selector:** 6 targeted categories (Chocolate & Sweets, Samosas & Fried Snacks, Salty Chips & Kurkure, White Bread & Pizza, Ice Cream & Creamy Dairy, Sweet Chai & Sodas).
-  - **Clinical Root Cause Decoder:** Explains the exact hormone shift, cycle phase relevance, and micronutrient depletion driving the craving with Web Speech read-aloud support.
-  - **Culturally Grounded Indian Healthy Swaps:** 3 vetted alternates per craving category (e.g. 70%+ Dark Chocolate + Almonds, Air-Fried Turmeric Makhana, Besan-Palak Pinwheels, Chilled Jeera Chaas, Kesar Pista Hung Curd Shrikhand, Jowar-Methi Mini Pizza) with glycemic impact ratings and chef prep tips.
-  - **1-Tap Swap Logger:** Allows women to tap `[✨ Try This Swap]` to instantly commit the healthy swap to their daily log and lifestyle tracking.
-- **Interactive Symptom Chips:**
-  - Quick-toggle tags: *Sugar Cravings*, *Bloating*, *Hormonal Acne*, *Afternoon Fatigue*, *Period Started*, *Brain Fog*.
-- **Multilingual Voice & NLP Extraction:**
-  - Users can speak naturally in Hindi, Telugu, Tamil, or English (e.g., *"Aaj bahut thakaan thi, period nahi aaya"*).
-  - Vision/LLM parses structured fields (`energy: 2, period: false, notes: ...`).
-  - Explicit confirmation review screen before committing to profile.
-- **Red-Flag Emergency Safeguard:**
-  - Detects acute symptoms (severe pelvic pain, heavy hemorrhage, chest pain, fainting, pregnancy complications).
-  - Immediately replaces AI wellness advice with an urgent **Call Emergency (112) / Seek Care Today** card.
+- **Unified Log Experience with 3-Way Selector:**
+  - **Daily Vitals & Mood:**
+    - 10-Second Flow: Quick input without tedious questionnaires.
+    - Mood tracker with 5 visual emojis and granular emotion tags (*Grounded*, *Anxious*, *Irritable*, *Grateful*, etc.).
+    - Daily DRSP (Daily Record of Severity of Problems) PMDD/PMS screener with severity sliders.
+    - Energy slider (1 to 5) and Carb/Sugar Cravings slider (1 to 5).
+    - Pelvic Cramp / Pain slider (0 to 10) and Period flow tracker (`None`, `Spotting`, `Light`, `Medium`, `Heavy`).
+    - L3 Skin & Hair Progress Photos: Collapsible weekly photo capture (Jawline acne / Hairline density) with local on-device comparison.
+    - Multilingual Voice & NLP Extraction: Natural voice logging in Hindi, Telugu, Tamil, or English with instant confirmation.
+    - Red-Flag Emergency Safeguard: Detects acute red flags and presents immediate emergency call / hospital guidance.
+  - **Complete Food Logging (`Food Log` Tab):**
+    - Dedicated meal category selection (*Breakfast*, *Lunch*, *Dinner*, *Snack*).
+    - Live daily macro nutrient summary banner: Total Calories, Carbohydrates (g), Protein (g), and Fiber (g).
+    - Natural language or quick dish input (e.g., *"2 boiled eggs, cucumber slices, filter coffee without sugar"*).
+    - Quick-add chips for popular balanced Indian dishes (Besan Chilla, Moong Dal Khichdi, Foxtail Millet Upma, Paneer Bhurji, Roasted Chana).
+    - Comprehensive list of today's logged meals with timestamp, dish title, macro breakdown, PCOS score, and 1-tap delete capability.
+  - **Eat Healthy: Low Sugar, Low Calorie & Low Carb Alternates for Unhealthy Cravings:**
+    - Specifically designed for when women experience intense cravings for unhealthy foods (pizza, ice cream, samosas, burgers, pastries) triggered by luteal progesterone drops, cortisol spikes, or hyperinsulinemic reactive hypoglycemia.
+    - **Craving Search & Instant Chips:** Real-time lookup for any unhealthy food (Pizza, Ice cream, Samosas & Pakoras, Burger & Fries, Biryani & White Rice, Maggi & Pasta, Cakes & Pastries, Sweet Chai & Sodas).
+    - **Unhealthy Nutritional & Hormonal Harm Breakdown:** Highlights the red-flag glycemic index (GI 75–85+), refined sugar, saturated trans-fats, and explains why it triggers ovarian androgen production, inflammation, and fatigue crashes.
+    - **Three Targeted Healthy Alternative Variants per Unhealthy Food:**
+      1. 🍯 **Low Sugar Version:** Drastically slashes added sugars (down to 1–3g natural sugars) with minimal glycemic impact (GI < 30) to eliminate insulin spikes.
+      2. ⚡ **Low Calorie Version:** Replaces high-density refined fats and flours with high-volume, fiber-rich vegetables (saving 250–450+ calories per serving) for light digestion and high satiety.
+      3. 🥗 **Low Carb / Keto Version:** Swaps high-glycemic starches for nutrient-dense bases (cauliflower crust, besan, edamame, almond flour, konjac) keeping net carbs under 6–10g.
+    - **1-Tap `[+ Add to Food Log]` Integration:** Directly commits the chosen low-sugar, low-calorie, or low-carb alternative into the user's daily food record with its exact macronutrients and PCOS score.
 
 ---
 
@@ -172,6 +173,21 @@ A permanently docked, native mobile bottom navigation bar with fluid active-stat
 
 ## 7. Module 4: Food & Indian Nutrition (INDB 150+ Dishes)
 
+- **Co-Located Food Logging & Nutrition Hub:**
+  - Accessible directly via `/food` and within the Log bottom menu (`/checkin`).
+  - Seamlessly integrates daily meal logging, macro tracking, regional INDB databank, and the Eat Healthy craving engine.
+- **Three Core View Modes:**
+  1. 🥗 **Daily Foods:** Quick text/voice meal logging, live macro summary, and full 150+ INDB dish search with PCOS scores.
+  2. 🌙 **Fasting Days (F2):** Evidence-based Vrat (Navratri, Ekadashi, Karwa Chauth) and Ramzan Suhoor/Iftar swaps that prevent high-GI insulin spikes.
+  3. ✨ **Eat Healthy:** Interactive search and curated cards for unhealthy cravings (pizza, ice cream, samosas, burgers, biryani, cakes) with Low Sugar, Low Calorie, and Low Carb alternatives and 1-tap logging.
+- **F1. Thali Photo Logging (Snap Thali):**
+  - Camera floating action button (FAB) for instant camera capture of meals.
+  - Multi-dish segmentation (e.g. Foxtail Millet, Palak Paneer, Moong Dal, Cucumber Salad).
+  - Glycemic load estimation and personalized tolerance verdict (*"Suits You: Fiber-first sequencing prevents postprandial glucose spike"*).
+- **F3. Regional & Budget Meal Planner ("Plan My Week"):**
+  - Regional cuisine customizer (Telugu/Deccan, North Indian, Tamil/Kerala).
+  - Budget Mode toggle (optimizing for healthy local ingredients under ₹80/meal).
+  - Cook for Family toggle (no separate cooking; base family gravies with easy personal protein additions).
 - **Indian Nutrient Databank (INDB) Seed:**
   - 150+ regional Indian dishes (North Indian, South Indian, Maharashtrian, Bengali, Gujarati).
   - Calculates per-serving calories, protein, carbohydrates, fat, dietary fiber, and estimated Glycemic Index.

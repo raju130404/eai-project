@@ -605,29 +605,29 @@ export default function TodayPage() {
         </div>
       </div>
 
-      {/* HORMONAL CRAVING SWAP PROMPT CARD */}
+      {/* EAT HEALTHY SMART SWAP PROMPT CARD */}
       <div className="p-4 rounded-3xl bg-[#FFF9F7] border border-[#F2E2DD] shadow-xs flex items-center justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
           <div className="w-10 h-10 rounded-2xl bg-[#FCEEEB] text-[#7A1D2E] flex items-center justify-center text-xl shrink-0">
-            🍫
+            🥗
           </div>
           <div className="min-w-0">
             <div className="text-xs font-bold text-[#361118] font-heading flex items-center gap-1.5 flex-wrap">
-              <span>Craving Unhealthy Food?</span>
+              <span>Eat Healthy: Craving Pizza, Ice Cream or Sweets?</span>
               <span className="text-[9px] bg-[#FCEEEB] text-[#7A1D2E] font-semibold px-2 py-0.5 rounded-full border border-[#F0DDD8]">
-                Hormonal Root Cause
+                Smart Alternates
               </span>
             </div>
             <div className="text-[11px] text-[#7A5A62] mt-0.5 truncate sm:whitespace-normal">
-              PMS &amp; insulin shifts drive cravings. Find vetted Indian swaps in your log.
+              Find delicious low sugar, low calorie, and low carb Indian versions that protect your insulin.
             </div>
           </div>
         </div>
         <Link
-          href="/checkin#cravings"
+          href="/checkin"
           className="px-3.5 py-1.5 rounded-xl bg-[#7A1D2E] text-white hover:bg-[#661423] text-xs font-bold shadow-xs transition shrink-0 whitespace-nowrap"
         >
-          Find Swaps &gt;
+          Eat Healthy &gt;
         </Link>
       </div>
 
