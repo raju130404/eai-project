@@ -111,7 +111,7 @@ export default function ProfilePage() {
   return (
     <div className="space-y-4 sm:space-y-6 pb-20">
       {/* Header */}
-      <div className="rounded-4xl bg-gradient-to-br from-[#FF7A9A] via-[#F04D7E] to-[#E3386C] p-6 text-white shadow-lg shadow-rose-200/50 relative overflow-hidden">
+      <div className="rounded-4xl bg-gradient-to-br from-[#801D30] via-[#7A1D2E] to-[#601422] p-6 text-white shadow-md shadow-[#7A1D2E]/20 relative overflow-hidden">
         <span className="inline-flex items-center gap-1 rounded-full bg-white/20 px-2.5 py-0.5 text-[10px] font-bold text-white">
           <User className="w-3 h-3 text-white" />
           Health Profile &amp; Settings
@@ -120,7 +120,7 @@ export default function ProfilePage() {
         <h1 className="mt-2 font-heading text-2xl sm:text-3xl font-bold tracking-tight text-white">
           Priya Sharma
         </h1>
-        <p className="mt-1 text-xs text-rose-100 max-w-md">
+        <p className="mt-1 text-xs text-[#FCEEEB] max-w-md">
           26F, Hyderabad • PCOS (Rotterdam B) &amp; Hypothyroidism • Care Team Connected.
         </p>
 
@@ -138,7 +138,7 @@ export default function ProfilePage() {
               onClick={() => setActiveTab(tab.id as any)}
               className={`rounded-full px-3.5 py-1.5 text-xs font-semibold whitespace-nowrap transition ${
                 activeTab === tab.id
-                  ? 'bg-white text-brand-pink shadow-xs font-bold'
+                  ? 'bg-white text-[#7A1D2E] shadow-xs font-bold'
                   : 'bg-white/15 text-white hover:bg-white/25'
               }`}
             >

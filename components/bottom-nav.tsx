@@ -61,20 +61,20 @@ export function BottomNav() {
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-rose-100/70 shadow-lg py-2">
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-[#F2E2DD] shadow-lg py-2">
         <nav className="mx-auto flex max-w-md items-center justify-around px-4">
           {/* Tab 1: Home / Cycle */}
           <Link
             href="/today"
             className={`flex flex-col items-center justify-center transition-all ${
-              isHomeActive ? 'text-brand-purple' : 'text-slate-400 hover:text-slate-600'
+              isHomeActive ? 'text-[#7A1D2E]' : 'text-[#9E838A] hover:text-[#523338]'
             }`}
             aria-label="Home Cycle"
           >
             <div
               className={`flex items-center justify-center w-10 h-10 rounded-full transition-all ${
                 isHomeActive
-                  ? 'bg-brand-purple text-white shadow-md shadow-brand-purple/30 scale-105'
+                  ? 'bg-[#7A1D2E] text-white shadow-md shadow-[#7A1D2E]/25 scale-105'
                   : 'bg-transparent'
               }`}
             >
@@ -100,14 +100,14 @@ export function BottomNav() {
                 }
               }}
               className={`flex flex-col items-center justify-center transition-all ${
-                isLogActive ? 'text-brand-purple' : 'text-slate-400 hover:text-slate-600'
+                isLogActive ? 'text-[#7A1D2E]' : 'text-[#9E838A] hover:text-[#523338]'
               }`}
               aria-label="Calendar and Log (Hold for voice)"
             >
               <div
                 className={`flex items-center justify-center w-10 h-10 rounded-full transition-all ${
                   isLogActive
-                    ? 'bg-brand-purple text-white shadow-md shadow-brand-purple/30 scale-105'
+                    ? 'bg-[#7A1D2E] text-white shadow-md shadow-[#7A1D2E]/25 scale-105'
                     : 'bg-transparent'
                 }`}
               >
@@ -121,14 +121,14 @@ export function BottomNav() {
           <Link
             href="/ask"
             className={`flex flex-col items-center justify-center transition-all ${
-              isAskActive ? 'text-brand-purple' : 'text-slate-400 hover:text-slate-600'
+              isAskActive ? 'text-[#7A1D2E]' : 'text-[#9E838A] hover:text-[#523338]'
             }`}
             aria-label="Ask Ritu"
           >
             <div
               className={`flex items-center justify-center w-10 h-10 rounded-full transition-all ${
                 isAskActive
-                  ? 'bg-brand-purple text-white shadow-md shadow-brand-purple/30 scale-105'
+                  ? 'bg-[#7A1D2E] text-white shadow-md shadow-[#7A1D2E]/25 scale-105'
                   : 'bg-transparent'
               }`}
             >
@@ -141,14 +141,14 @@ export function BottomNav() {
           <Link
             href="/care"
             className={`flex flex-col items-center justify-center transition-all ${
-              isCareActive ? 'text-brand-purple' : 'text-slate-400 hover:text-slate-600'
+              isCareActive ? 'text-[#7A1D2E]' : 'text-[#9E838A] hover:text-[#523338]'
             }`}
             aria-label="Care and Doctor"
           >
             <div
               className={`flex items-center justify-center w-10 h-10 rounded-full transition-all ${
                 isCareActive
-                  ? 'bg-brand-purple text-white shadow-md shadow-brand-purple/30 scale-105'
+                  ? 'bg-[#7A1D2E] text-white shadow-md shadow-[#7A1D2E]/25 scale-105'
                   : 'bg-transparent'
               }`}
             >
@@ -161,18 +161,21 @@ export function BottomNav() {
           <Link
             href="/profile"
             className={`flex flex-col items-center justify-center transition-all ${
-              isProfileActive ? 'text-brand-purple' : 'text-slate-400 hover:text-slate-600'
+              isProfileActive ? 'text-[#7A1D2E]' : 'text-[#9E838A] hover:text-[#523338]'
             }`}
             aria-label="Profile and Settings"
           >
             <div
               className={`flex items-center justify-center w-10 h-10 rounded-full transition-all ${
                 isProfileActive
-                  ? 'bg-brand-purple text-white shadow-md shadow-brand-purple/30 scale-105'
+                  ? 'bg-[#7A1D2E] text-white shadow-md shadow-[#7A1D2E]/25 scale-105'
                   : 'bg-transparent'
               }`}
             >
               <User className="w-5 h-5 stroke-[2.2]" />
+            </div>
+            <span className="text-[10px] font-semibold mt-0.5">{dict.nav.profile}</span>
+          </Link>
             </div>
             <span className="text-[10px] font-semibold mt-0.5">{dict.nav.profile}</span>
           </Link>

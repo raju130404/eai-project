@@ -210,7 +210,7 @@ export default function CarePage() {
   return (
     <div className="space-y-4 sm:space-y-6 pb-20">
       {/* 1. Care Header */}
-      <div className="rounded-4xl bg-gradient-to-br from-[#8E93F8] via-[#6C70EB] to-[#555AD4] p-5 sm:p-6 text-white shadow-lg shadow-indigo-200/50 relative overflow-hidden">
+      <div className="rounded-4xl bg-gradient-to-br from-[#801D30] via-[#7A1D2E] to-[#601422] p-5 sm:p-6 text-white shadow-md shadow-[#7A1D2E]/20 relative overflow-hidden">
         <span className="inline-flex items-center gap-1 rounded-full bg-white/20 px-2.5 py-0.5 text-[10px] font-bold text-white">
           <Stethoscope className="w-3 h-3 text-white" />
           {dict.care.headerTitle}
@@ -219,7 +219,7 @@ export default function CarePage() {
         <h1 className="mt-2 font-heading text-2xl sm:text-3xl font-bold tracking-tight text-white">
           {dict.care.headerTitle}
         </h1>
-        <p className="mt-1 text-xs text-indigo-100 max-w-md">
+        <p className="mt-1 text-xs text-[#FCEEEB] max-w-md">
           {dict.care.headerSub}
         </p>
 
@@ -239,7 +239,7 @@ export default function CarePage() {
               onClick={() => setActiveTab(tab.id as any)}
               className={`rounded-full px-3.5 py-1.5 text-xs font-semibold whitespace-nowrap transition ${
                 activeTab === tab.id
-                  ? 'bg-white text-brand-purple shadow-xs font-bold'
+                  ? 'bg-white text-[#7A1D2E] shadow-xs font-bold'
                   : 'bg-white/15 text-white hover:bg-white/25'
               }`}
             >

@@ -74,7 +74,13 @@ export function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-[#1E171B]/85 backdrop-blur-md border-b border-white/10 text-white shadow-sm">
+      <header
+        className={`sticky top-0 z-40 backdrop-blur-md border-b shadow-xs transition-colors ${
+          isDoctorView
+            ? 'bg-[#2A1016]/95 border-[#4A1D26] text-white'
+            : 'bg-[#FAF4F0]/95 border-[#F2E2DD] text-[#361118]'
+        }`}
+      >
         <div className={`mx-auto ${isDoctorView ? 'max-w-7xl px-4 sm:px-6' : 'max-w-md sm:max-w-lg px-3.5 sm:px-4'} py-2.5`}>
           <div className="flex items-center justify-between gap-2">
             {/* Left: User / Doctor Welcome */}
@@ -83,10 +89,18 @@ export function Navbar() {
               className="flex items-center gap-2 min-w-0"
             >
               <div className="flex flex-col min-w-0">
-                <span className="text-[11px] font-medium text-rose-200/70 leading-none whitespace-nowrap">
+                <span
+                  className={`text-[11px] font-medium leading-none whitespace-nowrap ${
+                    isDoctorView ? 'text-rose-200/70' : 'text-[#7A5A62]'
+                  }`}
+                >
                   {isDoctorView ? 'Clinical Doctor Portal' : dict.navbar.welcome}
                 </span>
-                <span className="font-heading text-base font-bold text-white tracking-tight flex items-center gap-1.5 min-w-0">
+                <span
+                  className={`font-heading text-base font-bold tracking-tight flex items-center gap-1.5 min-w-0 ${
+                    isDoctorView ? 'text-white' : 'text-[#7A1D2E]'
+                  }`}
+                >
                   <span className="truncate">{isDoctorView ? PERSONAS.doctor.name : currentPersona.name}</span>
                   {isDoctorView && (
                     <span className="hidden sm:inline text-[10px] bg-indigo-500/30 text-indigo-200 border border-indigo-400/40 px-2 py-0.5 rounded-full font-sans font-medium">
@@ -109,11 +123,11 @@ export function Navbar() {
                 <button
                   type="button"
                   onClick={() => setNotificationsOpen(true)}
-                  className="relative flex w-9 h-9 items-center justify-center rounded-full bg-white/10 border border-white/15 text-white hover:bg-white/20 shadow-xs transition"
+                  className="relative flex w-9 h-9 items-center justify-center rounded-full bg-[#FCEEEB] border border-[#F2E2DD] text-[#7A1D2E] hover:bg-[#F8DDD7] shadow-xs transition"
                   aria-label="Notifications"
                 >
-                  <Bell className="w-4 h-4 text-white" />
-                  <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-brand-pink animate-pulse" />
+                  <Bell className="w-4 h-4 text-[#7A1D2E]" />
+                  <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#7A1D2E] animate-pulse" />
                 </button>
               )}
             </div>

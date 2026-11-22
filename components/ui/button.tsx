@@ -8,33 +8,33 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-[#F04D7E] text-white hover:bg-[#D83868] shadow-md shadow-rose-300/30',
+          'bg-[#7A1D2E] text-white hover:bg-[#661423] shadow-md shadow-[#7A1D2E]/20',
         forest:
-          'bg-[#F04D7E] text-white hover:bg-[#D83868] shadow-md shadow-rose-300/30',
+          'bg-[#7A1D2E] text-white hover:bg-[#661423] shadow-md shadow-[#7A1D2E]/20',
         pink:
-          'bg-[#F04D7E] text-white hover:bg-[#D83868] shadow-md shadow-rose-300/30',
+          'bg-[#7A1D2E] text-white hover:bg-[#661423] shadow-md shadow-[#7A1D2E]/20',
         purple:
-          'bg-[#6C70EB] text-white hover:bg-[#585CD6] shadow-md shadow-indigo-300/30',
+          'bg-[#801D30] text-white hover:bg-[#6E1826] shadow-md shadow-[#801D30]/20',
         sage:
-          'bg-[#6C70EB] text-white hover:bg-[#585CD6] shadow-md shadow-indigo-300/30',
+          'bg-[#801D30] text-white hover:bg-[#6E1826] shadow-md shadow-[#801D30]/20',
         coral:
-          'bg-[#F04D7E] text-white hover:bg-[#D83868] shadow-md shadow-rose-300/30',
+          'bg-[#7A1D2E] text-white hover:bg-[#661423] shadow-md shadow-[#7A1D2E]/20',
         destructive:
           'bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm',
         outline:
-          'border border-slate-200 bg-white text-slate-800 hover:bg-slate-50 hover:border-slate-300 shadow-xs',
+          'border border-[#F2E2DD] bg-white text-[#361118] hover:bg-[#FAF4F0] hover:border-[#7A1D2E]/40 shadow-xs',
         outlineForest:
-          'border-2 border-[#F04D7E] bg-transparent text-[#F04D7E] hover:bg-[#F04D7E] hover:text-white',
+          'border-2 border-[#7A1D2E] bg-transparent text-[#7A1D2E] hover:bg-[#7A1D2E] hover:text-white',
         secondary:
-          'bg-[#EEF0FF] text-[#6C70EB] hover:bg-[#EEF0FF]/80 font-bold',
+          'bg-[#FCEEEB] text-[#7A1D2E] hover:bg-[#F8DDD7] font-bold',
         ghost:
-          'hover:bg-rose-50/70 text-slate-700 hover:text-brand-pink',
+          'hover:bg-[#FCEEEB]/70 text-[#361118] hover:text-[#7A1D2E]',
         link:
-          'text-[#6C70EB] underline-offset-4 hover:underline p-0 h-auto font-medium',
+          'text-[#7A1D2E] underline-offset-4 hover:underline p-0 h-auto font-medium',
         pcos:
-          'bg-[#F04D7E] text-white hover:bg-[#D83868] shadow-md',
+          'bg-[#7A1D2E] text-white hover:bg-[#661423] shadow-md',
         teal:
-          'bg-[#6C70EB] text-white hover:bg-[#585CD6] shadow-sm',
+          'bg-[#801D30] text-white hover:bg-[#6E1826] shadow-sm',
       },
       size: {
         default: 'h-11 px-5 py-2.5',

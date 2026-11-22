@@ -6,67 +6,67 @@
 
 @layer base {
   :root {
-    /* Warm soft blush/cream canvas matching lofee UI reference kit (s1.png & s2.png) */
-    --background: 345 50% 98%; /* #FFF6F8 */
-    --foreground: 330 10% 16%; /* #2D2528 */
+    /* Warm cream linen canvas matching slide (media_1795370318775_6dbb03a6.jpg) */
+    --background: 24 50% 97%; /* #FAF4F0 */
+    --foreground: 348 52% 15%; /* #361118 deep espresso burgundy */
 
     --card: 0 0% 100%;
-    --card-foreground: 330 10% 16%;
+    --card-foreground: 348 52% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 330 10% 16%;
+    --popover-foreground: 348 52% 15%;
 
-    /* Signature Berry Rose primary & Periwinkle Purple secondary */
-    --primary: 342 85% 62%; /* #F04D7E */
+    /* Signature Deep Burgundy primary & Warm Maroon secondary */
+    --primary: 349 60% 30%; /* #7A1D2E */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 238 75% 67%; /* #6C70EB */
+    --secondary: 351 55% 35%; /* #8A2232 */
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 345 20% 92%;
-    --muted-foreground: 330 6% 50%;
+    --muted: 24 25% 93%;
+    --muted-foreground: 348 15% 42%; /* #7A5A62 */
 
-    --accent: 238 75% 67%; /* #6C70EB */
+    --accent: 349 60% 30%; /* #7A1D2E */
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 345 25% 93%;
-    --input: 345 25% 93%;
-    --ring: 342 85% 62%;
+    --border: 20 30% 91%; /* #F2E2DD */
+    --input: 20 30% 91%;
+    --ring: 349 60% 30%;
 
-    --radius: 1.5rem;
+    --radius: 1.25rem;
   }
 
   .dark {
-    --background: 165 35% 8%;
-    --foreground: 90 20% 95%;
+    --background: 348 40% 8%;
+    --foreground: 24 30% 95%;
 
-    --card: 165 30% 12%;
-    --card-foreground: 90 20% 95%;
+    --card: 348 35% 12%;
+    --card-foreground: 24 30% 95%;
 
-    --popover: 165 30% 12%;
-    --popover-foreground: 90 20% 95%;
+    --popover: 348 35% 12%;
+    --popover-foreground: 24 30% 95%;
 
-    --primary: 110 25% 66%;
-    --primary-foreground: 165 35% 10%;
+    --primary: 349 60% 45%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 165 25% 18%;
-    --secondary-foreground: 90 20% 95%;
+    --secondary: 351 55% 50%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 165 20% 20%;
-    --muted-foreground: 110 15% 70%;
+    --muted: 348 20% 20%;
+    --muted-foreground: 24 15% 70%;
 
-    --accent: 12 80% 66%;
+    --accent: 349 60% 45%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 165 20% 20%;
-    --input: 165 20% 20%;
-    --ring: 110 25% 66%;
+    --border: 348 20% 20%;
+    --input: 348 20% 20%;
+    --ring: 349 60% 45%;
   }
 }
 
@@ -76,7 +76,7 @@
   }
   body {
     @apply bg-background text-foreground antialiased font-body;
-    background-color: #F4F6F2;
+    background-color: #FAF4F0;
     -webkit-tap-highlight-color: transparent;
   }
   h1, h2, h3, h4, h5, h6 {

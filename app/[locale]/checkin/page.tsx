@@ -165,8 +165,8 @@ export default function CheckinPage() {
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      {/* Header Prompt */}
-      <div className="rounded-4xl bg-gradient-to-br from-[#FF7A9A] via-[#F04D7E] to-[#E3386C] p-6 text-white text-center shadow-lg shadow-rose-200/50 relative overflow-hidden">
+      {/* Header Prompt in Deep Burgundy (matching slide theme) */}
+      <div className="rounded-4xl bg-gradient-to-br from-[#801D30] via-[#7A1D2E] to-[#601422] p-6 text-white text-center shadow-md shadow-[#7A1D2E]/20 relative overflow-hidden">
         <div className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full bg-white/20 blur-xl" />
         <span className="inline-flex items-center gap-1 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold text-rose-50">
           <Calendar className="w-3.5 h-3.5 text-white" />
@@ -175,7 +175,7 @@ export default function CheckinPage() {
         <h1 className="mt-2 font-heading text-2xl sm:text-3xl font-bold tracking-tight text-white">
           {dict.checkin.headerTitle}
         </h1>
-        <p className="mt-1 text-xs text-rose-100 max-w-sm mx-auto">
+        <p className="mt-1 text-xs text-[#FCEEEB] max-w-sm mx-auto">
           {dict.checkin.headerSub}
         </p>
 
@@ -185,7 +185,7 @@ export default function CheckinPage() {
             type="button"
             onClick={() => setMode('quick')}
             className={`rounded-full px-4 py-1.5 transition-all ${
-              mode === 'quick' ? 'bg-white text-brand-pink shadow-xs font-bold' : 'text-white'
+              mode === 'quick' ? 'bg-white text-[#7A1D2E] shadow-xs font-bold' : 'text-white'
             }`}
           >
             {dict.checkin.quickTap}
@@ -194,7 +194,7 @@ export default function CheckinPage() {
             type="button"
             onClick={() => setMode('voice')}
             className={`rounded-full px-4 py-1.5 transition-all ${
-              mode === 'voice' ? 'bg-white text-brand-pink shadow-xs font-bold' : 'text-white'
+              mode === 'voice' ? 'bg-white text-[#7A1D2E] shadow-xs font-bold' : 'text-white'
             }`}
           >
             {dict.checkin.voiceNote}

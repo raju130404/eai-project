@@ -27,7 +27,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} className="h-full">
-      <body className="flex min-h-full flex-col bg-[#FFF6F8] font-body text-slate-900 antialiased selection:bg-brand-pinkLight selection:text-brand-pink">
+      <body className="flex min-h-full flex-col bg-[#FAF4F0] font-body text-[#361118] antialiased selection:bg-[#FCEEEB] selection:text-[#7A1D2E]">
         <PersonaProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>
             {/* Top Bar Navigation */}

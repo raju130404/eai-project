@@ -44,17 +44,19 @@ Hormonal conditions in women depend on individual neuroendocrine baselines, carr
 
 ## 2. Visual Design System & Mobile UI Architecture
 
-*Directly aligned with the **lofee - Health Woman App UI Design Kit** (`reference/s1.png` and `reference/s2.png`):*
+*Aligned with the presentation prototype design:*
 
-- **Canvas Background:** Soft Warm Blush (`#FFF6F8`) providing an inviting, tactile, premium feel.
-- **Card Surfaces:** Pure White (`#FFFFFF`) with delicate rose borders (`#F5E8EB`) and soft depth shadows.
+- **Canvas Background:** Warm Cream Linen (`#FAF4F0`) providing a high-end, tactile, human health aesthetic.
+- **Card Surfaces:** Pure White (`#FFFFFF`) with delicate warm rose-sand borders (`#F2E2DD`) and soft depth shadows.
 - **Color Palette:**
-  - **Berry Rose (`#F04D7E`):** Signature color for the interactive Period Heart widget, active calendar dates, and primary action buttons.
-  - **Periwinkle Purple (`#6C70EB`):** Signature color for Ovulation predictions, active bottom navigation highlights, and secondary tools.
-  - **Pastel Modals:** Soft peach (`#FFE8EF`), mint (`#E8F8F5`), sunny yellow (`#FEF9C3`), and sky blue (`#EEF2FF`).
+  - **Deep Burgundy / Wine (`#7A1D2E` / `#801D30`):** Signature primary color for active tabs, cycle progress indicators, primary CTA buttons ("See what you can do"), and the "Personalised. Connected. Actionable." banner.
+  - **Soft Peach / Warm Blush (`#FCEEEB`):** Rounded container background for health icons (Cycle, Symptoms, Sleep, Mood).
+  - **Warm Terracotta & Muted Rose (`#C46874` / `#BD535D`):** Supportive accent for trends and indicators.
+  - **Espresso Charcoal Text (`#361118`):** Rich, legible typography for headings and high-emphasis labels.
+  - **Muted Taupe Text (`#7A5A62`):** Calm, non-alarmist body and metric descriptions.
 - **Typography:**
-  - Headings: `Fredoka` & `Plus Jakarta Sans` for soft, friendly, rounded headers.
-  - Body & Metrics: `Poppins` & `Inter` for crisp, medical-grade legibility.
+  - Headings: `Fredoka` & `Plus Jakarta Sans` for soft, elegant, friendly rounded titles.
+  - Body & Metrics: `Poppins` & `Inter` for crisp medical-grade legibility.
 - **Mobile Container:** Optimized for iPhone 14/15 profiles (`max-w-md sm:max-w-lg mx-auto`) with generous pill radii (`rounded-3xl` / `rounded-4xl`).
 
 ---
@@ -65,39 +67,41 @@ A permanently docked, native mobile bottom navigation bar with fluid active-stat
 
 | Tab | Route | Description |
 | :--- | :--- | :--- |
-| 🏠 **Home** | `/today` (and `/`) | Central Period & Ovulation Heart, Weekly Strip, Moods, Articles, Daily Meds |
+| 🏠 **Home** | `/today` (and `/`) | Greeting overview, Cycle progress, Symptoms & Sleep cards, Mood sparkline, AI Insight |
 | 📅 **Log** | `/checkin` | 10-Second Daily Check-in, Symptoms, Pain slider, Indic Voice note |
 | 💬 **Ask** | `/ask` | Personal AI Chat, Doctor Advice Explainer, Myth Checker, Lab Tracker |
-| 🩺 **Care** | `/care` | Care Team roster, Sharing Toggles, 1-Page Summary, Screening Calendar, Doctor Portal |
+| 🩺 **Care** | `/care` | Care Team roster, Sharing Toggles, 1-Page Summary, Doctor Directory & Triage |
 | 👤 **Profile** | `/profile` | Health Baseline, Calibration Engine, Smart Cart Settings, DPDP Data Export |
 
 ---
 
-## 4. Module 1: Home & Daily Cycle Tracking
+## 4. Module 1: Home & Daily Health Overview
 
-- **Welcome Header:** Displays `Welcome` + active user name (`Priya Sharma`), with a notification bell showing unread badge alerts.
-- **Notification Tray (Matching `s1.png`):**
-  - Tapping the bell opens a slide-up notification tray:
-    - 💙 *Ovulation Prediction Day! (High chance of fertile window)*
-    - 💖 *Today is Your Day (Energy rising; 30-min gentle walk recommended)*
-    - 🛒 *Smart Cart Swap Ready (Slurrp Farm Millet Noodles pick)*
-    - 💊 *Medicine Reminder (Thyronorm taken; Metformin due with dinner)*
-- **Hero Period & Ovulation Heart Widget:**
-  - Heart-shaped gradient card (`#FF7A9A` → `#F04D7E` → `#E3386C`) with floating pencil button (`✏️`).
-  - Displays: **Period: Day 18** and **Possible Pregnancy: 12.4%**.
-  - **Interactive 1-Tap Toggle:** Tapping the heart instantly transforms it into the **Ovulation Prediction** view in Periwinkle Purple (`#8E93F8` → `#6C70EB`).
+- **Welcome Greeting:** Displays `Good morning!` and `Here's your health overview` with user profile integration.
+- **Cycle Progress Card:**
+  - Replaced the legacy Day 18 heart and pregnancy chance widget with a clean, clinical cycle overview.
+  - Features **Day 14 of 28** progress slider with a smooth indicator dot at 50% (Follicular phase • Regular baseline).
+  - Clean phase markers: *Day 1 (Period)*, *Day 14 (Mid-Cycle)*, and *Day 28 (Expected)*.
+- **2-Column Health Signals (Symptoms & Sleep):**
+  - **Symptoms:** Bloating, fatigue quick indicators with 1-tap drill-down.
+  - **Sleep:** 6 h 40 min sleep duration tracker.
+- **Mood Card with 7-Day Sparkline Wave:**
+  - Real-time mood trend card ("Mostly good • Calming trend") with a smooth SVG sparkline wave in deep burgundy.
+- **Adaptive AI Insight Card:**
+  - Direct clinical synthesis: *"Your fatigue and bloating are common around mid-cycle and may be linked to hormonal changes."*
+  - 1-Tap CTA: **[See what you can do >]** in solid deep burgundy routing to Ask Ritu.
+- **Core Pillars Banner:**
+  - **CONNECT:** Symptoms, cycle, sleep & mood signals together.
+  - **UNDERSTAND:** AI-powered insights adapting to evolving individual patterns.
+  - **NAVIGATE:** Informed next steps and knowing when to seek professional care.
+  - **Tagline Banner:** *"Personalised. Connected. Actionable."* in rich burgundy pill styling.
 - **Weekly Interactive Calendar Strip:**
   - Displays current month (`November 2026`) with a 7-day row (`S M T W T F S`).
-  - Active date `18` highlighted in a solid rose pink circle; period days highlighted in dashed circles.
-  - Tapping any date updates daily vitals.
-- **"Your Mood" Quick Bar:**
-  - ➕ `Add Mood` in soft periwinkle card.
-  - 😭 `Sad` in soft rose card.
-  - 😫 `Badmood` in soft mint card.
-  - 😍 `Happy` in soft yellow card.
-  - Immediate tactile confirmation upon selection.
-- **Article & Guidance Cards:**
-  - 🧘‍♀️ **Daily Woman** (`#EEF2FF`): Hormone harmony routine for Day 18.
+  - Active date highlighted in a solid burgundy circle (`#7A1D2E`).
+- **Daily Medicines Checklist:**
+  - Interactive checklists for prescribed morning Thyronorm and evening Metformin with smart timing advice.
+- **2×3 Direct Access Tools Grid:**
+  - 1-tap shortcuts to Food & Tolerance, Lab OCR, N-of-1 Trials, Smart Cart, Targeted Workouts, and Fasting Planner.
   - 🥗 **Mood Booster** (`#FFE8EF`): High-fiber Indian breakfast swaps.
   - ✨ **Spread Happines** (`#E8F8F5`): Restorative pelvic stretches and active trials.
 - **Daily Medicine Checklist:**

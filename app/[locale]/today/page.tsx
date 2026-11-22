@@ -9,10 +9,8 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
   Calendar as CalendarIcon,
-  Heart,
-  Edit3,
-  Plus,
-  CheckCircle2,
+  Flame,
+  Clock,
   ChevronRight,
   Smile,
   Pill,
@@ -20,9 +18,7 @@ import {
   Utensils,
   BookOpen,
   ArrowRight,
-  Clock,
   Activity,
-  Flame,
   Volume2,
   Camera,
   X,
@@ -31,15 +27,14 @@ import {
   AlertTriangle,
   FileText,
   ShieldCheck,
+  CheckCircle2,
+  Plus,
 } from 'lucide-react';
 
 export default function TodayPage() {
   const router = useRouter();
   const locale = useLocale() as Locale;
   const dict = getDictionary(locale);
-
-  // Heart mode: 'period' (Pink heart) vs 'ovulation' (Periwinkle heart)
-  const [heartMode, setHeartMode] = useState<'period' | 'ovulation'>('period');
 
   // Selected date in weekly strip
   const [selectedDay, setSelectedDay] = useState<number>(18);
@@ -86,169 +81,220 @@ export default function TodayPage() {
   };
 
   return (
-    <div className="space-y-4 sm:space-y-5 pb-6">
-      {/* 1. HERO HEART WIDGET (Exact match to reference s1.png & s2.png) */}
-      <div className="relative flex flex-col items-center justify-center pt-2">
-        {/* Floating decorative mini hearts */}
-        <span className="absolute left-8 top-12 text-rose-300 text-lg animate-pulse">
-          ♥
-        </span>
-        <span className="absolute right-10 bottom-6 text-pink-300 text-sm animate-bounce">
-          ♥
-        </span>
-
-        {/* Central Heart Card with toggle between Period & Ovulation */}
-        <div
-          onClick={() => setHeartMode(heartMode === 'period' ? 'ovulation' : 'period')}
-          className={`relative w-64 h-60 sm:w-72 sm:h-64 rounded-full flex flex-col items-center justify-center p-6 text-white text-center shadow-xl cursor-pointer transition-all duration-300 transform hover:scale-[1.02] ${
-            heartMode === 'period'
-              ? 'bg-gradient-to-br from-[#FF7A9A] via-[#F04D7E] to-[#E3386C] shadow-rose-300/50'
-              : 'bg-gradient-to-br from-[#8E93F8] via-[#6C70EB] to-[#555AD4] shadow-indigo-300/50'
-          }`}
-          style={{
-            clipPath:
-              'path("M130,35 C130,35 110,0 65,0 C25,0 0,35 0,75 C0,135 75,190 130,225 C185,190 260,135 260,75 C260,35 235,0 195,0 C150,0 130,35 130,35 Z")',
-          }}
-        >
-          {/* Top-Right Floating Edit / Log Button */}
-          <Link
-            href="/checkin"
-            onClick={(e) => e.stopPropagation()}
-            className="absolute right-6 top-8 w-8 h-8 rounded-full bg-white/25 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/40 shadow-xs transition"
-            title="Log period / symptoms"
-          >
-            <Edit3 className="w-3.5 h-3.5" />
-          </Link>
-
-          {/* Heart Content with Softened Evidence-Based Estimates */}
-          <div className="pt-2 flex flex-col items-center justify-center">
-            {heartMode === 'period' ? (
-              <>
-                <span className="text-xs font-semibold text-rose-100 uppercase tracking-wider">
-                  {dict.home.periodTitle}
-                </span>
-                <h2 className="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight mt-0.5">
-                  {dict.home.day18}
-                </h2>
-                <div className="mt-1 text-[10px] font-medium text-rose-100">
-                  {dict.home.conceptionChance}
-                </div>
-                <div className="font-heading text-sm font-bold">{dict.home.conceptionValue}</div>
-                <div className="text-[9px] text-rose-200/90 leading-none mt-0.5">
-                  {dict.home.irregularCycleNote}
-                </div>
-              </>
-            ) : (
-              <>
-                <span className="text-xs font-semibold text-indigo-100 uppercase tracking-wider">
-                  {dict.home.ovulationTitle}
-                </span>
-                <h2 className="font-heading text-2xl sm:text-3xl font-extrabold tracking-tight mt-0.5">
-                  {dict.home.ovulationPred}
-                </h2>
-                <div className="mt-1 text-[11px] font-medium text-indigo-100 max-w-[140px] leading-tight">
-                  {dict.home.fertileWindow}
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-
-        {/* Tap to Toggle Hint */}
-        <div className="mt-2 text-[11px] text-slate-400 font-medium">
-          {dict.home.tapHeartHint}
-        </div>
+    <div className="space-y-4 sm:space-y-5 pb-8 pt-1">
+      {/* 1. TOP GREETING HEADER (Matching Slide Phone Prototype) */}
+      <div className="px-1 pt-1 pb-0.5">
+        <h1 className="font-heading text-2xl sm:text-3xl font-extrabold text-[#361118] tracking-tight">
+          Good morning!
+        </h1>
+        <p className="text-xs sm:text-sm font-medium text-[#7A5A62] mt-0.5">
+          Here&apos;s your health overview
+        </p>
       </div>
 
-      {/* H1. TODAY'S FORECAST (Soft sky-blue #EEF2FF card with 3-day expandable outlook & read-aloud) */}
-      <div className="bg-[#EEF2FF] border border-blue-200/80 rounded-3xl p-4 shadow-xs transition">
-        <div className="flex items-start justify-between gap-3">
-          <div className="space-y-1 flex-1">
-            <div className="flex items-center gap-1.5 text-[11px] font-bold text-blue-900 font-heading">
-              <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-              <span>{dict.home.forecastTitle}</span>
-              <span className="text-[9px] font-semibold bg-blue-100/90 text-blue-700 px-2 py-0.5 rounded-full border border-blue-200">
-                {dict.home.highConfidence}
+      {/* 2. CYCLE OVERVIEW CARD (Clean progress bar, Day 14 of 28, matching slide phone) */}
+      <div className="bg-white rounded-3xl p-4 sm:p-5 border border-[#F2E2DD] shadow-xs space-y-3.5 transition">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-[#FCEEEB] flex items-center justify-center text-[#7A1D2E] shrink-0">
+              <CalendarIcon className="w-5 h-5 text-[#7A1D2E]" />
+            </div>
+            <div>
+              <span className="font-heading font-bold text-base text-[#361118] block leading-tight">
+                Cycle
+              </span>
+              <span className="text-[11px] font-medium text-[#7A5A62]">
+                Follicular phase • Regular baseline
               </span>
             </div>
-            <p className="text-xs text-blue-950 leading-relaxed font-medium">
-              {dict.home.forecastText}
-            </p>
           </div>
-
-          <button
-            type="button"
-            onClick={() => setIsSpeakingForecast(!isSpeakingForecast)}
-            className={`w-8 h-8 rounded-full flex items-center justify-center transition shrink-0 ${
-              isSpeakingForecast
-                ? 'bg-blue-600 text-white animate-pulse'
-                : 'bg-white text-blue-700 hover:bg-blue-100 border border-blue-200'
-            }`}
-            title="Read forecast aloud"
+          <Link
+            href="/checkin"
+            className="flex items-center gap-1 text-xs font-bold text-[#7A1D2E] hover:underline bg-[#FCEEEB] px-3 py-1.5 rounded-full border border-[#F0DDD8] transition"
           >
-            <Volume2 className="w-4 h-4" />
-          </button>
+            <span>Day 14 of 28</span>
+            <ChevronRight className="w-3.5 h-3.5 text-[#7A1D2E]" />
+          </Link>
         </div>
 
-        {isSpeakingForecast && (
-          <div className="mt-2 px-2.5 py-1.5 rounded-xl bg-blue-100 text-blue-900 text-[11px] flex items-center gap-2 animate-in fade-in">
-            <span className="w-2 h-2 rounded-full bg-blue-600 animate-ping" />
-            <span>{dict.home.speakingNotice}</span>
+        {/* Progress Bar & Phase Marker */}
+        <div className="pt-1 pb-0.5">
+          <div className="relative h-2.5 w-full rounded-full bg-[#F5E6E1]">
+            <div
+              className="h-2.5 rounded-full bg-[#7A1D2E] transition-all duration-500"
+              style={{ width: '50%' }}
+            />
+            {/* Slider Indicator dot at Day 14 / 50% */}
+            <div
+              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-[#7A1D2E] border-2 border-white shadow-xs"
+              style={{ left: '50%' }}
+            />
           </div>
-        )}
-
-        {/* 3-day Outlook Accordion Toggle */}
-        <div className="mt-2.5 pt-2 border-t border-blue-200/60 flex items-center justify-between">
-          <button
-            type="button"
-            onClick={() => setForecastExpanded(!forecastExpanded)}
-            className="text-[11px] font-bold text-blue-700 hover:text-blue-900 flex items-center gap-1"
-          >
-            <span>{forecastExpanded ? dict.home.hideOutlook : dict.home.viewOutlook}</span>
-            <ChevronRight className={`w-3 h-3 transition-transform ${forecastExpanded ? 'rotate-90' : ''}`} />
-          </button>
-          <span className="text-[10px] text-blue-600/70">{dict.home.fromLogs}</span>
+          <div className="flex items-center justify-between text-[10px] font-medium text-[#7A5A62] mt-2 px-0.5">
+            <span>Day 1 (Period)</span>
+            <span className="text-[#7A1D2E] font-bold">Day 14 (Mid-Cycle)</span>
+            <span>Day 28 (Expected)</span>
+          </div>
         </div>
-
-        {forecastExpanded && (
-          <div className="mt-3 space-y-2 pt-1 border-t border-blue-200/50 text-xs text-blue-950 animate-in fade-in">
-            <div className="grid grid-cols-3 gap-2 text-center">
-              <div className="p-2 rounded-2xl bg-white/90 border border-blue-100 shadow-xs">
-                <div className="font-bold text-slate-800 text-[11px]">Today (Day 18)</div>
-                <div className="text-[10px] text-slate-500 mt-0.5">Energy: Low</div>
-                <div className="text-[10px] text-amber-600 font-medium">Cravings: High</div>
-                <span className="inline-block mt-1 text-[9px] bg-emerald-50 text-emerald-700 font-bold px-1.5 rounded">High Conf.</span>
-              </div>
-              <div className="p-2 rounded-2xl bg-white/90 border border-blue-100 shadow-xs">
-                <div className="font-bold text-slate-800 text-[11px]">Day 19</div>
-                <div className="text-[10px] text-slate-500 mt-0.5">Energy: Rising</div>
-                <div className="text-[10px] text-slate-500">Cramps: None</div>
-                <span className="inline-block mt-1 text-[9px] bg-emerald-50 text-emerald-700 font-bold px-1.5 rounded">High Conf.</span>
-              </div>
-              <div className="p-2 rounded-2xl bg-white/90 border border-blue-100 shadow-xs">
-                <div className="font-bold text-slate-800 text-[11px]">Day 20</div>
-                <div className="text-[10px] text-slate-500 mt-0.5">Energy: Steady</div>
-                <div className="text-[10px] text-slate-500">Cravings: Low</div>
-                <span className="inline-block mt-1 text-[9px] bg-amber-50 text-amber-700 font-bold px-1.5 rounded">Medium Conf.</span>
-              </div>
-            </div>
-            <div className="text-[10px] text-blue-800/80 italic mt-1 text-center">
-              {dict.home.safetyGuideline}
-            </div>
-          </div>
-        )}
       </div>
 
-      {/* 2. WEEKLY CALENDAR STRIP (Exact match to reference s1.png & s2.png) */}
-      <div className="bg-white rounded-3xl p-4 shadow-sm border border-rose-100/60">
+      {/* 3. 2-COLUMN SUMMARY ROW: SYMPTOMS & SLEEP (Matching Slide Phone) */}
+      <div className="grid grid-cols-2 gap-3">
+        {/* Left Card: Symptoms */}
+        <Link
+          href="/checkin"
+          className="bg-white rounded-2xl p-3.5 border border-[#F2E2DD] shadow-xs hover:border-[#7A1D2E]/40 transition group flex flex-col justify-between"
+        >
+          <div className="flex items-center justify-between">
+            <div className="w-8 h-8 rounded-xl bg-[#FCEEEB] flex items-center justify-center text-[#7A1D2E]">
+              <Flame className="w-4 h-4 text-[#7A1D2E]" />
+            </div>
+            <ChevronRight className="w-4 h-4 text-[#7A1D2E] opacity-60 group-hover:translate-x-0.5 transition-transform" />
+          </div>
+          <div className="mt-3">
+            <span className="text-xs font-bold text-[#361118] block font-heading">
+              Symptoms
+            </span>
+            <div className="text-[11px] font-medium text-[#7A5A62] flex items-center justify-between mt-0.5">
+              <span>Bloating, fatigue</span>
+              <span className="text-[10px] text-[#7A1D2E] font-bold">&gt;</span>
+            </div>
+          </div>
+        </Link>
+
+        {/* Right Card: Sleep */}
+        <div className="bg-white rounded-2xl p-3.5 border border-[#F2E2DD] shadow-xs flex flex-col justify-between">
+          <div className="flex items-center justify-between">
+            <div className="w-8 h-8 rounded-xl bg-[#FCEEEB] flex items-center justify-center text-[#7A1D2E]">
+              <Clock className="w-4 h-4 text-[#7A1D2E]" />
+            </div>
+            <ChevronRight className="w-4 h-4 text-[#7A1D2E] opacity-60" />
+          </div>
+          <div className="mt-3">
+            <span className="text-xs font-bold text-[#361118] block font-heading">
+              Sleep
+            </span>
+            <div className="text-[11px] font-medium text-[#7A5A62] flex items-center justify-between mt-0.5">
+              <span>6 h 40 min</span>
+              <span className="text-[10px] text-[#7A1D2E] font-bold">&gt;</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 4. MOOD CARD WITH 7-DAY SPARKLINE WAVE (Matching Slide Phone) */}
+      <div className="bg-white rounded-2xl p-3.5 sm:p-4 border border-[#F2E2DD] shadow-xs flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="w-9 h-9 rounded-xl bg-[#FCEEEB] flex items-center justify-center text-[#7A1D2E] shrink-0">
+            <Smile className="w-5 h-5 text-[#7A1D2E]" />
+          </div>
+          <div className="min-w-0">
+            <span className="text-xs font-bold text-[#361118] block font-heading">
+              Mood
+            </span>
+            <span className="text-[11px] font-medium text-[#7A5A62] block truncate">
+              Mostly good • Calming trend
+            </span>
+          </div>
+        </div>
+
+        {/* Dynamic Sparkline Wave in Deep Burgundy */}
+        <div className="shrink-0 flex items-center gap-2">
+          <svg className="w-24 h-8 overflow-visible" viewBox="0 0 96 32">
+            <defs>
+              <linearGradient id="moodGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#7A1D2E" stopOpacity="0.25" />
+                <stop offset="100%" stopColor="#7A1D2E" stopOpacity="0.0" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M 0,22 Q 16,8 32,16 T 64,12 T 96,18 L 96,32 L 0,32 Z"
+              fill="url(#moodGradient)"
+            />
+            <path
+              d="M 0,22 Q 16,8 32,16 T 64,12 T 96,18"
+              fill="none"
+              stroke="#7A1D2E"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <circle cx="96" cy="18" r="3.5" fill="#7A1D2E" stroke="#FFFFFF" strokeWidth="1.5" />
+          </svg>
+        </div>
+      </div>
+
+      {/* 5. AI INSIGHT CARD (Matching Slide Phone) */}
+      <div className="bg-[#FFF9F7] rounded-3xl p-4 sm:p-5 border border-[#F2E2DD] shadow-xs space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-[#FCEEEB] flex items-center justify-center text-[#7A1D2E]">
+              <Sparkles className="w-4 h-4 text-[#7A1D2E]" />
+            </div>
+            <span className="font-heading font-bold text-sm text-[#7A1D2E]">
+              AI Insight
+            </span>
+          </div>
+          <span className="text-[10px] font-semibold bg-[#FCEEEB] text-[#7A1D2E] px-2.5 py-0.5 rounded-full border border-[#F0DDD8]">
+            Adaptive
+          </span>
+        </div>
+
+        <p className="text-xs sm:text-[13px] text-[#361118] leading-relaxed font-medium">
+          Your fatigue and bloating are common around mid-cycle and may be linked to hormonal changes.
+        </p>
+
+        <Link
+          href="/ask"
+          className="w-full py-2.5 px-4 rounded-xl bg-[#7A1D2E] hover:bg-[#661423] text-white font-heading font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition"
+        >
+          <span>See what you can do</span>
+          <ChevronRight className="w-4 h-4 text-white" />
+        </Link>
+      </div>
+
+      {/* 6. SLIDE CORE PILLARS & BANNER (Connect · Understand · Navigate) */}
+      <div className="bg-white rounded-3xl p-4 border border-[#F2E2DD] shadow-xs space-y-3">
+        <div className="grid grid-cols-3 gap-2 text-center">
+          <div className="p-2.5 rounded-2xl bg-[#FAF4F0] border border-[#F2E2DD]">
+            <div className="w-7 h-7 mx-auto rounded-full bg-[#FCEEEB] flex items-center justify-center text-[#7A1D2E] text-xs font-bold mb-1">
+              🔗
+            </div>
+            <div className="font-heading font-bold text-[11px] text-[#7A1D2E]">CONNECT</div>
+            <div className="text-[9px] text-[#7A5A62] mt-0.5 leading-tight">Cycle, sleep & mood signals</div>
+          </div>
+          <div className="p-2.5 rounded-2xl bg-[#FAF4F0] border border-[#F2E2DD]">
+            <div className="w-7 h-7 mx-auto rounded-full bg-[#FCEEEB] flex items-center justify-center text-[#7A1D2E] text-xs font-bold mb-1">
+              🧠
+            </div>
+            <div className="font-heading font-bold text-[11px] text-[#7A1D2E]">UNDERSTAND</div>
+            <div className="text-[9px] text-[#7A5A62] mt-0.5 leading-tight">Adaptive evolving patterns</div>
+          </div>
+          <div className="p-2.5 rounded-2xl bg-[#FAF4F0] border border-[#F2E2DD]">
+            <div className="w-7 h-7 mx-auto rounded-full bg-[#FCEEEB] flex items-center justify-center text-[#7A1D2E] text-xs font-bold mb-1">
+              🧭
+            </div>
+            <div className="font-heading font-bold text-[11px] text-[#7A1D2E]">NAVIGATE</div>
+            <div className="text-[9px] text-[#7A5A62] mt-0.5 leading-tight">Informed clinical next steps</div>
+          </div>
+        </div>
+
+        {/* Banner from slide */}
+        <div className="w-full py-2 px-3 rounded-xl bg-[#801D30] text-white text-center font-heading font-bold text-xs tracking-wider shadow-xs">
+          Personalised. Connected. Actionable.
+        </div>
+      </div>
+
+      {/* 7. WEEKLY CALENDAR STRIP */}
+      <div className="bg-white rounded-3xl p-4 shadow-xs border border-[#F2E2DD]">
         <div className="flex items-center justify-between px-1 mb-3">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800 font-heading">
-            <CalendarIcon className="w-3.5 h-3.5 text-brand-pink" />
+          <div className="flex items-center gap-1.5 text-xs font-bold text-[#361118] font-heading">
+            <CalendarIcon className="w-3.5 h-3.5 text-[#7A1D2E]" />
             <span>{dict.home.monthName}</span>
           </div>
           <Link
             href="/checkin"
-            className="text-[11px] font-semibold text-brand-purple hover:underline"
+            className="text-[11px] font-semibold text-[#7A1D2E] hover:underline"
           >
             {dict.home.viewCalendar}
           </Link>
@@ -268,17 +314,17 @@ export default function TodayPage() {
                 <div
                   className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
                     isSelected
-                      ? 'bg-brand-pink text-white shadow-md shadow-brand-pink/30 scale-105'
+                      ? 'bg-[#7A1D2E] text-white shadow-md shadow-[#7A1D2E]/25 scale-105'
                       : item.isPeriod
-                      ? 'border border-dashed border-brand-pink bg-rose-50/70 text-brand-pink'
-                      : 'text-slate-700 hover:bg-slate-50'
+                      ? 'border border-dashed border-[#7A1D2E] bg-[#FCEEEB] text-[#7A1D2E]'
+                      : 'text-[#7A5A62] hover:bg-[#FAF4F0]'
                   }`}
                 >
                   {item.date}
                 </div>
                 <span
                   className={`text-[10px] font-semibold mt-1 ${
-                    isSelected ? 'text-brand-pink font-bold' : 'text-slate-400'
+                    isSelected ? 'text-[#7A1D2E] font-bold' : 'text-[#9E838A]'
                   }`}
                 >
                   {item.day}
@@ -289,14 +335,14 @@ export default function TodayPage() {
         </div>
       </div>
 
-      {/* 3. YOUR MOOD ROW (Exact match to reference s1.png & s2.png) */}
+      {/* 8. QUICK MOOD TAG SELECTOR */}
       <div>
         <div className="flex items-center justify-between px-1 mb-2.5">
-          <h3 className="font-heading text-sm font-bold text-slate-900">
+          <h3 className="font-heading text-sm font-bold text-[#361118]">
             {dict.home.yourMood}
           </h3>
           {moodSuccess && (
-            <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+            <span className="text-[10px] font-bold text-[#7A1D2E] bg-[#FCEEEB] px-2.5 py-0.5 rounded-full border border-[#F0DDD8]">
               {dict.home.loggedToast}
             </span>
           )}
@@ -306,12 +352,12 @@ export default function TodayPage() {
           {/* ➕ Add Mood Card */}
           <Link
             href="/checkin"
-            className="flex flex-col items-center justify-center p-3 rounded-2xl bg-brand-purpleLight border border-indigo-100 hover:bg-indigo-100/70 transition shadow-xs"
+            className="flex flex-col items-center justify-center p-3 rounded-2xl bg-[#FCEEEB] border border-[#F2E2DD] hover:bg-[#F8DDD7] transition shadow-xs"
           >
-            <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-brand-purple shadow-xs mb-1">
-              <Plus className="w-5 h-5 stroke-[2.5]" />
+            <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[#7A1D2E] shadow-xs mb-1">
+              <Plus className="w-4 h-4 stroke-[2.5]" />
             </div>
-            <span className="text-[10px] font-bold text-brand-purple mt-0.5">
+            <span className="text-[10px] font-bold text-[#7A1D2E] mt-0.5">
               {dict.home.addMood}
             </span>
           </Link>
@@ -322,12 +368,12 @@ export default function TodayPage() {
             onClick={() => handleSelectMood('sad')}
             className={`flex flex-col items-center justify-center p-3 rounded-2xl border transition shadow-xs ${
               activeMood === 'sad'
-                ? 'bg-rose-100 border-brand-pink scale-105'
-                : 'bg-rose-50/70 border-rose-100 hover:bg-rose-100/50'
+                ? 'bg-[#FCEEEB] border-[#7A1D2E] scale-105'
+                : 'bg-white border-[#F2E2DD] hover:bg-[#FAF4F0]'
             }`}
           >
-            <span className="text-2xl mb-1">😭</span>
-            <span className="text-[10px] font-semibold text-slate-700">{dict.home.moodSad}</span>
+            <span className="text-xl mb-1">😭</span>
+            <span className="text-[10px] font-semibold text-[#7A5A62]">{dict.home.moodSad}</span>
           </button>
 
           {/* 😫 Badmood */}
@@ -336,12 +382,12 @@ export default function TodayPage() {
             onClick={() => handleSelectMood('badmood')}
             className={`flex flex-col items-center justify-center p-3 rounded-2xl border transition shadow-xs ${
               activeMood === 'badmood'
-                ? 'bg-teal-100 border-teal-400 scale-105'
-                : 'bg-teal-50/70 border-teal-100 hover:bg-teal-100/50'
+                ? 'bg-[#FCEEEB] border-[#7A1D2E] scale-105'
+                : 'bg-white border-[#F2E2DD] hover:bg-[#FAF4F0]'
             }`}
           >
-            <span className="text-2xl mb-1">😫</span>
-            <span className="text-[10px] font-semibold text-slate-700">{dict.home.moodBad}</span>
+            <span className="text-xl mb-1">😫</span>
+            <span className="text-[10px] font-semibold text-[#7A5A62]">{dict.home.moodBad}</span>
           </button>
 
           {/* 😍 Happy */}
@@ -350,120 +396,24 @@ export default function TodayPage() {
             onClick={() => handleSelectMood('happy')}
             className={`flex flex-col items-center justify-center p-3 rounded-2xl border transition shadow-xs ${
               activeMood === 'happy'
-                ? 'bg-amber-100 border-amber-400 scale-105'
-                : 'bg-amber-50/70 border-amber-100 hover:bg-amber-100/50'
+                ? 'bg-[#FCEEEB] border-[#7A1D2E] scale-105'
+                : 'bg-white border-[#F2E2DD] hover:bg-[#FAF4F0]'
             }`}
           >
-            <span className="text-2xl mb-1">😍</span>
-            <span className="text-[10px] font-semibold text-slate-700">{dict.home.moodHappy}</span>
+            <span className="text-xl mb-1">😍</span>
+            <span className="text-[10px] font-semibold text-[#7A5A62]">{dict.home.moodHappy}</span>
           </button>
         </div>
       </div>
 
-      {/* 4. HEALTH GUIDANCE & ARTICLES (Exact match to reference s1.png & s2.png) */}
-      <div>
-        <div className="flex items-center justify-between px-1 mb-2.5">
-          <h3 className="font-heading text-sm font-bold text-slate-900">
-            {dict.home.articlesTitle}
-          </h3>
-          <Link
-            href="/ask"
-            className="text-[11px] font-semibold text-brand-purple hover:underline flex items-center gap-0.5"
-          >
-            {dict.home.seeAll}
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-3 gap-2.5">
-          {/* Card 1: H3. Weekly Audio Recap (Sunday Card with Audio & Transcript) */}
-          <div className="flex flex-col justify-between p-3 rounded-2xl bg-gradient-to-br from-[#EEF2FF] to-[#E0E7FF] border border-blue-200/90 shadow-xs h-32 relative">
-            <div>
-              <div className="flex items-center justify-between">
-                <span className="text-base">🎙️</span>
-                <span className="text-[9px] font-bold bg-blue-600 text-white px-1.5 py-0.5 rounded-full">
-                  {dict.home.duration75s}
-                </span>
-              </div>
-              <div className="font-heading font-bold text-xs text-blue-950 mt-1 leading-snug">
-                {dict.home.weeklyRecapTitle}
-              </div>
-              <p className="text-[9px] text-blue-700 line-clamp-1 mt-0.5">
-                {dict.home.weeklyRecapSub}
-              </p>
-            </div>
-            <div className="flex items-center justify-between gap-1 mt-1">
-              <button
-                type="button"
-                onClick={() => setAudioRecapPlaying(!audioRecapPlaying)}
-                className="flex items-center gap-1 rounded-xl bg-blue-600 text-white px-2 py-1 text-[10px] font-bold hover:bg-blue-700 shadow-xs transition"
-              >
-                {audioRecapPlaying ? dict.home.pause : dict.home.play}
-              </button>
-              <button
-                type="button"
-                onClick={() => setAudioTranscriptOpen(!audioTranscriptOpen)}
-                className="text-[9px] text-blue-700 underline font-semibold"
-              >
-                {audioTranscriptOpen ? dict.home.hideTranscript : dict.home.textTranscript}
-              </button>
-            </div>
-          </div>
-
-          {/* Card 2: Mood Booster */}
-          <Link
-            href="/food"
-            className="flex flex-col justify-between p-3 rounded-2xl bg-[#FFE8EF] border border-rose-100/80 hover:scale-[1.02] transition shadow-xs h-32"
-          >
-            <div>
-              <span className="text-lg">🥗</span>
-              <div className="font-heading font-bold text-xs text-rose-950 mt-1 leading-snug">
-                {dict.home.moodBooster}
-              </div>
-            </div>
-            <span className="text-[9px] text-rose-600 font-semibold">
-              {dict.home.smartSwaps}
-            </span>
-          </Link>
-
-          {/* Card 3: Spread Happiness */}
-          <Link
-            href="/experiments"
-            className="flex flex-col justify-between p-3 rounded-2xl bg-[#E8F8F5] border border-emerald-100/80 hover:scale-[1.02] transition shadow-xs h-32"
-          >
-            <div>
-              <span className="text-lg">✨</span>
-              <div className="font-heading font-bold text-xs text-emerald-950 mt-1 leading-snug">
-                {dict.home.spreadHappiness}
-              </div>
-            </div>
-            <span className="text-[9px] text-emerald-700 font-semibold">
-              {dict.home.activeTrials}
-            </span>
-          </Link>
-        </div>
-
-        {/* Weekly Audio Recap Transcript Drawer */}
-        {audioTranscriptOpen && (
-          <div className="mt-2.5 p-3 rounded-2xl bg-white border border-blue-100 text-xs text-slate-700 shadow-xs animate-in fade-in space-y-1">
-            <div className="font-bold text-blue-900 text-[11px] flex items-center justify-between">
-              <span>{dict.home.weeklyRecapTitle} ({dict.home.monthName})</span>
-              <span className="text-slate-400 text-[10px]">Read by Ritu</span>
-            </div>
-            <p className="text-[11px] leading-relaxed text-slate-600">
-              {dict.home.recapTranscriptText}
-            </p>
-          </div>
-        )}
-      </div>
-
-      {/* 5. TODAY'S DAILY PROTOCOL (Medicines & Doctor Care) */}
-      <div className="bg-white rounded-3xl p-4 shadow-sm border border-rose-100/60 space-y-3">
+      {/* 9. TODAY'S DAILY MEDICINES CHECKLIST */}
+      <div className="bg-white rounded-3xl p-4 shadow-xs border border-[#F2E2DD] space-y-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1.5 font-heading text-xs font-bold text-slate-900">
-            <Pill className="w-3.5 h-3.5 text-brand-pink" />
+          <div className="flex items-center gap-1.5 font-heading text-xs font-bold text-[#361118]">
+            <Pill className="w-3.5 h-3.5 text-[#7A1D2E]" />
             <span>{dict.home.medsChecklistTitle}</span>
           </div>
-          <span className="text-[10px] text-slate-400 font-semibold">
+          <span className="text-[10px] text-[#7A5A62] font-semibold">
             {dict.home.careTeamPrescribed}
           </span>
         </div>
@@ -476,30 +426,30 @@ export default function TodayPage() {
             }
             className={`p-2.5 rounded-2xl border transition flex items-center justify-between cursor-pointer ${
               medsTaken.thyronorm
-                ? 'bg-rose-50/50 border-rose-200'
-                : 'bg-slate-50 border-slate-100'
+                ? 'bg-[#FAF4F0] border-[#F2E2DD]'
+                : 'bg-white border-[#F2E2DD]'
             }`}
           >
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2.5">
               <div
                 className={`w-5 h-5 rounded-md flex items-center justify-center transition ${
                   medsTaken.thyronorm
-                    ? 'bg-brand-pink text-white'
-                    : 'border border-slate-300 bg-white'
+                    ? 'bg-[#7A1D2E] text-white'
+                    : 'border border-[#F2E2DD] bg-white'
                 }`}
               >
                 {medsTaken.thyronorm && <CheckCircle2 className="w-3.5 h-3.5" />}
               </div>
               <div>
-                <div className="text-xs font-bold text-slate-900">
+                <div className="text-xs font-bold text-[#361118]">
                   {dict.home.thyronormName}
                 </div>
-                <div className="text-[10px] text-slate-500">
+                <div className="text-[10px] text-[#7A5A62]">
                   {dict.home.thyronormDesc}
                 </div>
               </div>
             </div>
-            <span className="text-[10px] text-rose-600 font-bold">
+            <span className="text-[10px] text-[#7A1D2E] font-bold">
               {medsTaken.thyronorm ? dict.home.takenLabel : dict.home.dueLabel}
             </span>
           </div>
@@ -511,116 +461,116 @@ export default function TodayPage() {
             }
             className={`p-2.5 rounded-2xl border transition flex items-center justify-between cursor-pointer ${
               medsTaken.metformin
-                ? 'bg-rose-50/50 border-rose-200'
-                : 'bg-slate-50 border-slate-100'
+                ? 'bg-[#FAF4F0] border-[#F2E2DD]'
+                : 'bg-white border-[#F2E2DD]'
             }`}
           >
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2.5">
               <div
                 className={`w-5 h-5 rounded-md flex items-center justify-center transition ${
                   medsTaken.metformin
-                    ? 'bg-brand-pink text-white'
-                    : 'border border-slate-300 bg-white'
+                    ? 'bg-[#7A1D2E] text-white'
+                    : 'border border-[#F2E2DD] bg-white'
                 }`}
               >
                 {medsTaken.metformin && <CheckCircle2 className="w-3.5 h-3.5" />}
               </div>
               <div>
-                <div className="text-xs font-bold text-slate-900">
+                <div className="text-xs font-bold text-[#361118]">
                   {dict.home.metforminName}
                 </div>
-                <div className="text-[10px] text-slate-500">
+                <div className="text-[10px] text-[#7A5A62]">
                   {dict.home.metforminDesc}
                 </div>
               </div>
             </div>
-            <span className="text-[10px] text-slate-400 font-semibold">
+            <span className="text-[10px] text-[#7A5A62] font-semibold">
               {medsTaken.metformin ? dict.home.takenLabel : dict.home.eveningLabel}
             </span>
           </div>
         </div>
 
-        {/* H4. Prescription Scan + Smart Timing Row */}
+        {/* H4. Prescription Scan Button */}
         <button
           type="button"
           onClick={() => setPrescriptionScanOpen(true)}
-          className="w-full mt-2 py-2.5 px-3 rounded-2xl border border-dashed border-brand-pink text-brand-pink bg-rose-50/50 hover:bg-rose-100/60 font-bold text-xs flex items-center justify-center gap-2 transition"
+          className="w-full mt-2 py-2.5 px-3 rounded-2xl border border-dashed border-[#7A1D2E] text-[#7A1D2E] bg-[#FCEEEB]/60 hover:bg-[#FCEEEB] font-bold text-xs flex items-center justify-center gap-2 transition"
         >
           <Camera className="w-4 h-4" />
           <span>{dict.home.scanPrescriptionBtn}</span>
         </button>
 
         {prescriptionSaved && (
-          <div className="p-2.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-800 flex items-center gap-2">
+          <div className="p-2.5 rounded-2xl bg-[#EBF5F0] border border-emerald-200 text-xs text-emerald-800 flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
             <span>Prescription parsed! Smart timing rules applied.</span>
           </div>
         )}
       </div>
 
-      {/* 6. 2×3 TOOLS GRID FOR DIRECT 1-TAP REACHABILITY */}
+      {/* 10. 2×3 TOOLS GRID */}
       <div>
         <div className="flex items-center justify-between px-1 mb-2.5">
-          <h3 className="font-heading text-sm font-bold text-slate-900">
+          <h3 className="font-heading text-sm font-bold text-[#361118]">
             {dict.home.toolsTitle}
           </h3>
-          <span className="text-[11px] text-slate-400 font-medium">{dict.home.oneTapAccess}</span>
+          <span className="text-[11px] text-[#7A5A62] font-medium">{dict.home.oneTapAccess}</span>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
           {/* Tool 1: Food & Tolerance */}
           <Link
             href="/food"
-            className="p-3 rounded-2xl bg-white border border-rose-100 shadow-xs hover:border-brand-pink transition flex items-center gap-2.5"
+            className="p-3 rounded-2xl bg-white border border-[#F2E2DD] shadow-xs hover:border-[#7A1D2E] transition flex items-center gap-2.5"
           >
-            <div className="w-9 h-9 rounded-xl bg-rose-50 text-brand-pink flex items-center justify-center text-lg shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-[#FCEEEB] text-[#7A1D2E] flex items-center justify-center text-lg shrink-0">
               🥗
             </div>
             <div>
-              <div className="text-xs font-bold text-slate-900 leading-tight">{dict.home.toolFoodTitle}</div>
-              <div className="text-[10px] text-slate-500">{dict.home.toolFoodSub}</div>
+              <div className="text-xs font-bold text-[#361118] leading-tight">{dict.home.toolFoodTitle}</div>
+              <div className="text-[10px] text-[#7A5A62]">{dict.home.toolFoodSub}</div>
             </div>
           </Link>
 
           {/* Tool 2: Labs & OCR */}
           <Link
             href="/labs"
-            className="p-3 rounded-2xl bg-white border border-rose-100 shadow-xs hover:border-brand-purple transition flex items-center gap-2.5"
+            className="p-3 rounded-2xl bg-white border border-[#F2E2DD] shadow-xs hover:border-[#7A1D2E] transition flex items-center gap-2.5"
           >
-            <div className="w-9 h-9 rounded-xl bg-indigo-50 text-brand-purple flex items-center justify-center text-lg shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-[#FCEEEB] text-[#7A1D2E] flex items-center justify-center text-lg shrink-0">
               🧪
             </div>
             <div>
-              <div className="text-xs font-bold text-slate-900 leading-tight">{dict.home.toolLabsTitle}</div>
-              <div className="text-[10px] text-slate-500">{dict.home.toolLabsSub}</div>
+              <div className="text-xs font-bold text-[#361118] leading-tight">{dict.home.toolLabsTitle}</div>
+              <div className="text-[10px] text-[#7A5A62]">{dict.home.toolLabsSub}</div>
             </div>
           </Link>
 
           {/* Tool 3: Trials */}
           <Link
             href="/experiments"
-            className="p-3 rounded-2xl bg-white border border-rose-100 shadow-xs hover:border-emerald-400 transition flex items-center gap-2.5"
+            className="p-3 rounded-2xl bg-white border border-[#F2E2DD] shadow-xs hover:border-[#7A1D2E] transition flex items-center gap-2.5"
           >
-            <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-[#FCEEEB] text-[#7A1D2E] flex items-center justify-center text-lg shrink-0">
               🔬
             </div>
             <div>
-              <div className="text-xs font-bold text-slate-900 leading-tight">{dict.home.toolTrialsTitle}</div>
-              <div className="text-[10px] text-slate-500">{dict.home.toolTrialsSub}</div>
+              <div className="text-xs font-bold text-[#361118] leading-tight">{dict.home.toolTrialsTitle}</div>
+              <div className="text-[10px] text-[#7A5A62]">{dict.home.toolTrialsSub}</div>
             </div>
           </Link>
 
           {/* Tool 4: Smart Cart */}
           <Link
             href="/cart"
-            className="p-3 rounded-2xl bg-white border border-rose-100 shadow-xs hover:border-amber-400 transition flex items-center gap-2.5"
+            className="p-3 rounded-2xl bg-white border border-[#F2E2DD] shadow-xs hover:border-[#7A1D2E] transition flex items-center gap-2.5"
           >
-            <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-lg shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-[#FCEEEB] text-[#7A1D2E] flex items-center justify-center text-lg shrink-0">
               🛒
             </div>
             <div>
-              <div className="text-xs font-bold text-slate-900 leading-tight">{dict.home.toolCartTitle}</div>
-              <div className="text-[10px] text-slate-500">{dict.home.toolCartSub}</div>
+              <div className="text-xs font-bold text-[#361118] leading-tight">{dict.home.toolCartTitle}</div>
+              <div className="text-[10px] text-[#7A5A62]">{dict.home.toolCartSub}</div>
             </div>
           </Link>
 
@@ -628,59 +578,155 @@ export default function TodayPage() {
           <button
             type="button"
             onClick={() => setWorkoutsModalOpen(true)}
-            className="p-3 rounded-2xl bg-white border border-rose-100 shadow-xs hover:border-brand-pink transition flex items-center gap-2.5 text-left"
+            className="p-3 rounded-2xl bg-white border border-[#F2E2DD] shadow-xs hover:border-[#7A1D2E] transition flex items-center gap-2.5 text-left"
           >
-            <div className="w-9 h-9 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center text-lg shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-[#FCEEEB] text-[#7A1D2E] flex items-center justify-center text-lg shrink-0">
               🏃‍♀️
             </div>
             <div>
-              <div className="text-xs font-bold text-slate-900 leading-tight">{dict.home.toolWorkoutsTitle}</div>
-              <div className="text-[10px] text-slate-500">{dict.home.toolWorkoutsSub}</div>
+              <div className="text-xs font-bold text-[#361118] leading-tight">{dict.home.toolWorkoutsTitle}</div>
+              <div className="text-[10px] text-[#7A5A62]">{dict.home.toolWorkoutsSub}</div>
             </div>
           </button>
 
           {/* Tool 6: Fasting Planner */}
           <Link
             href="/food"
-            className="p-3 rounded-2xl bg-white border border-rose-100 shadow-xs hover:border-purple-400 transition flex items-center gap-2.5"
+            className="p-3 rounded-2xl bg-white border border-[#F2E2DD] shadow-xs hover:border-[#7A1D2E] transition flex items-center gap-2.5"
           >
-            <div className="w-9 h-9 rounded-xl bg-purple-50 text-brand-purple flex items-center justify-center text-lg shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-[#FCEEEB] text-[#7A1D2E] flex items-center justify-center text-lg shrink-0">
               🌙
             </div>
             <div>
-              <div className="text-xs font-bold text-slate-900 leading-tight">{dict.home.toolFastingTitle}</div>
-              <div className="text-[10px] text-slate-500">{dict.home.toolFastingSub}</div>
+              <div className="text-xs font-bold text-[#361118] leading-tight">{dict.home.toolFastingTitle}</div>
+              <div className="text-[10px] text-[#7A5A62]">{dict.home.toolFastingSub}</div>
             </div>
           </Link>
         </div>
       </div>
 
+      {/* 11. WEEKLY AUDIO RECAP & HEALTH ARTICLES */}
+      <div>
+        <div className="flex items-center justify-between px-1 mb-2.5">
+          <h3 className="font-heading text-sm font-bold text-[#361118]">
+            {dict.home.articlesTitle}
+          </h3>
+          <Link
+            href="/ask"
+            className="text-[11px] font-semibold text-[#7A1D2E] hover:underline flex items-center gap-0.5"
+          >
+            {dict.home.seeAll}
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-3 gap-2.5">
+          {/* Card 1: H3. Weekly Audio Recap */}
+          <div className="flex flex-col justify-between p-3 rounded-2xl bg-[#FFF9F7] border border-[#F2E2DD] shadow-xs h-32 relative">
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-base">🎙️</span>
+                <span className="text-[9px] font-bold bg-[#7A1D2E] text-white px-1.5 py-0.5 rounded-full">
+                  {dict.home.duration75s}
+                </span>
+              </div>
+              <div className="font-heading font-bold text-xs text-[#361118] mt-1 leading-snug">
+                {dict.home.weeklyRecapTitle}
+              </div>
+              <p className="text-[9px] text-[#7A5A62] line-clamp-1 mt-0.5">
+                {dict.home.weeklyRecapSub}
+              </p>
+            </div>
+            <div className="flex items-center justify-between gap-1 mt-1">
+              <button
+                type="button"
+                onClick={() => setAudioRecapPlaying(!audioRecapPlaying)}
+                className="flex items-center gap-1 rounded-xl bg-[#7A1D2E] text-white px-2 py-1 text-[10px] font-bold hover:bg-[#661423] shadow-xs transition"
+              >
+                {audioRecapPlaying ? dict.home.pause : dict.home.play}
+              </button>
+              <button
+                type="button"
+                onClick={() => setAudioTranscriptOpen(!audioTranscriptOpen)}
+                className="text-[9px] text-[#7A1D2E] underline font-semibold"
+              >
+                {audioTranscriptOpen ? dict.home.hideTranscript : dict.home.textTranscript}
+              </button>
+            </div>
+          </div>
+
+          {/* Card 2: Mood Booster */}
+          <Link
+            href="/food"
+            className="flex flex-col justify-between p-3 rounded-2xl bg-white border border-[#F2E2DD] hover:scale-[1.02] transition shadow-xs h-32"
+          >
+            <div>
+              <span className="text-lg">🥗</span>
+              <div className="font-heading font-bold text-xs text-[#361118] mt-1 leading-snug">
+                {dict.home.moodBooster}
+              </div>
+            </div>
+            <span className="text-[9px] text-[#7A1D2E] font-semibold">
+              {dict.home.smartSwaps}
+            </span>
+          </Link>
+
+          {/* Card 3: Spread Happiness */}
+          <Link
+            href="/experiments"
+            className="flex flex-col justify-between p-3 rounded-2xl bg-white border border-[#F2E2DD] hover:scale-[1.02] transition shadow-xs h-32"
+          >
+            <div>
+              <span className="text-lg">✨</span>
+              <div className="font-heading font-bold text-xs text-[#361118] mt-1 leading-snug">
+                {dict.home.spreadHappiness}
+              </div>
+            </div>
+            <span className="text-[9px] text-[#7A1D2E] font-semibold">
+              {dict.home.activeTrials}
+            </span>
+          </Link>
+        </div>
+
+        {/* Weekly Audio Recap Transcript Drawer */}
+        {audioTranscriptOpen && (
+          <div className="mt-2.5 p-3 rounded-2xl bg-white border border-[#F2E2DD] text-xs text-[#361118] shadow-xs animate-in fade-in space-y-1">
+            <div className="font-bold text-[#7A1D2E] text-[11px] flex items-center justify-between">
+              <span>{dict.home.weeklyRecapTitle} ({dict.home.monthName})</span>
+              <span className="text-[#7A5A62] text-[10px]">Read by Ritu</span>
+            </div>
+            <p className="text-[11px] leading-relaxed text-[#7A5A62]">
+              {dict.home.recapTranscriptText}
+            </p>
+          </div>
+        )}
+      </div>
+
       {/* H4. PRESCRIPTION SCANNER MODAL */}
       {prescriptionScanOpen && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-xs p-3 animate-in fade-in">
-          <div className="relative w-full max-w-sm bg-white rounded-4xl p-5 shadow-2xl border border-rose-100 z-10 space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+          <div className="relative w-full max-w-sm bg-white rounded-4xl p-5 shadow-2xl border border-[#F2E2DD] z-10 space-y-4">
+            <div className="flex items-center justify-between pb-2 border-b border-[#F2E2DD]">
               <div className="flex items-center gap-2">
-                <Camera className="w-5 h-5 text-brand-pink" />
-                <span className="font-heading text-base font-bold text-slate-900">
-                  Prescription Scanner & Smart Timing
+                <Camera className="w-5 h-5 text-[#7A1D2E]" />
+                <span className="font-heading text-base font-bold text-[#361118]">
+                  Prescription Scanner
                 </span>
               </div>
               <button
                 type="button"
                 onClick={() => setPrescriptionScanOpen(false)}
-                className="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200"
+                className="w-7 h-7 rounded-full bg-[#FAF4F0] flex items-center justify-center text-[#7A5A62] hover:bg-[#F2E2DD]"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Simulated OCR viewfinder */}
-            <div className="relative rounded-2xl bg-slate-900 p-4 text-center text-white space-y-2 border-2 border-dashed border-rose-300">
-              <div className="text-xs font-semibold text-rose-200">
-                📄 Dr. Sen's RX Slip Detected
+            <div className="relative rounded-2xl bg-[#361118] p-4 text-center text-white space-y-2 border-2 border-dashed border-[#C46874]">
+              <div className="text-xs font-semibold text-[#FCEEEB]">
+                📄 Dr. Sen&apos;s RX Slip Detected
               </div>
-              <div className="bg-white/10 rounded-xl p-2.5 text-[11px] text-left text-slate-200 space-y-1">
+              <div className="bg-white/10 rounded-xl p-2.5 text-[11px] text-left text-[#FAF4F0] space-y-1">
                 <div>• Tab. Thyronorm 25mcg (1-0-0) AC</div>
                 <div>• Tab. Metformin 500mg SR (0-0-1) PC</div>
                 <div>• Cap. Shelcal-HD (1-0-0) PC</div>
@@ -689,34 +735,30 @@ export default function TodayPage() {
 
             {/* Smart Timing AI Rules */}
             <div className="space-y-2">
-              <div className="text-xs font-bold text-slate-800 font-heading">
+              <div className="text-xs font-bold text-[#361118] font-heading">
                 Smart Timing Recommendations:
               </div>
-              <div className="p-2.5 rounded-2xl bg-amber-50 border border-amber-200 text-[11px] text-amber-900 space-y-1">
-                <div className="font-bold flex items-center gap-1">
-                  <AlertTriangle className="w-3.5 h-3.5 text-amber-600" />
+              <div className="p-2.5 rounded-2xl bg-[#FAF4F0] border border-[#F2E2DD] text-[11px] text-[#361118] space-y-1">
+                <div className="font-bold flex items-center gap-1 text-[#7A1D2E]">
+                  <AlertTriangle className="w-3.5 h-3.5 text-[#7A1D2E]" />
                   <span>Interaction Protection</span>
                 </div>
                 <div>
-                  • <strong>Thyronorm:</strong> Empty stomach, wait 30 mins before tea or coffee.
-                </div>
-                <div>
-                  • <strong>Calcium & Iron:</strong> Separate by at least 4 hours to avoid inhibiting absorption.
+                  Take <strong>Thyronorm</strong> 30 min before chai. Separate from <strong>Shelcal-HD</strong> by 4+ hours.
                 </div>
               </div>
             </div>
 
-            <Button
-              variant="pink"
-              className="w-full text-xs font-bold py-2.5"
+            <button
+              type="button"
               onClick={() => {
                 setPrescriptionSaved(true);
                 setPrescriptionScanOpen(false);
-                setTimeout(() => setPrescriptionSaved(false), 3500);
               }}
+              className="w-full py-2.5 rounded-xl bg-[#7A1D2E] text-white font-heading font-bold text-xs hover:bg-[#661423] transition"
             >
-              Confirm & Add to Daily Schedule
-            </Button>
+              Apply Reminders to Checklist
+            </button>
           </div>
         </div>
       )}
@@ -724,56 +766,42 @@ export default function TodayPage() {
       {/* WORKOUTS MODAL */}
       {workoutsModalOpen && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-xs p-3 animate-in fade-in">
-          <div className="relative w-full max-w-sm bg-white rounded-4xl p-5 shadow-2xl border border-rose-100 z-10 space-y-4">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+          <div className="relative w-full max-w-sm bg-white rounded-4xl p-5 shadow-2xl border border-[#F2E2DD] z-10 space-y-4">
+            <div className="flex items-center justify-between pb-2 border-b border-[#F2E2DD]">
               <div className="flex items-center gap-2">
-                <span className="text-xl">🏃‍♀️</span>
-                <span className="font-heading text-base font-bold text-slate-900">
-                  Targeted Movement Plan
+                <Activity className="w-5 h-5 text-[#7A1D2E]" />
+                <span className="font-heading text-base font-bold text-[#361118]">
+                  Targeted Movement
                 </span>
               </div>
               <button
                 type="button"
                 onClick={() => setWorkoutsModalOpen(false)}
-                className="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200"
+                className="w-7 h-7 rounded-full bg-[#FAF4F0] flex items-center justify-center text-[#7A5A62] hover:bg-[#F2E2DD]"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
-
-            <div className="text-xs text-slate-600 leading-relaxed">
-              Based on International PCOS Guidelines: 150 mins/week moderate activity + 2 days resistance training.
-            </div>
-
+            <p className="text-xs text-[#7A5A62]">
+              Cortisol-conscious workouts calibrated to Priya&apos;s follicular phase and HOMA-IR target.
+            </p>
             <div className="space-y-2">
-              <div className="p-3 rounded-2xl bg-rose-50/70 border border-rose-100 flex items-center justify-between">
-                <div>
-                  <div className="text-xs font-bold text-slate-900">Luteal Phase Gentle Yoga</div>
-                  <div className="text-[10px] text-slate-500">20 mins • Low cortisol • Home room-friendly</div>
-                </div>
-                <Button size="sm" variant="pink" className="text-[10px] h-7 px-2.5">
-                  Start
-                </Button>
+              <div className="p-3 rounded-2xl bg-[#FAF4F0] border border-[#F2E2DD]">
+                <div className="font-bold text-xs text-[#361118]">30-Min Post-Meal Walk</div>
+                <div className="text-[11px] text-[#7A5A62]">Reduces glucose spike by 24% without cortisol spike.</div>
               </div>
-
-              <div className="p-3 rounded-2xl bg-indigo-50/70 border border-indigo-100 flex items-center justify-between">
-                <div>
-                  <div className="text-xs font-bold text-slate-900">PCOS Resistance Training</div>
-                  <div className="text-[10px] text-slate-500">25 mins • Glutes & Core • Enhances insulin sensitivity</div>
-                </div>
-                <Button size="sm" variant="purple" className="text-[10px] h-7 px-2.5">
-                  Start
-                </Button>
+              <div className="p-3 rounded-2xl bg-[#FAF4F0] border border-[#F2E2DD]">
+                <div className="font-bold text-xs text-[#361118]">Slow-Paced Strength</div>
+                <div className="text-[11px] text-[#7A5A62]">Glute & hamstring focus to build insulin sensitivity.</div>
               </div>
             </div>
-
-            <Button
-              variant="outline"
-              className="w-full text-xs font-semibold py-2"
+            <button
+              type="button"
               onClick={() => setWorkoutsModalOpen(false)}
+              className="w-full py-2.5 rounded-xl bg-[#7A1D2E] text-white font-heading font-bold text-xs hover:bg-[#661423] transition"
             >
               Close
-            </Button>
+            </button>
           </div>
         </div>
       )}

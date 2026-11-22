@@ -48,56 +48,64 @@ const config: Config = {
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
 
-        // Palette extracted from lofee reference UI kit (s1.png & s2.png)
+        // Color palette matching the presentation slide (media_1795370318775_6dbb03a6.jpg)
+        // Deep burgundy / maroon primary, warm cream linen background, and soft terracotta accents
         brand: {
-          pink: "#F04D7E", // Signature Berry Rose (Heart, Period, Primary CTA)
-          pinkLight: "#FFF0F4",
-          pinkHover: "#D83868",
-          purple: "#6C70EB", // Periwinkle Purple (Ovulation, Active Tab, Next CTA)
-          purpleLight: "#EEF0FF",
-          purpleHover: "#585CD6",
+          pink: "#7A1D2E", // Signature Deep Burgundy / Wine (Primary Brand & CTA)
+          pinkLight: "#FCEEEB", // Soft warm peach/rose icon container
+          pinkHover: "#661423", // Darker rich wine hover
+          purple: "#8A2232", // Warm rich maroon / secondary
+          purpleLight: "#FDF5F2", // Linen / warm cream
+          purpleHover: "#6E1826",
+          burgundy: "#7A1D2E",
+          maroon: "#801D30",
+          terracotta: "#C46874",
+          cream: "#FAF4F0",
+          linen: "#FDF8F5",
+          blush: "#FCEEEB",
+          cardBorder: "#F2E2DD",
         },
         lofee: {
-          bg: "#FFF6F8", // Soft warm blush canvas
+          bg: "#FAF4F0", // Warm cream linen canvas from slide
           card: "#FFFFFF",
-          text: "#2D2528", // Deep soft charcoal for titles
-          muted: "#8E8388", // Secondary text
-          border: "#F5E8EB",
-          peach: "#FFE8EF",
-          mint: "#E8F8F5",
-          yellow: "#FEF9C3",
-          sky: "#EEF2FF",
+          text: "#361118", // Deep warm espresso burgundy for titles
+          muted: "#7A5A62", // Warm muted taupe for secondary text
+          border: "#F2E2DD", // Subtle warm rose-sand border
+          peach: "#FCEEEB",
+          mint: "#EBF5F0",
+          yellow: "#FDF4DE",
+          sky: "#F4EFEA",
         },
         forest: {
-          DEFAULT: "#F04D7E", // Map legacy tokens cleanly to Rose Pink
-          dark: "#D83868",
-          light: "#FFF0F4",
-          muted: "#8E8388",
+          DEFAULT: "#7A1D2E", // Map tokens to Deep Burgundy
+          dark: "#661423",
+          light: "#FCEEEB",
+          muted: "#7A5A62",
         },
         sage: {
-          DEFAULT: "#6C70EB", // Map legacy tokens to Periwinkle Purple
-          dark: "#585CD6",
-          light: "#EEF0FF",
-          soft: "#FFF6F8",
+          DEFAULT: "#8A2232", // Map tokens to Warm Maroon
+          dark: "#6E1826",
+          light: "#FDF5F2",
+          soft: "#FAF4F0",
         },
         coral: {
-          DEFAULT: "#F04D7E",
-          dark: "#D83868",
-          light: "#FFE8EF",
+          DEFAULT: "#7A1D2E",
+          dark: "#661423",
+          light: "#FCEEEB",
         },
         sand: {
-          DEFAULT: "#8E8388",
-          light: "#FFF6F8",
-          amber: "#FEF9C3",
+          DEFAULT: "#7A5A62",
+          light: "#FAF4F0",
+          amber: "#FDF4DE",
         },
         pastel: {
-          peach: "#FFE8EF",
-          peachText: "#A82D50",
-          blue: "#EEF0FF",
-          blueText: "#4348C7",
-          purple: "#F3E8FF",
-          purpleText: "#6B21A8",
-          mint: "#E8F8F5",
+          peach: "#FCEEEB",
+          peachText: "#7A1D2E",
+          blue: "#FDF5F2",
+          blueText: "#8A2232",
+          purple: "#FAF0ED",
+          purpleText: "#7A1D2E",
+          mint: "#EBF5F0",
           mintText: "#1F7A65",
           yellow: "#FEF9C3",
           yellowText: "#854D0E",

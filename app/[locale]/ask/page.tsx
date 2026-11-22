@@ -214,8 +214,8 @@ export default function AskPage() {
 
   return (
     <div className="space-y-4 sm:space-y-6 pb-20">
-      {/* Ask Header in Periwinkle Purple (matching s1.png & s2.png) */}
-      <div className="rounded-4xl bg-gradient-to-br from-[#8E93F8] via-[#6C70EB] to-[#555AD4] p-6 text-white shadow-lg shadow-indigo-200/50 relative overflow-hidden">
+      {/* Ask Header in Deep Burgundy (matching slide theme) */}
+      <div className="rounded-4xl bg-gradient-to-br from-[#801D30] via-[#7A1D2E] to-[#601422] p-6 text-white shadow-md shadow-[#7A1D2E]/20 relative overflow-hidden">
         <span className="inline-flex items-center gap-1 rounded-full bg-white/20 px-2.5 py-0.5 text-[10px] font-bold text-white">
           <Sparkles className="w-3 h-3 text-white" />
           Personal Health Assistant
@@ -224,7 +224,7 @@ export default function AskPage() {
         <h1 className="mt-2 font-heading text-2xl sm:text-3xl font-bold tracking-tight text-white">
           {dict.ask.headerTitle}
         </h1>
-        <p className="mt-1 text-xs text-indigo-100 max-w-md">
+        <p className="mt-1 text-xs text-[#FCEEEB] max-w-md">
           {dict.ask.headerSub}
         </p>
 
@@ -243,7 +243,7 @@ export default function AskPage() {
               onClick={() => setActiveSubTab(tab.id as any)}
               className={`rounded-full px-3.5 py-1.5 text-xs font-semibold whitespace-nowrap transition ${
                 activeSubTab === tab.id
-                  ? 'bg-white text-brand-purple shadow-xs font-bold'
+                  ? 'bg-white text-[#7A1D2E] shadow-xs font-bold'
                   : 'bg-white/15 text-white hover:bg-white/25'
               }`}
             >
