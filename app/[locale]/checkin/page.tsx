@@ -149,12 +149,30 @@ export default function CheckinPage() {
   // EAT HEALTHY STATE (Search Unhealthy Food -> Low Sugar, Low Calorie, Low Carb Alternates)
   // -------------------------------------------------------------
   const [eatHealthySearch, setEatHealthySearch] = useState<string>('');
+  const [selectedEatCategory, setSelectedEatCategory] = useState<string>('All');
   const [selectedEatHealthyFood, setSelectedEatHealthyFood] = useState<UnhealthyFoodItem>(EAT_HEALTHY_FOODS[0]);
   const [selectedVariantType, setSelectedVariantType] = useState<'all' | 'lowSugar' | 'lowCalorie' | 'lowCarb'>('all');
   const [speakingWhy, setIsSpeakingWhy] = useState<boolean>(false);
 
-  // Filtered unhealthy foods based on search query
+  const EAT_HEALTHY_CATEGORIES = [
+    'All',
+    'Ice Cream & Desserts',
+    'Pizzas & Fast Food',
+    'Burgers & Fries',
+    'Fried Snacks & Samosas',
+    'Biryani & Rice',
+    'Noodles & Pasta',
+    'Bakery & Sweets',
+    'Sweet Beverages',
+  ];
+
+  // Filtered unhealthy foods based on search query and selected category
   const filteredUnhealthyFoods = EAT_HEALTHY_FOODS.filter((item) => {
+    const matchesCat =
+      selectedEatCategory === 'All' ||
+      item.category.toLowerCase().includes(selectedEatCategory.toLowerCase());
+    if (!matchesCat) return false;
+
     if (!eatHealthySearch.trim()) return true;
     const q = eatHealthySearch.toLowerCase();
     return (
@@ -412,48 +430,112 @@ export default function CheckinPage() {
                 type="text"
                 value={eatHealthySearch}
                 onChange={(e) => setEatHealthySearch(e.target.value)}
-                placeholder="Search food or craving (e.g. Pizza, Ice cream, Samosa, Burger, Biryani...)"
-                className="w-full pl-10 pr-4 py-2.5 rounded-2xl border border-[#F2E2DD] bg-[#FAF4F0] text-xs text-[#361118] placeholder:text-[#7A5A62]/70 focus:border-[#7A1D2E] focus:outline-none"
+                placeholder="Type any craving (e.g. ice cream, pizza, samosa, burger, biryani, chocolate)..."
+                className="w-full pl-10 pr-9 py-2.5 rounded-2xl border border-[#F2E2DD] bg-[#FAF4F0] text-xs text-[#361118] placeholder:text-[#7A5A62]/70 focus:border-[#7A1D2E] focus:outline-none"
               />
               {eatHealthySearch && (
                 <button
                   type="button"
                   onClick={() => setEatHealthySearch('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5"
+                  title="Clear search"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
               )}
             </div>
 
-            {/* Popular Unhealthy Food Quick-Select Chips */}
-            <div>
-              <div className="text-[11px] font-bold text-[#7A5A62] mb-1.5">
-                Popular unhealthy cravings (tap to view alternatives):
+            {/* Category Filter Pills */}
+            <div className="space-y-1.5">
+              <div className="text-[11px] font-bold text-[#7A5A62]">
+                Browse by craving category:
               </div>
               <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-                {EAT_HEALTHY_FOODS.map((item) => {
-                  const isSelected = selectedEatHealthyFood.id === item.id;
-                  return (
-                    <button
-                      key={item.id}
-                      type="button"
-                      onClick={() => {
-                        setSelectedEatHealthyFood(item);
-                        setEatHealthySearch('');
-                      }}
-                      className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition-all ${
-                        isSelected
-                          ? 'bg-[#7A1D2E] text-white shadow-xs font-bold scale-[1.02]'
-                          : 'bg-[#FAF4F0] text-[#7A5A62] border border-[#F2E2DD] hover:bg-[#FCEEEB]/60'
-                      }`}
-                    >
-                      <span>{item.emoji}</span>
-                      <span>{item.name}</span>
-                    </button>
-                  );
-                })}
+                {EAT_HEALTHY_CATEGORIES.map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => setSelectedEatCategory(cat)}
+                    className={`rounded-full px-3 py-1 text-xs font-semibold whitespace-nowrap transition-all ${
+                      selectedEatCategory === cat
+                        ? 'bg-[#7A1D2E] text-white shadow-xs font-bold'
+                        : 'bg-[#FAF4F0] text-[#7A5A62] border border-[#F2E2DD] hover:bg-[#FCEEEB]'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
               </div>
+            </div>
+
+            {/* AVAILABLE ITEMS LIST (Appears when searching or browsing) */}
+            <div className="space-y-2 pt-2 border-t border-[#F2E2DD]">
+              <div className="flex items-center justify-between px-1">
+                <span className="text-xs font-bold text-[#361118]">
+                  {eatHealthySearch.trim()
+                    ? `Available Items matching "${eatHealthySearch}" (${filteredUnhealthyFoods.length}):`
+                    : `Available Items in ${selectedEatCategory} (${filteredUnhealthyFoods.length}):`}
+                </span>
+                <span className="text-[10px] text-[#7A5A62]">
+                  Tap any item to view healthy alternates
+                </span>
+              </div>
+
+              {filteredUnhealthyFoods.length === 0 ? (
+                <div className="p-4 rounded-2xl bg-[#FAF4F0] text-center text-xs text-[#7A5A62] space-y-1">
+                  <div>No unhealthy food found matching &quot;{eatHealthySearch}&quot;.</div>
+                  <div className="text-[11px] text-[#7A1D2E]">
+                    Try searching for <strong>ice cream</strong>, <strong>pizza</strong>, <strong>samosa</strong>, or <strong>burger</strong>!
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-64 overflow-y-auto pr-1">
+                  {filteredUnhealthyFoods.map((item) => {
+                    const isSelected = selectedEatHealthyFood.id === item.id;
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => {
+                          setSelectedEatHealthyFood(item);
+                          setEatHealthySearch(item.name);
+                        }}
+                        className={`p-2.5 rounded-2xl border text-left transition-all flex items-center justify-between ${
+                          isSelected
+                            ? 'bg-white border-[#7A1D2E] shadow-xs ring-1 ring-[#7A1D2E]'
+                            : 'bg-white/80 border-[#F2E2DD] hover:bg-white hover:border-[#7A1D2E]/50'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <span className="text-2xl shrink-0">{item.emoji}</span>
+                          <div className="min-w-0">
+                            <div className="font-heading font-bold text-xs text-[#361118] truncate flex items-center gap-1.5">
+                              <span>{item.name}</span>
+                              {isSelected && (
+                                <span className="text-[9px] font-bold bg-[#7A1D2E] text-white px-1.5 py-0.2 rounded-full shrink-0">
+                                  Selected
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-[10px] text-[#7A5A62] flex items-center gap-1.5 mt-0.5">
+                              <span className="truncate text-slate-500">{item.category}</span>
+                              <span>•</span>
+                              <span className="text-rose-700 font-semibold shrink-0">{item.unhealthyProfile.calories} kcal</span>
+                              <span>•</span>
+                              <span className="text-rose-700 font-semibold shrink-0">{item.unhealthyProfile.sugar}g sugar</span>
+                              <span>•</span>
+                              <span className="text-rose-800 font-bold shrink-0">GI {item.unhealthyProfile.glycemicIndex}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <span className="text-[11px] font-bold text-[#7A1D2E] shrink-0 ml-2">
+                          View Swaps →
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             {/* Unhealthy Food Warning & Macro Breakdown */}
@@ -520,10 +602,10 @@ export default function CheckinPage() {
                     <button
                       key={filterKey}
                       type="button"
-                      onClick={() => setSelectedEatHealthyFood(selectedEatHealthyFood)}
+                      onClick={() => setSelectedVariantType(filterKey)}
                       className={`text-[10px] font-bold px-2 py-0.5 rounded-full transition ${
                         selectedVariantType === filterKey
-                          ? 'bg-[#7A1D2E] text-white'
+                          ? 'bg-[#7A1D2E] text-white shadow-xs'
                           : 'bg-[#FAF4F0] text-[#7A5A62] hover:bg-[#FCEEEB]'
                       }`}
                     >
@@ -542,169 +624,175 @@ export default function CheckinPage() {
               {/* 3 Detailed Alternative Cards: Low Sugar · Low Calorie · Low Carb */}
               <div className="grid grid-cols-1 gap-3">
                 {/* 1. LOW SUGAR VERSION */}
-                <div className="p-4 rounded-3xl border border-emerald-200 bg-[#EBF5F0]/70 space-y-2">
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <span className="text-[9px] font-extrabold uppercase tracking-wider bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-200">
-                        Low Sugar Alternative
+                {(selectedVariantType === 'all' || selectedVariantType === 'lowSugar') && (
+                  <div className="p-4 rounded-3xl border border-emerald-200 bg-[#EBF5F0]/70 space-y-2">
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <span className="text-[9px] font-extrabold uppercase tracking-wider bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full border border-emerald-200">
+                          Low Sugar Alternative
+                        </span>
+                        <h4 className="font-heading font-bold text-sm text-[#361118] mt-1">
+                          {selectedEatHealthyFood.lowSugarVariant.title}
+                        </h4>
+                      </div>
+                      <span className="text-[10px] font-bold text-emerald-800 bg-white px-2 py-0.5 rounded-full border border-emerald-200">
+                        GI: {selectedEatHealthyFood.lowSugarVariant.glycemicIndex} (Very Low)
                       </span>
-                      <h4 className="font-heading font-bold text-sm text-[#361118] mt-1">
-                        {selectedEatHealthyFood.lowSugarVariant.title}
-                      </h4>
                     </div>
-                    <span className="text-[10px] font-bold text-emerald-800 bg-white px-2 py-0.5 rounded-full border border-emerald-200">
-                      GI: {selectedEatHealthyFood.lowSugarVariant.glycemicIndex} (Very Low)
-                    </span>
-                  </div>
 
-                  <p className="text-xs text-[#361118] leading-relaxed">
-                    {selectedEatHealthyFood.lowSugarVariant.description}
-                  </p>
+                    <p className="text-xs text-[#361118] leading-relaxed">
+                      {selectedEatHealthyFood.lowSugarVariant.description}
+                    </p>
 
-                  <div className="grid grid-cols-4 gap-1.5 text-center text-xs py-1">
-                    <div className="bg-white/90 p-1.5 rounded-xl border border-emerald-100">
-                      <div className="text-[9px] text-slate-500">Calories</div>
-                      <div className="font-bold text-emerald-800">{selectedEatHealthyFood.lowSugarVariant.calories}</div>
+                    <div className="grid grid-cols-4 gap-1.5 text-center text-xs py-1">
+                      <div className="bg-white/90 p-1.5 rounded-xl border border-emerald-100">
+                        <div className="text-[9px] text-slate-500">Calories</div>
+                        <div className="font-bold text-emerald-800">{selectedEatHealthyFood.lowSugarVariant.calories}</div>
+                      </div>
+                      <div className="bg-white/90 p-1.5 rounded-xl border border-emerald-100">
+                        <div className="text-[9px] text-slate-500">Sugar</div>
+                        <div className="font-bold text-emerald-800">{selectedEatHealthyFood.lowSugarVariant.sugar}</div>
+                      </div>
+                      <div className="bg-white/90 p-1.5 rounded-xl border border-emerald-100">
+                        <div className="text-[9px] text-slate-500">Protein</div>
+                        <div className="font-bold text-emerald-800">{selectedEatHealthyFood.lowSugarVariant.protein}</div>
+                      </div>
+                      <div className="bg-white/90 p-1.5 rounded-xl border border-emerald-100">
+                        <div className="text-[9px] text-slate-500">Fiber</div>
+                        <div className="font-bold text-emerald-800">{selectedEatHealthyFood.lowSugarVariant.fiber}</div>
+                      </div>
                     </div>
-                    <div className="bg-white/90 p-1.5 rounded-xl border border-emerald-100">
-                      <div className="text-[9px] text-slate-500">Sugar</div>
-                      <div className="font-bold text-emerald-800">{selectedEatHealthyFood.lowSugarVariant.sugar}</div>
+
+                    <div className="text-[11px] text-[#7A5A62] italic">
+                      💡 <strong>Quick Recipe:</strong> {selectedEatHealthyFood.lowSugarVariant.quickRecipe}
                     </div>
-                    <div className="bg-white/90 p-1.5 rounded-xl border border-emerald-100">
-                      <div className="text-[9px] text-slate-500">Protein</div>
-                      <div className="font-bold text-emerald-800">{selectedEatHealthyFood.lowSugarVariant.protein}</div>
-                    </div>
-                    <div className="bg-white/90 p-1.5 rounded-xl border border-emerald-100">
-                      <div className="text-[9px] text-slate-500">Fiber</div>
-                      <div className="font-bold text-emerald-800">{selectedEatHealthyFood.lowSugarVariant.fiber}</div>
+
+                    <div className="pt-1 flex justify-end">
+                      <button
+                        type="button"
+                        onClick={() => handleAddHealthySwapToFoodLog(selectedEatHealthyFood.lowSugarVariant, selectedEatHealthyFood.name)}
+                        className="px-3.5 py-1.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center gap-1 shadow-xs transition"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>Add to Food Log</span>
+                      </button>
                     </div>
                   </div>
-
-                  <div className="text-[11px] text-[#7A5A62] italic">
-                    💡 <strong>Quick Recipe:</strong> {selectedEatHealthyFood.lowSugarVariant.quickRecipe}
-                  </div>
-
-                  <div className="pt-1 flex justify-end">
-                    <button
-                      type="button"
-                      onClick={() => handleAddHealthySwapToFoodLog(selectedEatHealthyFood.lowSugarVariant, selectedEatHealthyFood.name)}
-                      className="px-3.5 py-1.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs flex items-center gap-1 shadow-xs transition"
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                      <span>Add to Food Log</span>
-                    </button>
-                  </div>
-                </div>
+                )}
 
                 {/* 2. LOW CALORIE VERSION */}
-                <div className="p-4 rounded-3xl border border-sky-200 bg-[#F4EFEA]/80 space-y-2">
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <span className="text-[9px] font-extrabold uppercase tracking-wider bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full border border-amber-200">
-                        Low Calorie Alternative
+                {(selectedVariantType === 'all' || selectedVariantType === 'lowCalorie') && (
+                  <div className="p-4 rounded-3xl border border-sky-200 bg-[#F4EFEA]/80 space-y-2">
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <span className="text-[9px] font-extrabold uppercase tracking-wider bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full border border-amber-200">
+                          Low Calorie Alternative
+                        </span>
+                        <h4 className="font-heading font-bold text-sm text-[#361118] mt-1">
+                          {selectedEatHealthyFood.lowCalorieVariant.title}
+                        </h4>
+                      </div>
+                      <span className="text-[10px] font-bold text-amber-900 bg-white px-2 py-0.5 rounded-full border border-amber-200">
+                        GI: {selectedEatHealthyFood.lowCalorieVariant.glycemicIndex} (Low)
                       </span>
-                      <h4 className="font-heading font-bold text-sm text-[#361118] mt-1">
-                        {selectedEatHealthyFood.lowCalorieVariant.title}
-                      </h4>
                     </div>
-                    <span className="text-[10px] font-bold text-amber-900 bg-white px-2 py-0.5 rounded-full border border-amber-200">
-                      GI: {selectedEatHealthyFood.lowCalorieVariant.glycemicIndex} (Low)
-                    </span>
-                  </div>
 
-                  <p className="text-xs text-[#361118] leading-relaxed">
-                    {selectedEatHealthyFood.lowCalorieVariant.description}
-                  </p>
+                    <p className="text-xs text-[#361118] leading-relaxed">
+                      {selectedEatHealthyFood.lowCalorieVariant.description}
+                    </p>
 
-                  <div className="grid grid-cols-4 gap-1.5 text-center text-xs py-1">
-                    <div className="bg-white/90 p-1.5 rounded-xl border border-amber-100">
-                      <div className="text-[9px] text-slate-500">Calories</div>
-                      <div className="font-bold text-amber-900">{selectedEatHealthyFood.lowCalorieVariant.calories}</div>
+                    <div className="grid grid-cols-4 gap-1.5 text-center text-xs py-1">
+                      <div className="bg-white/90 p-1.5 rounded-xl border border-amber-100">
+                        <div className="text-[9px] text-slate-500">Calories</div>
+                        <div className="font-bold text-amber-900">{selectedEatHealthyFood.lowCalorieVariant.calories}</div>
+                      </div>
+                      <div className="bg-white/90 p-1.5 rounded-xl border border-amber-100">
+                        <div className="text-[9px] text-slate-500">Carbs</div>
+                        <div className="font-bold text-amber-900">{selectedEatHealthyFood.lowCalorieVariant.carbs}</div>
+                      </div>
+                      <div className="bg-white/90 p-1.5 rounded-xl border border-amber-100">
+                        <div className="text-[9px] text-slate-500">Protein</div>
+                        <div className="font-bold text-amber-900">{selectedEatHealthyFood.lowCalorieVariant.protein}</div>
+                      </div>
+                      <div className="bg-white/90 p-1.5 rounded-xl border border-amber-100">
+                        <div className="text-[9px] text-slate-500">Fiber</div>
+                        <div className="font-bold text-amber-900">{selectedEatHealthyFood.lowCalorieVariant.fiber}</div>
+                      </div>
                     </div>
-                    <div className="bg-white/90 p-1.5 rounded-xl border border-amber-100">
-                      <div className="text-[9px] text-slate-500">Carbs</div>
-                      <div className="font-bold text-amber-900">{selectedEatHealthyFood.lowCalorieVariant.carbs}</div>
+
+                    <div className="text-[11px] text-[#7A5A62] italic">
+                      💡 <strong>Quick Recipe:</strong> {selectedEatHealthyFood.lowCalorieVariant.quickRecipe}
                     </div>
-                    <div className="bg-white/90 p-1.5 rounded-xl border border-amber-100">
-                      <div className="text-[9px] text-slate-500">Protein</div>
-                      <div className="font-bold text-amber-900">{selectedEatHealthyFood.lowCalorieVariant.protein}</div>
-                    </div>
-                    <div className="bg-white/90 p-1.5 rounded-xl border border-amber-100">
-                      <div className="text-[9px] text-slate-500">Fiber</div>
-                      <div className="font-bold text-amber-900">{selectedEatHealthyFood.lowCalorieVariant.fiber}</div>
+
+                    <div className="pt-1 flex justify-end">
+                      <button
+                        type="button"
+                        onClick={() => handleAddHealthySwapToFoodLog(selectedEatHealthyFood.lowCalorieVariant, selectedEatHealthyFood.name)}
+                        className="px-3.5 py-1.5 rounded-xl bg-[#7A1D2E] hover:bg-[#661423] text-white font-bold text-xs flex items-center gap-1 shadow-xs transition"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>Add to Food Log</span>
+                      </button>
                     </div>
                   </div>
-
-                  <div className="text-[11px] text-[#7A5A62] italic">
-                    💡 <strong>Quick Recipe:</strong> {selectedEatHealthyFood.lowCalorieVariant.quickRecipe}
-                  </div>
-
-                  <div className="pt-1 flex justify-end">
-                    <button
-                      type="button"
-                      onClick={() => handleAddHealthySwapToFoodLog(selectedEatHealthyFood.lowCalorieVariant, selectedEatHealthyFood.name)}
-                      className="px-3.5 py-1.5 rounded-xl bg-[#7A1D2E] hover:bg-[#661423] text-white font-bold text-xs flex items-center gap-1 shadow-xs transition"
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                      <span>Add to Food Log</span>
-                    </button>
-                  </div>
-                </div>
+                )}
 
                 {/* 3. LOW CARB VERSION */}
-                <div className="p-4 rounded-3xl border border-[#F2E2DD] bg-[#FFF9F7] space-y-2">
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <span className="text-[9px] font-extrabold uppercase tracking-wider bg-[#FCEEEB] text-[#7A1D2E] px-2 py-0.5 rounded-full border border-[#F0DDD8]">
-                        Low Carb / Ketogenic Variant
+                {(selectedVariantType === 'all' || selectedVariantType === 'lowCarb') && (
+                  <div className="p-4 rounded-3xl border border-[#F2E2DD] bg-[#FFF9F7] space-y-2">
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <span className="text-[9px] font-extrabold uppercase tracking-wider bg-[#FCEEEB] text-[#7A1D2E] px-2 py-0.5 rounded-full border border-[#F0DDD8]">
+                          Low Carb / Ketogenic Variant
+                        </span>
+                        <h4 className="font-heading font-bold text-sm text-[#361118] mt-1">
+                          {selectedEatHealthyFood.lowCarbVariant.title}
+                        </h4>
+                      </div>
+                      <span className="text-[10px] font-bold text-[#7A1D2E] bg-white px-2 py-0.5 rounded-full border border-[#F2E2DD]">
+                        GI: {selectedEatHealthyFood.lowCarbVariant.glycemicIndex} (Ultra Low)
                       </span>
-                      <h4 className="font-heading font-bold text-sm text-[#361118] mt-1">
-                        {selectedEatHealthyFood.lowCarbVariant.title}
-                      </h4>
                     </div>
-                    <span className="text-[10px] font-bold text-[#7A1D2E] bg-white px-2 py-0.5 rounded-full border border-[#F2E2DD]">
-                      GI: {selectedEatHealthyFood.lowCarbVariant.glycemicIndex} (Ultra Low)
-                    </span>
-                  </div>
 
-                  <p className="text-xs text-[#361118] leading-relaxed">
-                    {selectedEatHealthyFood.lowCarbVariant.description}
-                  </p>
+                    <p className="text-xs text-[#361118] leading-relaxed">
+                      {selectedEatHealthyFood.lowCarbVariant.description}
+                    </p>
 
-                  <div className="grid grid-cols-4 gap-1.5 text-center text-xs py-1">
-                    <div className="bg-white/90 p-1.5 rounded-xl border border-[#F2E2DD]">
-                      <div className="text-[9px] text-slate-500">Calories</div>
-                      <div className="font-bold text-[#7A1D2E]">{selectedEatHealthyFood.lowCarbVariant.calories}</div>
+                    <div className="grid grid-cols-4 gap-1.5 text-center text-xs py-1">
+                      <div className="bg-white/90 p-1.5 rounded-xl border border-[#F2E2DD]">
+                        <div className="text-[9px] text-slate-500">Calories</div>
+                        <div className="font-bold text-[#7A1D2E]">{selectedEatHealthyFood.lowCarbVariant.calories}</div>
+                      </div>
+                      <div className="bg-white/90 p-1.5 rounded-xl border border-[#F2E2DD]">
+                        <div className="text-[9px] text-slate-500">Net Carbs</div>
+                        <div className="font-bold text-[#7A1D2E]">{selectedEatHealthyFood.lowCarbVariant.carbs}</div>
+                      </div>
+                      <div className="bg-white/90 p-1.5 rounded-xl border border-[#F2E2DD]">
+                        <div className="text-[9px] text-slate-500">Protein</div>
+                        <div className="font-bold text-[#7A1D2E]">{selectedEatHealthyFood.lowCarbVariant.protein}</div>
+                      </div>
+                      <div className="bg-white/90 p-1.5 rounded-xl border border-[#F2E2DD]">
+                        <div className="text-[9px] text-slate-500">Fiber</div>
+                        <div className="font-bold text-[#7A1D2E]">{selectedEatHealthyFood.lowCarbVariant.fiber}</div>
+                      </div>
                     </div>
-                    <div className="bg-white/90 p-1.5 rounded-xl border border-[#F2E2DD]">
-                      <div className="text-[9px] text-slate-500">Net Carbs</div>
-                      <div className="font-bold text-[#7A1D2E]">{selectedEatHealthyFood.lowCarbVariant.carbs}</div>
+
+                    <div className="text-[11px] text-[#7A5A62] italic">
+                      💡 <strong>Quick Recipe:</strong> {selectedEatHealthyFood.lowCarbVariant.quickRecipe}
                     </div>
-                    <div className="bg-white/90 p-1.5 rounded-xl border border-[#F2E2DD]">
-                      <div className="text-[9px] text-slate-500">Protein</div>
-                      <div className="font-bold text-[#7A1D2E]">{selectedEatHealthyFood.lowCarbVariant.protein}</div>
-                    </div>
-                    <div className="bg-white/90 p-1.5 rounded-xl border border-[#F2E2DD]">
-                      <div className="text-[9px] text-slate-500">Fiber</div>
-                      <div className="font-bold text-[#7A1D2E]">{selectedEatHealthyFood.lowCarbVariant.fiber}</div>
+
+                    <div className="pt-1 flex justify-end">
+                      <button
+                        type="button"
+                        onClick={() => handleAddHealthySwapToFoodLog(selectedEatHealthyFood.lowCarbVariant, selectedEatHealthyFood.name)}
+                        className="px-3.5 py-1.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-bold text-xs flex items-center gap-1 shadow-xs transition"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>Add to Food Log</span>
+                      </button>
                     </div>
                   </div>
-
-                  <div className="text-[11px] text-[#7A5A62] italic">
-                    💡 <strong>Quick Recipe:</strong> {selectedEatHealthyFood.lowCarbVariant.quickRecipe}
-                  </div>
-
-                  <div className="pt-1 flex justify-end">
-                    <button
-                      type="button"
-                      onClick={() => handleAddHealthySwapToFoodLog(selectedEatHealthyFood.lowCarbVariant, selectedEatHealthyFood.name)}
-                      className="px-3.5 py-1.5 rounded-xl bg-[#7A1D2E] hover:bg-[#661423] text-white font-bold text-xs flex items-center gap-1 shadow-xs transition"
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                      <span>Add to Food Log</span>
-                    </button>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
           </Card>
