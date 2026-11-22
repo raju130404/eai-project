@@ -624,7 +624,7 @@ export default function TodayPage() {
           </div>
         </div>
         <Link
-          href="/checkin"
+          href="/checkin?tab=eatHealthy"
           className="px-3.5 py-1.5 rounded-xl bg-[#7A1D2E] text-white hover:bg-[#661423] text-xs font-bold shadow-xs transition shrink-0 whitespace-nowrap"
         >
           Eat Healthy &gt;

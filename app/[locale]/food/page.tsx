@@ -336,25 +336,36 @@ export default function FoodPage() {
             </div>
 
             {/* Search Input for Any Unhealthy Food or Craving */}
-            <div className="relative">
-              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#7A5A62]" />
-              <input
-                type="text"
-                value={eatHealthySearch}
-                onChange={(e) => setEatHealthySearch(e.target.value)}
-                placeholder="Type any craving (e.g. ice cream, pizza, samosa, burger, biryani, chocolate)..."
-                className="w-full pl-10 pr-9 py-2.5 rounded-2xl border border-[#F2E2DD] bg-[#FAF4F0] text-xs text-[#361118] placeholder:text-[#7A5A62]/70 focus:border-[#7A1D2E] focus:outline-none"
-              />
-              {eatHealthySearch && (
-                <button
-                  type="button"
-                  onClick={() => setEatHealthySearch('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5"
-                  title="Clear search"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              )}
+            <div className="bg-white rounded-3xl p-4 sm:p-5 border-2 border-[#7A1D2E]/25 shadow-sm space-y-2">
+              <div className="flex items-center justify-between px-1">
+                <span className="text-xs sm:text-sm font-bold text-[#361118] font-heading flex items-center gap-2">
+                  <Search className="w-4 h-4 text-[#7A1D2E]" />
+                  <span>Search Any Food, Craving or Dish:</span>
+                </span>
+                <span className="text-[10px] font-semibold text-[#7A1D2E] bg-[#FCEEEB] px-2.5 py-0.5 rounded-full border border-[#F0DDD8]">
+                  Instant Healthy Swaps
+                </span>
+              </div>
+              <div className="relative">
+                <Search className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#7A1D2E]" />
+                <input
+                  type="text"
+                  value={eatHealthySearch}
+                  onChange={(e) => setEatHealthySearch(e.target.value)}
+                  placeholder="Type any craving (e.g. ice cream, pizza, samosa, burger, biryani, chocolate)..."
+                  className="w-full pl-11 pr-10 py-3 rounded-2xl border-2 border-[#F2E2DD] bg-[#FAF4F0] text-sm text-[#361118] font-medium placeholder:text-[#7A5A62] focus:border-[#7A1D2E] focus:bg-white focus:outline-none shadow-inner"
+                />
+                {eatHealthySearch && (
+                  <button
+                    type="button"
+                    onClick={() => setEatHealthySearch('')}
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
+                    title="Clear search"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* Category Filter Pills */}
@@ -875,102 +886,100 @@ export default function FoodPage() {
         </div>
       </div>
 
-      {/* 150+ INDB Food Database Search & Category Filter - Daily Mode */}
-      {foodViewMode === 'daily' && (
-        <div className="space-y-3 pt-2">
-          <div className="flex items-center justify-between px-1">
-            <h2 className="font-heading text-base font-bold text-slate-900">
-              INDB Food Databank &amp; PCOS Smart Swaps
-            </h2>
-            <span className="text-xs text-slate-500">{filteredFoods.length} dishes</span>
-          </div>
-
-          {/* Pill Search Bar */}
-          <div className="relative">
-            <Search className="absolute left-4 top-3.5 h-4 w-4 text-slate-400" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search Indian dishes (Roti, Poha, Dal, Paneer, Idli)..."
-              className="w-full rounded-full border border-slate-200 bg-white pl-11 pr-4 py-3 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 shadow-sm focus:border-forest focus:outline-none"
-            />
-          </div>
-
-          {/* Category Pills */}
-          <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => setSelectedCategory(cat)}
-                className={`rounded-full px-3.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-all ${
-                  selectedCategory === cat
-                    ? 'bg-forest text-white shadow-xs'
-                    : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          {/* Food Items List */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {filteredFoods.slice(0, 12).map((item) => {
-              const isFriendly = item.pcosScore >= 7;
-              return (
-                <Card key={item.name} className="rounded-3xl p-4 border-slate-200/80 bg-white shadow-card flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <h4 className="font-heading text-sm font-bold text-slate-900">
-                          {item.name}
-                        </h4>
-                        {item.nameHindi && (
-                          <span className="text-[11px] text-slate-400">{item.nameHindi}</span>
-                        )}
-                      </div>
-                      <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
-                        isFriendly ? 'bg-pastel-mint text-pastel-mintText' : 'bg-pastel-peach text-pastel-peachText'
-                      }`}>
-                        {item.pcosScore}/10
-                      </span>
-                    </div>
-
-                    <div className="mt-2 text-[11px] text-slate-500 flex gap-2.5">
-                      <span>{item.calories} kcal</span>
-                      <span>•</span>
-                      <span>P: {item.protein}g</span>
-                      <span>•</span>
-                      <span>F: {item.fiber}g</span>
-                      <span>•</span>
-                      <span>C: {item.carbs}g</span>
-                    </div>
-
-                    {item.swapSuggestion && (
-                      <div className="mt-2.5 p-2 rounded-2xl bg-pastel-yellow/60 border border-amber-200/60 text-[11px] text-amber-900">
-                        <span className="font-bold">Smart Swap:</span> {item.swapSuggestion}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
-                    <span className="text-[10px] text-slate-400">{item.category}</span>
-                    <button
-                      type="button"
-                      onClick={() => handleAddDirect(item)}
-                      className="inline-flex items-center gap-1 text-xs font-bold text-forest hover:underline"
-                    >
-                      <Plus className="w-3.5 h-3.5" /> Log Dish
-                    </button>
-                  </div>
-                </Card>
-              );
-            })}
-          </div>
+      {/* 150+ INDB Food Database Search & Category Filter */}
+      <div className="space-y-3 pt-2">
+        <div className="flex items-center justify-between px-1">
+          <h2 className="font-heading text-base font-bold text-slate-900">
+            INDB Food Databank &amp; PCOS Smart Swaps
+          </h2>
+          <span className="text-xs text-slate-500">{filteredFoods.length} dishes</span>
         </div>
-      )}
+
+        {/* Pill Search Bar */}
+        <div className="relative">
+          <Search className="absolute left-4 top-3.5 h-4 w-4 text-slate-400" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search Indian dishes (Roti, Poha, Dal, Paneer, Idli)..."
+            className="w-full rounded-full border border-slate-200 bg-white pl-11 pr-4 py-3 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 shadow-sm focus:border-forest focus:outline-none"
+          />
+        </div>
+
+        {/* Category Pills */}
+        <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => setSelectedCategory(cat)}
+              className={`rounded-full px-3.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-all ${
+                selectedCategory === cat
+                  ? 'bg-forest text-white shadow-xs'
+                  : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        {/* Food Items List */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {filteredFoods.slice(0, 12).map((item) => {
+            const isFriendly = item.pcosScore >= 7;
+            return (
+              <Card key={item.name} className="rounded-3xl p-4 border-slate-200/80 bg-white shadow-card flex flex-col justify-between">
+                <div>
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <h4 className="font-heading text-sm font-bold text-slate-900">
+                        {item.name}
+                      </h4>
+                      {item.nameHindi && (
+                        <span className="text-[11px] text-slate-400">{item.nameHindi}</span>
+                      )}
+                    </div>
+                    <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
+                      isFriendly ? 'bg-pastel-mint text-pastel-mintText' : 'bg-pastel-peach text-pastel-peachText'
+                    }`}>
+                      {item.pcosScore}/10
+                    </span>
+                  </div>
+
+                  <div className="mt-2 text-[11px] text-slate-500 flex gap-2.5">
+                    <span>{item.calories} kcal</span>
+                    <span>•</span>
+                    <span>P: {item.protein}g</span>
+                    <span>•</span>
+                    <span>F: {item.fiber}g</span>
+                    <span>•</span>
+                    <span>C: {item.carbs}g</span>
+                  </div>
+
+                  {item.swapSuggestion && (
+                    <div className="mt-2.5 p-2 rounded-2xl bg-pastel-yellow/60 border border-amber-200/60 text-[11px] text-amber-900">
+                      <span className="font-bold">Smart Swap:</span> {item.swapSuggestion}
+                    </div>
+                  )}
+                </div>
+
+                <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+                  <span className="text-[10px] text-slate-400">{item.category}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleAddDirect(item)}
+                    className="inline-flex items-center gap-1 text-xs font-bold text-forest hover:underline"
+                  >
+                    <Plus className="w-3.5 h-3.5" /> Log Dish
+                  </button>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+      </div>
 
       {/* F1. THALI PHOTO LOGGING FLOATING ACTION BUTTON (FAB) */}
       <div className="fixed bottom-20 right-4 z-40">

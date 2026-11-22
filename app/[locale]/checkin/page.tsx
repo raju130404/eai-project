@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { Locale } from '@/i18n';
 import { getDictionary } from '@/lib/i18n-dictionary';
@@ -79,8 +79,18 @@ export default function CheckinPage() {
   const dict = getDictionary(locale);
 
   // Top Section Selector: 'vitals' (Daily Check-in) | 'food' (Meals Log) | 'eatHealthy' (Craving & Healthy Swaps)
-  const [activeSection, setActiveSection] = useState<'vitals' | 'food' | 'eatHealthy'>('vitals');
+  const [activeSection, setActiveSection] = useState<'vitals' | 'food' | 'eatHealthy'>('eatHealthy');
   const [mode, setMode] = useState<'quick' | 'voice'>('quick');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const tab = params.get('tab');
+      if (tab === 'vitals' || tab === 'food' || tab === 'eatHealthy') {
+        setActiveSection(tab as any);
+      }
+    }
+  }, []);
 
   // Form states (Vitals)
   const [selectedMood, setSelectedMood] = useState<number>(4);
@@ -398,6 +408,44 @@ export default function CheckinPage() {
         </div>
       )}
 
+      {/* PERMANENT FOOD & CRAVING SEARCH BAR (Always visible across all tabs) */}
+      <div className="bg-white rounded-3xl p-4 sm:p-5 border-2 border-[#7A1D2E]/25 shadow-sm space-y-2">
+        <div className="flex items-center justify-between px-1">
+          <span className="text-xs sm:text-sm font-bold text-[#361118] font-heading flex items-center gap-2">
+            <Search className="w-4 h-4 text-[#7A1D2E]" />
+            <span>Search Any Food, Craving or Dish:</span>
+          </span>
+          <span className="text-[10px] font-semibold text-[#7A1D2E] bg-[#FCEEEB] px-2.5 py-0.5 rounded-full border border-[#F0DDD8]">
+            Instant Healthy Swaps
+          </span>
+        </div>
+        <div className="relative">
+          <Search className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#7A1D2E]" />
+          <input
+            type="text"
+            value={eatHealthySearch}
+            onChange={(e) => {
+              setEatHealthySearch(e.target.value);
+              if (activeSection !== 'eatHealthy') {
+                setActiveSection('eatHealthy');
+              }
+            }}
+            placeholder="Type any craving (e.g. ice cream, pizza, samosa, burger, biryani, chocolate)..."
+            className="w-full pl-11 pr-10 py-3 rounded-2xl border-2 border-[#F2E2DD] bg-[#FAF4F0] text-sm text-[#361118] font-medium placeholder:text-[#7A5A62] focus:border-[#7A1D2E] focus:bg-white focus:outline-none shadow-inner"
+          />
+          {eatHealthySearch && (
+            <button
+              type="button"
+              onClick={() => setEatHealthySearch('')}
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
+              title="Clear search"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+      </div>
+
       {/* ========================================================================= */}
       {/* SECTION 1: EAT HEALTHY (Search Unhealthy Foods -> Low Sugar/Calorie/Carb) */}
       {/* ========================================================================= */}
@@ -411,9 +459,9 @@ export default function CheckinPage() {
                 </div>
                 <div>
                   <h2 className="font-heading text-base font-bold text-[#361118] flex items-center gap-1.5">
-                    <span>Eat Healthy</span>
+                    <span>Eat Healthy Alternates</span>
                     <span className="text-[10px] font-semibold bg-[#FCEEEB] text-[#7A1D2E] px-2 py-0.5 rounded-full border border-[#F0DDD8]">
-                      Smart Alternates
+                      Low Sugar · Low Calorie · Low Carb
                     </span>
                   </h2>
                   <p className="text-xs text-[#7A5A62]">
